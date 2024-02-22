@@ -123,9 +123,10 @@ const getCourseById = async (courseId) => {
         }
       }
     `
+    const result = await request(MASTER_URL,query)
+    console.log(result);
+    return result;
 }
-
-
 
 export default {
     getAllCourseList,

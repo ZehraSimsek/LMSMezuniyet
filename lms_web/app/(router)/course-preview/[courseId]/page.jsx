@@ -43,13 +43,11 @@ function CoursePreview({params}) {
 
   return courseInfo&&(
     <div className='grid grid-cols-1 md:grid-cols-3 p-5 gap-3'>
-        <div className='col-span-2 bg-white p-36 '>
+        <div className='col-span-2 bg-white p-36 pt-10 '>
             <VideoDesc courseInfo={courseInfo}/>
         </div>
-
         <div>
             <CourseEnroll />
-
             <CourseContent courseInfo={courseInfo}/>
         </div>
     </div>

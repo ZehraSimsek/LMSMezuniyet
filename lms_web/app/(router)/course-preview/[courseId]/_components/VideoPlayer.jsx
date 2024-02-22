@@ -1,16 +1,16 @@
-import React from 'react'
+import React from "react";
 
-function VideoPlayer({videoUrl}) {
+function VideoPlayer({ videoUrl }) {
   return (
     <video
-        width={100}
-        height={250}
-        controls
-        className='rounded-sm'
+      width={1000}
+      height={250}
+      controls
+      className="rounded-sm"
     >
-        <source src={videoUrl} type='video/mp4'/>
+      <source src={videoUrl} type="video/mp4" />
     </video>
-  )
+  );
 }
 
-export default VideoPlayer
+export default VideoPlayer;

@@ -55,7 +55,8 @@ import React, { useEffect, useState } from "react";
 import GlobalApi from "../../../_utils/GlobalApi";
 import CourseItem from "./CourseItem";
 import SideBanners from "./SideBanners";
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+
 
 function CourseList() {
   const [courseList, setCourseList] = useState([]);

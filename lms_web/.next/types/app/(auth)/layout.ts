@@ -1,4 +1,4 @@
-// File: C:\Users\zehra\OneDrive\Documents\GitHub\LMSProjectWeb\lms_web\app\(auth)\layout.tsx
+// File: C:\Users\edaka\OneDrive\Belgeler\GitHub\LMSMezuniyet\lms_web\app\(auth)\layout.tsx
 import * as entry from '../../../../app/(auth)/layout.js'
 import type { ResolvingMetadata } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

@@ -1,4 +1,4 @@
-// File: C:\Users\zehra\OneDrive\Documents\GitHub\LMSProjectWeb\lms_web\app\(router)\layout.js
+// File: C:\Users\edaka\OneDrive\Belgeler\GitHub\LMSMezuniyet\lms_web\app\(router)\layout.js
 import * as entry from '../../../../app/(router)/layout.js'
 import type { ResolvingMetadata } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
