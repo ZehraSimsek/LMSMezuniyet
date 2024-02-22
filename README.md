@@ -1,0 +1,2 @@
+# LMSMezuniyet
+ bitirme projesi
