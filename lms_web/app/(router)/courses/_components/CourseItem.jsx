@@ -71,7 +71,6 @@
 import React from 'react'
 import Image from 'next/image'
 import { FaBookOpen, FaBook } from 'react-icons/fa'
-import { Link } from 'react-router-dom' // Corrected import
 
 function CourseItem({course , id}) {
   return (
@@ -88,9 +87,7 @@ function CourseItem({course , id}) {
             <h2 className='text-[15px]'>{course?.free?'Ücretsiz':'Ücretli'}</h2>
         </div>
         <div className='p-2 flex justify-between items-center'>
-          <Link to={`/course-preview/${id}`} className="text-blue-500 hover:text-blue-700 flex-grow">
-            Kursu Görüntüle
-          </Link>
+
           <div>
             {course?.chapter?.length == 2 ? <FaBookOpen size={24} className='mr-2'/> : <FaBook size={24}/>}
           </div>

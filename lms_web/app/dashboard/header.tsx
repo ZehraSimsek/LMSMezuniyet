@@ -10,13 +10,12 @@ export default function Header({ name, isTeacher }) {
 
   const handleSignOut = async () => {
     await auth.signOut(() => {
-      history.push('/'); // Çıkış yaptıktan sonra ana sayfaya yönlendir
+      history.push('/'); 
     });
   };
 
   const handleTeacherMode = async () => {
     'use server';
-    // Öğretmen moduna geçiş işlemleri burada gerçekleştirilir.
   };
 
   return (

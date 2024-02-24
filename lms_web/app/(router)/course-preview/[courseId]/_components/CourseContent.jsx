@@ -12,7 +12,7 @@ function CourseContent({courseInfo}) {
             <h2 className={`p-3 text-[14px] flex justify-between 
                 items-center border rounded-sm px-4 
                 cursor-pointer mt-2 hover:bg-gray-200 hover:text-gray-500 
-                ${activeIndex == index && 'bg-purple-600 text-white'}`}>
+                ${activeIndex == index && 'bg-purple-900 text-white'}`}>
                    {index+1}. {item.name}
                    {activeIndex == index?
                    <Play className="h-4 w-4"/>:

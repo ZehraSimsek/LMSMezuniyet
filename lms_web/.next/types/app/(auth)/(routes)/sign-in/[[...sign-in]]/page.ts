@@ -1,4 +1,4 @@
-// File: C:\Users\edaka\OneDrive\Belgeler\GitHub\LMSMezuniyet\lms_web\app\(auth)\(routes)\sign-in\[[...sign-in]]\page.tsx
+// File: C:\Users\zehra\OneDrive\Documents\GitHub\LMSMezuniyet\lms_web\app\(auth)\(routes)\sign-in\[[...sign-in]]\page.tsx
 import * as entry from '../../../../../../../app/(auth)/(routes)/sign-in/[[...sign-in]]/page.js'
 import type { ResolvingMetadata } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

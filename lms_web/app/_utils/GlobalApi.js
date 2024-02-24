@@ -128,8 +128,16 @@ const getCourseById = async (courseId) => {
     return result;
 }
 
+const getUserEnrollDetail = async() => {
+  const query = gql ``
+  const result = await request(MASTER_URL,query)
+  console.log(result);
+  return result;
+}
+
 export default {
     getAllCourseList,
     getSideBanner,
-    getCourseById
+    getCourseById,
+    getUserEnrollDetail
 }

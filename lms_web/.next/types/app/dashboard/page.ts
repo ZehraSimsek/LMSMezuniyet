@@ -1,4 +1,4 @@
-// File: C:\Users\edaka\OneDrive\Belgeler\GitHub\LMSMezuniyet\lms_web\app\dashboard\page.tsx
+// File: C:\Users\zehra\OneDrive\Documents\GitHub\LMSMezuniyet\lms_web\app\dashboard\page.tsx
 import * as entry from '../../../../app/dashboard/page.js'
 import type { ResolvingMetadata } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
