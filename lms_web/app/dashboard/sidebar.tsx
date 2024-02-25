@@ -263,9 +263,9 @@ function Sidebar({ isVisible }) {
         </nav>
       </div>
       <Routes>
-        <Route path="/" element={<CourseList />}/>
+        <Route path="/" />
           {/* Anasayfa içeriği */}
-        <Route path="/search">
+        <Route path="/search" element={<CourseList />}>
           {/* Arama içeriği */}
         </Route>
         <Route path="/settings">

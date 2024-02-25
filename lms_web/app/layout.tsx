@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes"
 import { ClerkProvider} from "@clerk/nextjs";
 import { trTR } from "@clerk/localizations";
 
+
 export default function RootLayout({
   children,
 }: {
@@ -20,7 +21,7 @@ export default function RootLayout({
           localization={trTR}
          >
         <body className="dark:bg-slate-700">
-          <ThemeProvider enableSystem={true} attribute="class">
+         <ThemeProvider enableSystem={true} attribute="class">
             {children}
           </ThemeProvider> 
         </body>
