@@ -161,6 +161,16 @@ const getUserEnrolledCourseDetails = async(id , email) => {
           banner{
             url
           }
+          chapter{
+            ... on Chapter {
+              id 
+              name 
+              shortDesc
+              video {
+                url
+              }
+            }
+          }
           demoUrl
           description
           free
