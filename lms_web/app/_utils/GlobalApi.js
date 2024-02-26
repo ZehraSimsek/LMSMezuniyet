@@ -145,6 +145,38 @@ const getUserEnrollDetail = async(courseId , email) => {
   return result;
 }
 
+const getUserEnrolledCourseDetails = async(id , email) => {
+  const query = gql `
+    query MyQuery {
+      userEnrollCourses(where: {
+        id:"`+id+`", 
+        userEmail: "`+email+`"
+      })
+      {
+        courseId
+        id
+        userEmail
+        courseList{
+          author
+          banner{
+            url
+          }
+          demoUrl
+          description
+          free
+          id
+          name
+          slug
+          sourceCode
+          totalChapters
+        }
+      }
+    }
+  `
+  const result = await request(MASTER_URL,query)
+  return result;
+}
+
 const enrollToCourse = async(courseId, email) => {
   const query = gql `
     mutation MyMutation {
@@ -172,5 +204,6 @@ export default {
     getSideBanner,
     getCourseById,
     getUserEnrollDetail,
-    enrollToCourse
+    enrollToCourse,
+    getUserEnrolledCourseDetails
 }
