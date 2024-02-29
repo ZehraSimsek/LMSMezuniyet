@@ -236,18 +236,35 @@
 
 // export default Sidebar;
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaHome, FaSearch, FaUserCog, FaChartBar, FaBookOpen, FaBars } from 'react-icons/fa';
 import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Courses from './teacherMode/courses';
 import CourseList from '../(router)/courses/_components/CourseList'
+import InProgressCourseList from './InProgressCourseList'
+import GlobalApi from '../_utils/GlobalApi';
+import { useUser } from '@clerk/nextjs';
 
 function Sidebar({ isVisible }) { 
   const [showLabels, setShowLabels] = useState(false);
-
+  const {user} = useUser();
   const menuItems = [
     ...(isVisible ? [{ link: '/statistics', icon: <FaChartBar />, label: 'İstatistik' }, { link: '/courses', icon: <FaBookOpen />, label: 'Dersler' }] : [{ link: '/', icon: <FaHome />, label: 'Anasayfa' }, { link: '/search', icon: <FaSearch />, label: 'Arama' }, { link: '/settings', icon: <FaUserCog />, label: 'Profil Ayarları' }]), 
   ];
+  const [userEnrolledCourses , setUserEnrolledCourses] = useState([]);
+
+
+  useEffect(() =>{
+    user&&getAllUserEnrolledCourses();
+  },[user]);
+
+  const getAllUserEnrolledCourses = () => {
+    GlobalApi.getUserAllEnrolledCourseList(user?.primaryEmailAddress?.emailAddress)
+    .then(resp => {
+      console.log(resp);
+      setUserEnrolledCourses(resp.userEnrollCourses);
+    })
+  }
 
   return (
     <Router>
@@ -263,7 +280,7 @@ function Sidebar({ isVisible }) {
         </nav>
       </div>
       <Routes>
-        <Route path="/" />
+      <Route path="/" element={<InProgressCourseList userEnrolledCourses={userEnrolledCourses} />} />
           {/* Anasayfa içeriği */}
         <Route path="/search" element={<CourseList />}>
           {/* Arama içeriği */}

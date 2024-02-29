@@ -86,3 +86,8 @@ body {
     padding: 30px;
   }
 }
+
+.fixedElement {
+  position: fixed;
+  top: 0; 
+}
