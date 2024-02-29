@@ -79,7 +79,7 @@ function CourseItem({course , id}) {
           width={500}
           height={150}
           alt='banner'
-          className='rounded-t-xl h-[130px] object-cover'
+          className='rounded-t-l'
         />
         <div className='flex flex-col gap-1 p-2'>
             <h2 className='font-semibold'>{course.name}</h2>

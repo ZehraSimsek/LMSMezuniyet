@@ -49,9 +49,9 @@ function InProgressCourseList({userEnrolledCourses}) {
   return (
     <div className='p-3 mt-2 rounded-sm'>
         <div className='font-bold text-custom-color p-2 rounded-md'> 
-            <h2 className='text-[18px] font-semibold'>Son Alınan Kurslar</h2>
+            <h2 className="text-[20px] font-bold text-sky-700">Son Alınan Kurslar</h2>
         </div>
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
             {
                 userEnrolledCourses.map((item, index) => {
                     return <ProgressCourseItem key={index}
