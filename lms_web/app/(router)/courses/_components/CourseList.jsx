@@ -202,20 +202,30 @@ import GlobalApi from "../../../_utils/GlobalApi";
 import CourseItem from "./CourseItem";
 import SideBanners from "./SideBanners";
 import Link from 'next/link';
+import { toast , ToastContainer,} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function CourseList() {
   const [courseList, setCourseList] = useState([]);
   const [filteredCourseList, setFilteredCourseList] = useState([]);
   const [filter, setFilter] = useState("Tümü");
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchBy, setSearchBy] = useState("name");
 
   useEffect(() => {
     getAllCourses();
   }, []);
 
+  // useEffect(() => {
+  //   filterCourses();
+  // }, [filter, courseList, searchTerm, searchBy]);
+
   useEffect(() => {
-    filterCourses();
-  }, [filter, courseList, searchTerm]);
+    if (courseList.length > 0) {
+      filterCourses();
+    }
+  }, [filter,courseList, searchTerm, searchBy]);
+  
 
   const getAllCourses = () => {
     GlobalApi.getAllCourseList().then((resp) => {
@@ -231,9 +241,27 @@ function CourseList() {
       filteredCourses = courseList.filter(course => course.free);
     }
     if (searchTerm !== "") {
-      filteredCourses = filteredCourses.filter(course =>
-        course.name.toLowerCase().includes(searchTerm.toLowerCase())
+      switch (searchBy) {
+        case "name":
+          filteredCourses = filteredCourses.filter(course =>
+            course.name.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+          break;
+        case "author":
+          filteredCourses = filteredCourses.filter(course =>
+            course.author.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+          break;
+        default:
+          break;
+      }
+    }
+    if (filteredCourses.length === 0) {
+      toast.warn('Arama sonucunda herhangi bir kurs bulunamadı.' , {
+          position: "top-center"
+        }
       );
+      filteredCourses = courseList;
     }
     setFilteredCourseList(filteredCourses);
   };
@@ -244,6 +272,10 @@ function CourseList() {
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleSearchByChange = (event) => {
+    setSearchBy(event.target.value);
   };
 
   return (
@@ -258,6 +290,14 @@ function CourseList() {
             placeholder="Kurs ara..."
             className="mr-2"
           />
+          <select
+            value={searchBy}
+            onChange={handleSearchByChange}
+            className="mr-2"
+          >
+            <option value="name">İsme Göre</option>
+            <option value="author">Yazara Göre</option>
+          </select>
           <select
             value={filter}
             onChange={handleFilterChange}
@@ -290,6 +330,7 @@ function CourseList() {
           <SideBanners />
         </div>
       </div>
+      <ToastContainer/>
     </div>
   );
 }
