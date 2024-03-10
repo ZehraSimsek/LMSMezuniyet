@@ -256,15 +256,15 @@ function CourseList() {
           break;
       }
     }
-    if (filteredCourses.length === 0) {
-      toast.warn('Arama sonucunda herhangi bir kurs bulunamadı.' , {
-          position: "top-center"
-        }
-      );
+    if (filteredCourses.length === 0 && searchTerm !== "") {
+      toast.warn('Arama sonucunda herhangi bir kurs bulunamadı.', {
+        position: "top-center"
+      });
       filteredCourses = courseList;
     }
     setFilteredCourseList(filteredCourses);
   };
+  
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
