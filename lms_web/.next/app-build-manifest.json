@@ -1,32 +1,31 @@
 {
   "pages": {
-    "/dashboard/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/dashboard/page.js"
-    ],
     "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/(router)/layout": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(router)/layout.js"
+      "static/css/app/page.css",
+      "static/chunks/app/page.js"
     ],
-    "/(router)/course-preview/[courseId]/page": [
+    "/(auth)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/(router)/course-preview/[courseId]/page.css",
-      "static/chunks/app/(router)/course-preview/[courseId]/page.js"
+      "static/chunks/app/(auth)/layout.js"
     ],
-    "/(router)/watch-course/[enrollId]/page": [
+    "/(auth)/(routes)/sign-in/[[...sign-in]]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/(router)/watch-course/[enrollId]/page.css",
-      "static/chunks/app/(router)/watch-course/[enrollId]/page.js"
+      "static/chunks/app/(auth)/(routes)/sign-in/[[...sign-in]]/page.js"
+    ],
+    "/dashboard/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/page.js"
     ]
   }
 }
