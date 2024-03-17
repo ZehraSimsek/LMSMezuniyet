@@ -242,6 +242,7 @@ import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Courses from './teacherMode/courses';
 import CourseList from '../(router)/courses/_components/CourseList'
 import InProgressCourseList from './InProgressCourseList'
+import EditProfile from './EditProfile';
 import GlobalApi from '../_utils/GlobalApi';
 import { useUser } from '@clerk/nextjs';
 
@@ -285,7 +286,7 @@ function Sidebar({ isVisible }) {
         <Route path="/search" element={<CourseList />}>
           {/* Arama içeriği */}
         </Route>
-        <Route path="/settings">
+        <Route path="/settings"  element={<EditProfile />}>
           {/* Profil Ayarları içeriği */}
         </Route>
         {isVisible && (
