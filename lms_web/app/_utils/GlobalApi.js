@@ -238,6 +238,30 @@ const markChapterCompleted = async(enrollId, chapterId) => {
   return result;
 }
 
+// const markChapterCompleted = async(email, chapterId) => {
+//   const query = gql `
+//     mutation MyMutation {
+//       updateUserEnrollCourses(
+//         data: {completedChapter : {
+//           create : {
+//             CompletedChapter : {data: {chapterId:"`+chapterId+`"}}
+//           }
+//         }}
+//         where : {userEmail:"`+email+`"}
+//       ){
+//         id
+//       }
+//       publishUserEnrollCourse(where: {userEmail:"`+email+`"}){
+//         id
+//       }
+//     }
+//   `
+
+//   const result = await request(MASTER_URL,query);
+//   return result;
+// }
+
+
 const getUserAllEnrolledCourseList = async(email) => {
   const query = gql `
       query Myquery{

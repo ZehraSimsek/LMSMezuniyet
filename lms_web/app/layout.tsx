@@ -16,8 +16,6 @@ export default function RootLayout({
         {}
         <head />
         <ClerkProvider
-          // frontendApi={process.env.NEXT_PUBLIC_CLERK_FRONTEND_API}
-          // navigate={(to) => window.location.href = to}
           localization={trTR}
          >
         <body className="dark:bg-slate-700">
