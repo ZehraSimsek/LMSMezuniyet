@@ -45,7 +45,7 @@
 // }
 
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { UserButton, useUser, useSession } from '@clerk/nextjs';
 import Image from 'next/image';
 import { FaChalkboardTeacher } from 'react-icons/fa';
@@ -53,8 +53,13 @@ import { useRouter } from 'next/router';
 
 export default function Header({ name, isTeacher }) {
   const { signOut } = useUser();
-  const { session } = useSession();
+  const { session, renew } = useSession();
   const router = useRouter();
+
+  useEffect(() => {
+    // Oturumu yenile
+    renew();
+  }, []);
 
   const handleSignOut = async () => {
     await signOut();
