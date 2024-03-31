@@ -243,6 +243,7 @@ import Courses from './teacherMode/courses';
 import CourseList from '../(router)/courses/_components/CourseList'
 import InProgressCourseList from './InProgressCourseList'
 import EditProfile from './EditProfile';
+import Statistic from './teacherMode/statistic'
 import GlobalApi from '../_utils/GlobalApi';
 import { useUser } from '@clerk/nextjs';
 
@@ -290,7 +291,7 @@ function Sidebar({ isVisible }) {
         </Route> */}
         {isVisible && (
           <>
-            <Route path="/statistics">
+            <Route path="/statistics" element={<Statistic />}>
               {/* İstatistik içeriği */}
             </Route>
             <Route path="/courses" element={<Courses />} />
