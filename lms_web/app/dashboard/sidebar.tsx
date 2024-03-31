@@ -250,7 +250,7 @@ function Sidebar({ isVisible }) {
   const [showLabels, setShowLabels] = useState(false);
   const {user} = useUser();
   const menuItems = [
-    ...(isVisible ? [{ link: '/statistics', icon: <FaChartBar />, label: 'İstatistik' }, { link: '/courses', icon: <FaBookOpen />, label: 'Dersler' }] : [{ link: '/', icon: <FaHome />, label: 'Anasayfa' }, { link: '/search', icon: <FaSearch />, label: 'Arama' }, { link: '/settings', icon: <FaUserCog />, label: 'Profil Ayarları' }]), 
+    ...(isVisible ? [{ link: '/statistics', icon: <FaChartBar />, label: 'İstatistik' }, { link: '/courses', icon: <FaBookOpen />, label: 'Dersler' }] : [{ link: '/myCourses', icon: <FaHome />, label: 'Kurslarım' }, { link: '/', icon: <FaSearch />, label: 'Ana Sayfa' }]), 
   ];
   const [userEnrolledCourses , setUserEnrolledCourses] = useState([]);
 
@@ -269,7 +269,7 @@ function Sidebar({ isVisible }) {
 
   return (
     <Router>
-      <div className={`fixed right-0 top-1/2 -translate-y-1/2 bg-custom-side transition-all duration-500 ease-in-out transform translate-x-0 w-42 h-auto p-4 rounded-l-lg shadow-lg`}>
+      <div className={`fixed right-0 top-1/4 -translate-y-1/2 bg-custom-side transition-all duration-500 ease-in-out transform translate-x-0 w-42 h-auto p-4 rounded-l-lg shadow-lg`}>
         <button onClick={() => setShowLabels(!showLabels)} className="absolute top-0 right-0 m-2"><FaBars /></button>
         <nav className="space-y-4">
           {menuItems.map((item, index) => (
@@ -281,14 +281,13 @@ function Sidebar({ isVisible }) {
         </nav>
       </div>
       <Routes>
-      <Route path="/" element={<InProgressCourseList userEnrolledCourses={userEnrolledCourses} />} />
-          {/* Anasayfa içeriği */}
-        <Route path="/search" element={<CourseList />}>
+      <Route path="/myCourses" element={<InProgressCourseList userEnrolledCourses={userEnrolledCourses} />} />
+          {/* Kurslarım içeriği */}
+        <Route path="/" element={<CourseList />}>
           {/* Arama içeriği */}
         </Route>
-        <Route path="/settings"  element={<EditProfile />}>
-          {/* Profil Ayarları içeriği */}
-        </Route>
+        {/* <Route path="/settings"  element={<EditProfile />}>
+        </Route> */}
         {isVisible && (
           <>
             <Route path="/statistics">

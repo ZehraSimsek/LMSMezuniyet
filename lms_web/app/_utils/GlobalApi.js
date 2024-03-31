@@ -215,28 +215,36 @@ const enrollToCourse = async(courseId, email) => {
   return result;
 }
 
-const markChapterCompleted = async(enrollId, chapterId) => {
-  const query = gql `
+const markChapterCompleted = async (enrollId, chapterId, isCompleted) => {
+  const query = gql`
     mutation MyMutation {
       updateUserEnrollCourse(
-        data: {completedChapter : {
-          create : {
-            CompletedChapter : {data: {chapterId:"`+chapterId+`"}}
+        data: {
+          completedChapter: {
+            create: {
+              CompletedChapter: {
+                data: {
+                  chapterId: "` + chapterId + `",
+                  isCompleted: ` + isCompleted + `
+                }
+              }
+            }
           }
-        }}
-        where : {id:"`+enrollId+`"}
-      ){
+        }
+        where: {id: "` + enrollId + `"}
+      ) {
         id
       }
-      publishUserEnrollCourse(where: {id:"`+enrollId+`"}){
+      publishUserEnrollCourse(where: {id: "` + enrollId + `"}){
         id
       }
     }
   `
 
-  const result = await request(MASTER_URL,query);
+  const result = await request(MASTER_URL, query);
   return result;
 }
+
 
 // const markChapterCompleted = async(email, chapterId) => {
 //   const query = gql `
@@ -272,6 +280,7 @@ const getUserAllEnrolledCourseList = async(email) => {
             ... on CompletedChapter{
               id
               chapterId
+              isCompleted
             }
           }
           courseId

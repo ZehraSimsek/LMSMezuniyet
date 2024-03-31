@@ -32,8 +32,8 @@ function WatchCourse({ params }) {
       )
   }
 
-  const onChapterComplete = (chapterId) => {
-    GlobalApi.markChapterCompleted(params.enrollId, chapterId)
+  const onChapterComplete = (chapterId, isCompleted) => {
+    GlobalApi.markChapterCompleted(params.enrollId, chapterId , isCompleted)
       .then(resp => {
         console.log(resp);
         if (resp) {
@@ -52,7 +52,7 @@ function WatchCourse({ params }) {
             <VideoDesc courseInfo={courseInfo}
               activeChapterIndex={activeChapterIndex}
               watchMode={true}
-              setChapterCompleted={(chapterId) => onChapterComplete(chapterId)} />
+              setChapterCompleted={(chapterId, isCompleted) => onChapterComplete(chapterId, isCompleted)} />
           </div>
           <div className="flex flex-col gap-5">
             <div className="bg-white p-5 rounded-lg shadow-md">
