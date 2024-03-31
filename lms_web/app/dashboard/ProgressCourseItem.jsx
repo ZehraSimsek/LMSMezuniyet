@@ -32,15 +32,16 @@
 
 // export default ProgressCourseItem
 
-import React from 'react'
-import Image from 'next/image'
+import React from 'react';
+import Image from 'next/image';
 import ProgressBar from 'react-progressbar'; 
 import Link from 'next/link';
 
 function ProgressCourseItem({course}) {
 
   const getTotalCompletedChapterPerc = (item) => {
-    const perc = (item.completedChapter?.length/item?.courseList?.chapter?.length)*100
+    let perc = (item.completedChapter?.length / item?.courseList?.chapter?.length) * 100;
+    perc = Math.min(perc, 100); 
     return perc || 0; 
   }
 
@@ -60,7 +61,7 @@ function ProgressCourseItem({course}) {
               <h2 className='text-[12px] text-gray-400 mt-3'>
                   %{getTotalCompletedChapterPerc(course)}
                 <span className='float-right'>
-                  {course.completedChapter?.length} / {course?.courseList?.chapter?.length}  
+                  {Math.min(course.completedChapter?.length, course?.courseList?.chapter?.length)} / {course?.courseList?.chapter?.length}  
                 </span>
               </h2>
           </div>
@@ -69,7 +70,8 @@ function ProgressCourseItem({course}) {
   )
 }
 
-export default ProgressCourseItem
+export default ProgressCourseItem;
+
 
 
 // import React from 'react'
