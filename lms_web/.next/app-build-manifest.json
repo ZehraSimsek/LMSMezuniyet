@@ -28,11 +28,6 @@
       "static/css/app/dashboard/page.css",
       "static/chunks/app/dashboard/page.js"
     ],
-    "/(auth)/(routes)/sign-up/[[...sign-up]]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(auth)/(routes)/sign-up/[[...sign-up]]/page.js"
-    ],
     "/(router)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",

@@ -105,7 +105,7 @@
 
 import React, { useEffect, useState } from 'react';
 import ProgressCourseItem from './ProgressCourseItem';
-import { FaCheckCircle, FaHourglassHalf } from 'react-icons/fa'; // İkonlar için
+import { FaCheckCircle, FaHourglassHalf } from 'react-icons/fa';
 
 function CourseList({ userEnrolledCourses }) {
   const completedCourses = userEnrolledCourses.filter(course => course.isCompleted);
@@ -125,15 +125,15 @@ function CourseList({ userEnrolledCourses }) {
     <div className='p-6 mt-3 rounded-sm'>
       <div className='flex justify-center mb-5'>
         <div className='flex items-center justify-center bg-blue-500 text-white rounded-full p-2 mr-2' onClick={handleClick}>
-          <FaHourglassHalf />
-          <span className='ml-2'>({inProgressCourses.length})</span>
+          <FaHourglassHalf className="animate-pulse cursor-pointer"/>
+          <span className='ml-2 cursor-pointer'>({inProgressCourses.length})</span>
         </div>
         <div className='flex items-center justify-center bg-green-500 text-white rounded-full p-2 ml-2' onClick={handleClick}>
-          <FaCheckCircle />
-          <span className='ml-2'>({completedCourses.length})</span>
+          <FaCheckCircle className="cursor-pointer animate-pulse"/>
+          <span className='ml-2 cursor-pointer'>({completedCourses.length})</span>
         </div>
       </div>
-      {!showCompleted && 
+      {showCompleted && 
         <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
           {inProgressCourses.map((item, index) => (
             <ProgressCourseItem key={index} course={item} isCompleted={false} />

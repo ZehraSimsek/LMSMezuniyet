@@ -17,14 +17,14 @@ export default function SideBanners() {
   };
 
   return (
-    <div>
+    <div className="mt-0">
       {sideBannerList.map((item, index) => (
         <div key={index}>
           <Image
             src={item.banner.url}
             alt="banner"
             width={250}
-            height={250}
+            height={500}
             onClick={() => window.open(item?.url)}
             className="mb-4 rounded-xl cursor-pointer"
           />
