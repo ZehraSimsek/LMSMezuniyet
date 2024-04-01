@@ -681,6 +681,12 @@ function CourseList() {
             onChange={handleSearchChange}
             placeholder="Kurs ara..."
             className="w-58 p-2 text-center rounded-xl mt-2"
+            style={{
+              border: "2px solid #C0C0C0", 
+              transition: "transform 0.3s ease", 
+            }}
+            onMouseEnter={(e) => e.target.style.transform = "scale(1.05)"} 
+            onMouseLeave={(e) => e.target.style.transform = "scale(1)"} 
           />
         </div>
         <div className="flex justify-center m-auto">
