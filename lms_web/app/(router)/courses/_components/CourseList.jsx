@@ -683,7 +683,7 @@ function CourseList() {
             className="w-58 p-2 text-center rounded-xl mt-2"
           />
         </div>
-        <div className="flex justify-center mb-5">
+        <div className="flex justify-center m-auto">
           {['Tümü', 'Ücretsiz', 'Ücretli'].map(option => (
             <button
               key={option}
