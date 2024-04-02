@@ -152,3 +152,57 @@ function CourseList({ userEnrolledCourses }) {
 }
 
 export default CourseList;
+
+
+// import React, { useEffect, useState } from 'react';
+// import ProgressCourseItem from './ProgressCourseItem';
+// import { FaCheckCircle, FaHourglassHalf } from 'react-icons/fa';
+
+// function CourseList({ userEnrolledCourses }) {
+//   const completedCourses = userEnrolledCourses.filter(course => course.isCompleted);
+//   const inProgressCourses = userEnrolledCourses.filter(course => !course.isCompleted);
+
+//   const [showCompleted, setShowCompleted] = useState(false);
+//   const [showInProgress, setShowInProgress] = useState(false);
+
+//   const handleCompletedClick = () => {
+//     setShowCompleted(true);
+//     setShowInProgress(false);
+//   }
+
+//   const handleInProgressClick = () => {
+//     setShowInProgress(true);
+//     setShowCompleted(false);
+//   }
+
+//   return (
+//     <div className='p-6 mt-3 rounded-sm'>
+//       <div className='flex justify-center mb-5'>
+//         <div className='flex items-center justify-center bg-blue-500 text-white rounded-full p-2 mr-2' onClick={handleInProgressClick}>
+//           <FaHourglassHalf className="animate-pulse cursor-pointer"/>
+//           <span className='ml-2 cursor-pointer'>({inProgressCourses.length})</span>
+//         </div>
+//         <div className='flex items-center justify-center bg-green-500 text-white rounded-full p-2 ml-2' onClick={handleCompletedClick}>
+//           <FaCheckCircle className="cursor-pointer animate-pulse"/>
+//           <span className='ml-2 cursor-pointer'>({completedCourses.length})</span>
+//         </div>
+//       </div>
+//       {showInProgress && 
+//         <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
+//           {inProgressCourses.map((item, index) => (
+//             <ProgressCourseItem key={index} course={item} isCompleted={false} />
+//           ))}
+//         </div>
+//       }
+//       {showCompleted && 
+//         <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
+//           {completedCourses.map((item, index) => (
+//             <ProgressCourseItem key={index} course={item} isCompleted={true} />
+//           ))}
+//         </div>
+//       }
+//     </div>
+//   );
+// }
+
+// export default CourseList;
