@@ -125,24 +125,24 @@ export default function Page() {
           >
             <div className="max-w-xl lg:max-w-3xl text-center">
               <h2 className="mt-6 text-2xl font-bold text-gray-900 text-center sm:text-3xl md:text-4xl">
-                Hesabınıza Giriş Yapın
+                Yeni Bir Hesap Oluşturun!
               </h2>
 
               <p className="mt-4 leading-relaxed text-gray-600">
-                Hesabınıza giriş yapmak için ilgili girişi seçiniz.
+                Hesabınız için ilgili girişi seçiniz.
               </p>
               <div className="mt-4">
                 <button
                   onClick={() => handleRoleChange('Öğretmen')}
                   type="button"
-                  className={`font-bold py-2 px-4 rounded m-2 ${userRole === 'Öğretmen' ? 'bg-blue-700' : 'bg-blue-500 hover:bg-blue-700'} text-white`}
+                  className={`font-bold py-2 px-4 rounded m-2 ${userRole === 'Öğretmen' ? 'bg-blue-700' : userRole === 'Öğrenci' ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-700'} text-white`}
                 >
                   Öğretmen Girişi
                 </button>
                 <button
                   type="button"
                   onClick={() => handleRoleChange('Öğrenci')}
-                  className={`font-bold py-2 px-4 rounded m-2 ${userRole === 'Öğrenci' ? 'bg-blue-700' : 'bg-blue-500 hover:bg-blue-700'} text-white`}
+                  className={`font-bold py-2 px-4 rounded m-2 ${userRole === 'Öğrenci' ? 'bg-blue-700' : userRole === 'Öğretmen' ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-700'} text-white`}
                 >
                   Öğrenci Girişi
                 </button>

@@ -31,7 +31,7 @@ function WatchCourse({ params }) {
 
       )
   }
-
+  
   const onChapterComplete = (chapterId, isCompleted) => {
     GlobalApi.markChapterCompleted(params.enrollId, chapterId , isCompleted)
       .then(resp => {

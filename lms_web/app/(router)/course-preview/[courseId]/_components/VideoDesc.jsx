@@ -176,7 +176,7 @@ function VideoDesc({ courseInfo, activeChapterIndex, watchMode = false, setChapt
   const [completedChapters, setCompletedChapters] = useState([]);
 
   const handleChapterCompletion = (chapterId) => {
-    if (!completedChapters[activeChapterIndex]) {
+    if (completedChapters[activeChapterIndex]) {
       setChapterCompleted(chapterId, true);
       setCompletedChapters(prevChapters => {
         const updatedChapters = [...prevChapters];
@@ -187,7 +187,7 @@ function VideoDesc({ courseInfo, activeChapterIndex, watchMode = false, setChapt
   }
 
   useEffect(() => {
-    if (completedChapters[activeChapterIndex]) {
+    if (!completedChapters[activeChapterIndex]) {
       setCompletedChapters(prevChapters => {
         const updatedChapters = [...prevChapters];
         updatedChapters[activeChapterIndex] = true;
