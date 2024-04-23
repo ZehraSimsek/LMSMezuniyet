@@ -635,6 +635,10 @@ video {
   margin-left: auto;
   margin-right: auto;
 }
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
 .my-56 {
   margin-top: 14rem;
   margin-bottom: 14rem;
@@ -796,6 +800,9 @@ video {
 }
 .min-h-screen {
   min-height: 100vh;
+}
+.w-1\/2 {
+  width: 50%;
 }
 .w-2\/12 {
   width: 16.666667%;
