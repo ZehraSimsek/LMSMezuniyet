@@ -20,6 +20,7 @@ function EditCourse({ courseId }) {
   const [confetti, setConfetti] = useState(false);
   const [filledFields, setFilledFields] = useState(0);
   const [update, setUpdate] = useState(false);
+  const [trigger, setTrigger] = useState(0);
   const totalFields = 7;
 
   useEffect(() => {
@@ -54,9 +55,9 @@ function EditCourse({ courseId }) {
 
   useEffect(() => {
     const getCategories = () => {
-        GlobalApi.getAllCourseList().then((resp) => {
-            setCourseList(resp?.courseLists);
-          });
+      GlobalApi.getAllCourseList().then((resp) => {
+        setCourseList(resp?.courseLists);
+      });
       if (course) {
         const categories = [...new Set(courseList.flatMap(course => course.tag))];
         console.log("zej" , categories);
@@ -67,7 +68,7 @@ function EditCourse({ courseId }) {
       }
     };
     getCategories();
-  }, [course, courseId]);
+  }, [course, courseId, trigger]);
   
 
   const handleUpdate = () => {
@@ -101,6 +102,7 @@ function EditCourse({ courseId }) {
       .catch((error) => {
         console.error("Kurs güncellenirken bir hata oluştu:", error);
       });
+      setTrigger(trigger + 1);
   };
   
   if (!course) {
