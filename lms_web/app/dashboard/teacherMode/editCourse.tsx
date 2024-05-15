@@ -67,7 +67,7 @@ function EditCourse({ courseId }) {
       }
     };
     getCategories();
-  }, [course]);
+  }, [course, courseId]);
   
 
   const handleUpdate = () => {
