@@ -49,7 +49,7 @@ function CoursePreview({params}) {
     }
 
     const getUserEnrollDetail = () => {
-        GlobalApi.getUserEnrollDetail(courseInfo.slug , user.primaryEmailAddress.emailAddress)
+        GlobalApi.getUserEnrollDetail(courseInfo.id , user.primaryEmailAddress.emailAddress)
         .then(resp => {
             if(resp?.userEnrollCourses){
               setIsUserAlreadyEnrolled(resp?.userEnrollCourses[0]?.id);

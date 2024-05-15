@@ -218,7 +218,7 @@ function PaymentForm({ courseInfo }) {
       alert("Payment Successful! Subscription active.");
 
       // Ödeme başarılı olduğunda kursa kaydol
-      GlobalApi.enrollToCourse(courseInfo?.slug, user?.primaryEmailAddress?.emailAddress)
+      GlobalApi.enrollToCourse(courseInfo?.id, user?.primaryEmailAddress?.emailAddress)
         .then(resp => {
           console.log(resp);
           if (resp) {
