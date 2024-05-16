@@ -68,6 +68,7 @@ function EditCourse({ courseId }) {
       }
     };
     getCategories();
+    setTrigger(trigger + 1);
   }, [course, courseId, trigger]);
   
 
@@ -102,7 +103,6 @@ function EditCourse({ courseId }) {
       .catch((error) => {
         console.error("Kurs güncellenirken bir hata oluştu:", error);
       });
-      setTrigger(trigger + 1);
   };
   
   if (!course) {

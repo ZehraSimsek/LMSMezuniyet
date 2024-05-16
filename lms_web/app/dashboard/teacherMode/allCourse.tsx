@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import GlobalApi from '../../_utils/GlobalApi';
-import { FaTrash, FaEdit, FaChevronUp } from 'react-icons/fa';
+import { FaTrash, FaEdit } from 'react-icons/fa';
 import { useUser } from '@clerk/nextjs';
 import { VictoryPie } from 'victory';
 import EditCourse from './editCourse';
