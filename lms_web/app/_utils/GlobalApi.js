@@ -1,45 +1,6 @@
-// const {gql, default: request} = require("graphql-request")
-
-// const MASTER_URL = "https://api-eu-west-2.hygraph.com/v2/"+process.env.NEXT_PUBLIC_HYGRAPH_API_KEY+"/master"
-
-// const getAllCourseList = async() => {
-//     const query = gql`
-//         query MyQuery {
-//             courseLists {
-//             author
-//             name
-//             id
-//             free
-//             description
-//             demoUrl
-//             banner {
-//                 url
-//             }
-//             chapter {
-//                 ... on Chapter {
-//                 id
-//                 name
-//                 video {
-//                     url
-//                 }
-//                 }
-//             }
-//             totalChapters
-//             sourceCode
-//             tag
-//             }
-//         }
-//     `
-//     const result = await request(MASTER_URL, query);
-//     return result;
-// }
-
-// export default{
-//     getAllCourseList
-// }
-
 const { gql, default: request } = require("graphql-request")
 const MASTER_URL = "https://api-eu-west-2.hygraph.com/v2/"+process.env.NEXT_PUBLIC_HYGRAPH_API_KEY+"/master"
+const API_TOKEN_ENDPOINT = "https://api-eu-west-2.hygraph.com/v2/"+process.env.TOKEN_ENDPOINT+"/master/upload";
 
 const getAllCourseList = async() => {
    const query = gql ` 
@@ -401,6 +362,7 @@ const createCourse = async ({ name, description, authorEmail, totalChapters, pri
           authorEmail: "${authorEmail}"
           tag: ${selectedCategory}
           slug: "${slug}"
+          banner: { connect: { id: "${coverPhoto}" } }
           counterEnroll: 0 
         }
       ) {
@@ -411,7 +373,6 @@ const createCourse = async ({ name, description, authorEmail, totalChapters, pri
   const createResult = await request(MASTER_URL, createCourseMutation);
   return createResult;
 };
-
 
 const publishCourse = async (courseId) => {
   const publishCourseMutation = gql`
@@ -424,9 +385,26 @@ const publishCourse = async (courseId) => {
       }
     }
   `;
-  const publishResult = await request(MASTER_URL, publishCourseMutation);
+  const publishCourseResult = await request(MASTER_URL, publishCourseMutation);
+  return publishCourseResult;
+};
+
+const publishAsset = async (assetId) => {
+  const publishAssetMutation = gql`
+    mutation PublishAsset {
+      publishAsset(
+        where: { id: "${assetId}" }
+        to: PUBLISHED
+      ) {
+        id
+      }
+    }
+  `;
+
+  const publishResult = await request(MASTER_URL, publishAssetMutation);
   return publishResult;
 };
+
 
 
 
@@ -528,6 +506,7 @@ const updateCourse = async ({ courseId, name, description, totalChapters, price,
 };
 
 
+
 export default {
     getAllCourseList,
     getSideBanner,
@@ -544,5 +523,6 @@ export default {
     deleteCourse,
     publishCourse,
     updateCourse,
-    getChapterCompletionStatus
+    getChapterCompletionStatus,
+    publishAsset
 }

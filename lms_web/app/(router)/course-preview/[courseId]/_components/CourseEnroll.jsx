@@ -502,8 +502,7 @@ function CourseEnroll({ courseInfo, isUserAlreadyEnrolled }) {
 
   const onEnrollCourse = () => {
     if (isUserAlreadyEnrolled) {
-      toast.info('Zaten bu kursa kaydoldunuz.', {
-      });
+      toast.info('Zaten bu kursa kaydoldunuz.');
       return;
     }
 
@@ -512,8 +511,7 @@ function CourseEnroll({ courseInfo, isUserAlreadyEnrolled }) {
       console.log(resp);
       if (resp) {
         router.push('/watch-course/' + resp.createUserEnrollCourse.id);
-        toast.success('Başarıyla kaydoldunuz!', {
-        });
+        toast.success('Başarıyla kaydoldunuz!');
       }
     })
     .catch(error => {

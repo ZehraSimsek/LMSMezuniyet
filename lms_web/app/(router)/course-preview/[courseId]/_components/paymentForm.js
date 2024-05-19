@@ -215,7 +215,7 @@ function PaymentForm({ courseInfo }) {
       const data = await response.json();
       const confirm = await stripe.confirmCardPayment(data.clientSecret);
       if (confirm.error) return alert("Payment unsuccessful!");
-      alert("Payment Successful! Subscription active.");
+      toast.success("Ödeme Başarılı! Abonelik aktif edildi.");
 
       // Ödeme başarılı olduğunda kursa kaydol
       GlobalApi.enrollToCourse(courseInfo?.id, user?.primaryEmailAddress?.emailAddress)
@@ -223,19 +223,15 @@ function PaymentForm({ courseInfo }) {
           console.log(resp);
           if (resp) {
             router.push('/watch-course/' + resp.createUserEnrollCourse.id);
-            toast.success('Başarıyla kaydoldunuz!', {
-              position: "top-center"
-            });
+            toast.success('Başarıyla kaydoldunuz!');
           }
         })
         .catch(error => {
-          toast.error('Bir hata oluştu. Lütfen tekrar deneyin.', {
-            position: "top-center"
-          });
+          toast.error('Bir hata oluştu. Lütfen tekrar deneyin.');
         });
     } catch (err) {
       console.error(err);
-      alert("Payment failed! " + err.message);
+      toast.error("Payment failed! " + err.message);
     }
   };
 

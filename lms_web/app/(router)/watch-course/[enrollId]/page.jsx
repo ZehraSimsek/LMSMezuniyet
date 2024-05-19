@@ -37,9 +37,7 @@ function WatchCourse({ params }) {
       .then(resp => {
         console.log(resp);
         if (resp) {
-          toast.success('Tamamlandı olarak işaretlendi', {
-            position: "top-center"
-          });
+          toast.success('Tamamlandı olarak işaretlendi');
           getUserEnrolledCourseDetails();
         }
       })
