@@ -479,7 +479,7 @@ const deleteCourse = async (courseId) => {
   }
 };
 
-const updateCourse = async ({ courseId, name, description, totalChapters, price, selectedCategory }) => {
+const updateCourse = async ({ courseId, coverPhoto, name, description, totalChapters, price, selectedCategory }) => {
   const slug = name.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
   
   const free = price > 0 ? false : true;
@@ -494,6 +494,7 @@ const updateCourse = async ({ courseId, name, description, totalChapters, price,
           price: ${price}
           free: ${free}
           tag: ${selectedCategory}
+          banner: { connect: { id: "${coverPhoto}" } }
           slug: "${slug}"
         }
       ) {
@@ -504,7 +505,6 @@ const updateCourse = async ({ courseId, name, description, totalChapters, price,
   const updateResult = await request(MASTER_URL, updateCourseMutation);
   return updateResult;
 };
-
 
 
 export default {
@@ -524,5 +524,5 @@ export default {
     publishCourse,
     updateCourse,
     getChapterCompletionStatus,
-    publishAsset
+    publishAsset,
 }

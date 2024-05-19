@@ -1094,6 +1094,7 @@ function Courses() {
   const [isModalOpen, setIsModalOpen] = useState(false);  
   const [confetti, setConfetti] = useState(false);
   const [filledFields, setFilledFields] = useState(0);
+  const [coverPhotoUrl, setCoverPhotoUrl] = useState();
   const totalFields = 7;
   const [showForm, setShowForm] = useState(false);
   const {user} = useUser();
@@ -1167,18 +1168,16 @@ function Courses() {
           },
           body: form,
         });
-  
         if (!uploadResponse.ok) {
           throw new Error(`Upload failed with status ${uploadResponse.status}`);
         }
   
         const responseData = await uploadResponse.json();
         coverPhotoId = responseData.id;
-  
+        
         const publishAssetResult = await GlobalApi.publishAsset(coverPhotoId);
         console.log("Asset yayınlandı:", publishAssetResult);
       }
-  
       const courseData = {
         name,
         price,

@@ -21,7 +21,10 @@ function EditCourse({ courseId }) {
   const [filledFields, setFilledFields] = useState(0);
   const [update, setUpdate] = useState(false);
   const [trigger, setTrigger] = useState(0);
+  const [coverPhotoUrl, setCoverPhotoUrl] = useState();
   const totalFields = 7;
+  const HYGRAPH_ASSET_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MTYxMjcwNTgsImF1ZCI6WyJodHRwczovL2FwaS1ldS13ZXN0LTIuaHlncmFwaC5jb20vdjIvY2xza3BxbHQ2M3dwZzAxdXBsbTRuMHQ3MS9tYXN0ZXIiLCJtYW5hZ2VtZW50LW5leHQuZ3JhcGhjbXMuY29tIl0sImlzcyI6Imh0dHBzOi8vbWFuYWdlbWVudC1ldS13ZXN0LTIuaHlncmFwaC5jb20vIiwic3ViIjoiNTg3OGUxZDMtNWJjMy00YzZkLTgwMzMtZDgyMWI2MmI5ZDhkIiwianRpIjoiY2x3ZGxxcGF2ajRobTA4anQ0MDZpYWxobSJ9.f1tncbqNT1xDpQgxtYhOlUAY3liLKUoaYAGVc6xxT7Su-0a6bmB3uKGULbPCcHKxocva8HfGtDnMczGpC1LZvoIQy9FrVftHHI5RublU2ZSOWpHnLGPxN9_QfC6reSSSWBgCCdIiq2sUblunM8DtGDmkTIpo75fYpoizeZGXNywXrg3tGk4vJVoBbSVBePM8Qx7fVF2rc7bYOCyGufgpnVo5-Rv_ZDtj-_0TTk2br4Vf6fKH92oBrKKBOUQOjU2IVyux7FOQQANCDaSmnVyqsbx6-zc1y5izKkC545hg9zMuoqhpTgfVwfJJekEGzDpXBSt4rqUACFVsbz_Xr0utvroQrEJQ97GMk8m-twOxSCeO00PJlDDupT3USDN7pADX5XCs_vLy0_9AMFxmv3ID4XvGggtp2d-a-TeQKtkT-DRg8x4O-ZaaT4w7L7Bg_Y9nh-ibVpFk9gtg5C9mtIt9bFHzgKFrblO24f-Tk-8MB2P1FLrnaJy9EMnU8WCcIDdQh8-notWa5AE4Xj6hcWxCUX269WOLVlp2i2_s4bXg1ClsopdYJ6LgeKzHkmIT2U1ZJcoDAa_WOd6o4_B8K_UqH8p64XiaOlR-LefJDmPbD59b26q2laqpf4BUsjBEbcH8s-TnFHRNqTWOOJq-c5i6ziGNAN6EprV53kX99S-r6iU';
+  const HYGRAPH_URL = "https://api-eu-west-2.hygraph.com/v2/"+process.env.NEXT_PUBLIC_HYGRAPH_API_KEY+"/master";
 
   useEffect(() => {
     let count = 0;
@@ -46,6 +49,7 @@ function EditCourse({ courseId }) {
       setPrice(specificCourse.price);
       setFree(specificCourse.free ? "yes" : "no");
       setSelectedCategory(specificCourse.tag);
+      setCoverPhotoUrl(specificCourse.banner.url);
     });
   }, [courseId]);
 
@@ -69,10 +73,35 @@ function EditCourse({ courseId }) {
     };
     getCategories();
     setTrigger(trigger + 1);
-  }, [course, courseId, trigger]);
+  }, [course, courseId]);
   
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
+    let coverPhotoId = null; // coverPhotoId değişkenini burada tanımlayın.
+  
+    if (coverPhoto) {
+        const form = new FormData();
+        form.append('fileUpload', coverPhoto);
+  
+        const uploadResponse = await fetch(`${HYGRAPH_URL}/upload`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${HYGRAPH_ASSET_TOKEN}`,
+          },
+          body: form,
+        });
+  
+        if (!uploadResponse.ok) {
+          throw new Error(`Upload failed with status ${uploadResponse.status}`);
+        }
+  
+        const responseData = await uploadResponse.json();
+        coverPhotoId = responseData.id; // Yeni yüklenen fotoğrafın ID'sini alın.
+  
+        const publishAssetResult = await GlobalApi.publishAsset(coverPhotoId);
+        console.log("Asset yayınlandı:", publishAssetResult);
+      }
+  
     const courseData = {
       courseId: courseId,
       name: name,
@@ -81,14 +110,15 @@ function EditCourse({ courseId }) {
       totalChapters: parseInt(totalChapters),
       free: free === "yes" ? true : false,
       selectedCategory: selectedCategory,
+      coverPhoto: coverPhotoId, // coverPhotoId değişkenini burada kullanın.
     };
+  
     GlobalApi.updateCourse(courseData)
       .then((result) => {
         toast.success("Kurs Başarıyla Güncellendi!"); 
         setConfetti(true);
         console.log(result);
-        setTimeout(() => setConfetti(false)
-        , 5000);
+        setTimeout(() => setConfetti(false), 5000);
         console.log("Kurs güncellendi:", result);
         GlobalApi.publishCourse(result.updateCourseList.id)
         .then((publishResult) => {
@@ -97,13 +127,14 @@ function EditCourse({ courseId }) {
         .catch((publishError) => {
           console.error("Kurs yayınlanırken bir hata oluştu:", publishError);
         });
-        setTimeout(() => setUpdate(true)
-        , 5000);
+        setTimeout(() => setUpdate(true), 5000);
       })
       .catch((error) => {
         console.error("Kurs güncellenirken bir hata oluştu:", error);
       });
   };
+
+
   
   if (!course) {
     return <div>Loading...</div>;
@@ -180,6 +211,7 @@ function EditCourse({ courseId }) {
           </div>
           <div className="card p-4 bg-blue-100 rounded-lg shadow-lg mb-8">  
             <label className="block text-gray-700 text-sm font-bold mb-2">Kapak Fotoğrafı:</label>
+            {coverPhotoUrl && <img src={coverPhotoUrl} alt="Kapak Fotoğrafı" />}
             <input type="file" onChange={handleCoverPhoto} />
           </div>
         </div>
