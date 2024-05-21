@@ -346,9 +346,37 @@ const getUserAllEnrolledCourseList = async(email) => {
 // };
 
 
-const createCourse = async ({ name, description, authorEmail, totalChapters, price, selectedCategory, coverPhoto }) => {
-  const slug = name.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
+// const createCourse = async ({ name, description, authorEmail, totalChapters, price, selectedCategory, coverPhoto }) => {
+//   const slug = name.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
   
+//   const free = price > 0 ? false : true;
+//   const createCourseMutation = gql`
+//     mutation MyMutation {
+//       createCourseList(
+//         data: {
+//           name: "${name}"
+//           description: "${description}"
+//           totalChapters: ${totalChapters}
+//           price: ${price}
+//           free: ${free}
+//           authorEmail: "${authorEmail}"
+//           tag: ${selectedCategory}
+//           slug: "${slug}"
+//           banner: { connect: { id: "${coverPhoto}" } }
+//           counterEnroll: 0 
+//         }
+//       ) {
+//         id
+//       }
+//     }
+//   `;
+//   const createResult = await request(MASTER_URL, createCourseMutation);
+//   return createResult;
+// };
+
+const createCourse = async ({ name, description, authorEmail, totalChapters, price, selectedCategory, coverPhoto, chapterName, chapterNum , chapterDesc , videoUri }) => {
+  const slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+
   const free = price > 0 ? false : true;
   const createCourseMutation = gql`
     mutation MyMutation {
@@ -363,16 +391,27 @@ const createCourse = async ({ name, description, authorEmail, totalChapters, pri
           tag: ${selectedCategory}
           slug: "${slug}"
           banner: { connect: { id: "${coverPhoto}" } }
-          counterEnroll: 0 
+          counterEnroll: 0
+          chapter: {create: {Chapter: {
+            name: "${chapterName}", 
+            chapterNumber: ${chapterNum}, 
+            shortDesc: "${chapterDesc}",
+            video:  {connect: {id: "${videoUri}" }}
+
+          }
+          }
+        }
         }
       ) {
         id
       }
     }
   `;
+
   const createResult = await request(MASTER_URL, createCourseMutation);
   return createResult;
 };
+
 
 const publishCourse = async (courseId) => {
   const publishCourseMutation = gql`

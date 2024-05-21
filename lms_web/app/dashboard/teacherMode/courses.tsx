@@ -1065,7 +1065,7 @@
 
 // export default Courses
 
-
+// bu tamam asset ekleme
 import React, { useState, useEffect } from 'react';
 import { FaPlus, FaPencilAlt, FaPlusCircle , FaTimes } from 'react-icons/fa';
 import { useUser } from '@clerk/nextjs';
@@ -1090,16 +1090,17 @@ function Courses() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [courseCategories, setCourseCategories] = useState([]);
   const [coverPhoto, setCoverPhoto] = useState(null);
+  const [videoUri, setVideoUri] = useState(null);
   const [courseList, setCourseList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);  
   const [confetti, setConfetti] = useState(false);
   const [filledFields, setFilledFields] = useState(0);
-  const [coverPhotoUrl, setCoverPhotoUrl] = useState();
   const totalFields = 7;
   const [showForm, setShowForm] = useState(false);
   const {user} = useUser();
   const HYGRAPH_ASSET_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MTYxMjcwNTgsImF1ZCI6WyJodHRwczovL2FwaS1ldS13ZXN0LTIuaHlncmFwaC5jb20vdjIvY2xza3BxbHQ2M3dwZzAxdXBsbTRuMHQ3MS9tYXN0ZXIiLCJtYW5hZ2VtZW50LW5leHQuZ3JhcGhjbXMuY29tIl0sImlzcyI6Imh0dHBzOi8vbWFuYWdlbWVudC1ldS13ZXN0LTIuaHlncmFwaC5jb20vIiwic3ViIjoiNTg3OGUxZDMtNWJjMy00YzZkLTgwMzMtZDgyMWI2MmI5ZDhkIiwianRpIjoiY2x3ZGxxcGF2ajRobTA4anQ0MDZpYWxobSJ9.f1tncbqNT1xDpQgxtYhOlUAY3liLKUoaYAGVc6xxT7Su-0a6bmB3uKGULbPCcHKxocva8HfGtDnMczGpC1LZvoIQy9FrVftHHI5RublU2ZSOWpHnLGPxN9_QfC6reSSSWBgCCdIiq2sUblunM8DtGDmkTIpo75fYpoizeZGXNywXrg3tGk4vJVoBbSVBePM8Qx7fVF2rc7bYOCyGufgpnVo5-Rv_ZDtj-_0TTk2br4Vf6fKH92oBrKKBOUQOjU2IVyux7FOQQANCDaSmnVyqsbx6-zc1y5izKkC545hg9zMuoqhpTgfVwfJJekEGzDpXBSt4rqUACFVsbz_Xr0utvroQrEJQ97GMk8m-twOxSCeO00PJlDDupT3USDN7pADX5XCs_vLy0_9AMFxmv3ID4XvGggtp2d-a-TeQKtkT-DRg8x4O-ZaaT4w7L7Bg_Y9nh-ibVpFk9gtg5C9mtIt9bFHzgKFrblO24f-Tk-8MB2P1FLrnaJy9EMnU8WCcIDdQh8-notWa5AE4Xj6hcWxCUX269WOLVlp2i2_s4bXg1ClsopdYJ6LgeKzHkmIT2U1ZJcoDAa_WOd6o4_B8K_UqH8p64XiaOlR-LefJDmPbD59b26q2laqpf4BUsjBEbcH8s-TnFHRNqTWOOJq-c5i6ziGNAN6EprV53kX99S-r6iU';
   const HYGRAPH_URL = "https://api-eu-west-2.hygraph.com/v2/"+process.env.NEXT_PUBLIC_HYGRAPH_API_KEY+"/master";
+  const MASTER = "https://api-eu-west-2.hygraph.com/v2/"+process.env.NEXT_PUBLIC_HYGRAPH_API_KEY+"/master";
 
   useEffect(() => {
     let count = 0;
@@ -1135,10 +1136,6 @@ function Courses() {
     })));
   };
 
-  const handleCoverPhoto = (event) => {
-    setCoverPhoto(event.target.files[0]);
-  };
-
   const handleFreeChange = (event) => {
     setFree(event.target.value);
     if (event.target.value === 'no') {
@@ -1152,32 +1149,62 @@ function Courses() {
     setSelectedCategory(event.target.value);
   };
 
+  const handleCoverPhoto = (event) => {
+    setCoverPhoto(event.target.files[0]);
+  };
+
+  const handleChapterVideo= (event) => {
+    setVideoUri(event.target.files[0]);
+  };
+
   const handleSubmit = async () => {
     console.log("token" , HYGRAPH_ASSET_TOKEN)
     try {
       let coverPhotoId = null;
-  
       if (coverPhoto) {
+        const coverForm = new FormData();
+        coverForm.append('fileUpload', coverPhoto);
+    
+        const coverUploadResponse = await fetch(`${HYGRAPH_URL}/upload`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${HYGRAPH_ASSET_TOKEN}`,
+            },
+            body: coverForm,
+        });
+        if (!coverUploadResponse.ok) {
+            throw new Error(`Cover photo upload failed with status ${coverUploadResponse.status}`);
+        }
+    
+        const coverResponseData = await coverUploadResponse.json();
+        coverPhotoId = coverResponseData.id;
+        
+        const publishCoverAssetResult = await GlobalApi.publishAsset(coverPhotoId);
+        console.log("Cover asset yayınlandı:", publishCoverAssetResult);
+    }
+    let coverVideoId = null;
+    if (videoUri) {
         const form = new FormData();
-        form.append('fileUpload', coverPhoto);
-  
-        const uploadResponse = await fetch(`${HYGRAPH_URL}/upload`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${HYGRAPH_ASSET_TOKEN}`,
-          },
-          body: form,
+        form.append('fileUpload', videoUri);
+
+        const uploadResponse = await fetch(`${MASTER}/upload`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${HYGRAPH_ASSET_TOKEN}`,
+            },
+            body: form,
         });
         if (!uploadResponse.ok) {
-          throw new Error(`Upload failed with status ${uploadResponse.status}`);
+            throw new Error(`Chapter video upload failed with status ${uploadResponse.status}`);
         }
-  
+
         const responseData = await uploadResponse.json();
-        coverPhotoId = responseData.id;
-        
-        const publishAssetResult = await GlobalApi.publishAsset(coverPhotoId);
-        console.log("Asset yayınlandı:", publishAssetResult);
-      }
+        coverVideoId = responseData.id;
+
+        const publishVideoAssetResult = await GlobalApi.publishAsset(coverVideoId);
+        console.log("Chapter video asset yayınlandı:", publishVideoAssetResult);
+    }
+    
       const courseData = {
         name,
         price,
@@ -1187,12 +1214,10 @@ function Courses() {
         authorEmail: user?.primaryEmailAddress?.emailAddress,
         selectedCategory,
         coverPhoto: coverPhotoId,
-        chapter: [
-          {
-            shortDesc: chapterDesc,
-            chapterNumber: parseInt(chapterNo)
-          }
-        ]
+        chapterName,
+        chapterDesc,
+        chapterNum: parseFloat(chapterNo),
+        videoUri: coverVideoId,
       };
   
       const result = await GlobalApi.createCourse(courseData);
@@ -1281,6 +1306,31 @@ function Courses() {
             <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">  
               <label className="block text-gray-700 text-sm font-bold mb-2">Kapak Fotoğrafı:</label>
               <input type="file" onChange={handleCoverPhoto} />
+            </div>
+            <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">  
+              <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Adı:</label>
+              <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+                <input type="text" value={chapterName} onChange={(e) => setChapterName(e.target.value)} className="bg-transparent w-full focus:outline-none" />
+                <FaPencilAlt />
+              </div>
+            </div>
+            <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">  
+              <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Numarası:</label>
+              <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+                <input type="number" value={chapterNo} onChange={(e) => setChapterNo(e.target.value)} className="bg-transparent w-full focus:outline-none" />
+                <FaPencilAlt />
+              </div>
+            </div>
+            <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">  
+              <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Açıklaması:</label>
+              <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+                <input type="text" value={chapterDesc} onChange={(e) => setChapterDesc(e.target.value)} className="bg-transparent w-full focus:outline-none" />
+                <FaPencilAlt />
+              </div>
+            </div>
+            <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">  
+              <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Videosu:</label>
+              <input type="file" onChange={handleChapterVideo} />
             </div>
           </div>
           <button onClick={handleSubmit} style={{ position: 'absolute', bottom: '20px', right: '20px' }} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
