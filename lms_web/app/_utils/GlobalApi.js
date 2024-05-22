@@ -474,8 +474,6 @@ const publishAsset = async (assetId) => {
 };
 
 
-
-
 const counterEnroll = async (courseId, counter) => {
   const mutationQuery = gql`
     mutation MyMutation {

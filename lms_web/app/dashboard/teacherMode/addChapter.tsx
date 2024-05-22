@@ -67,17 +67,17 @@ function AddChapter({ courseId }) {
         chapterNum: parseFloat(chapterNo),
         videoUri: coverVideoId,
       };
-  
+
       const result = await GlobalApi.addChapter(chapterData);
       toast.success("Kurs Ekleme Başarılı!");
       setConfetti(true);
       console.log(result);
-  
+
       const publishResult = await GlobalApi.publishCourse(result.updateCourseList.id);
-      console.log("Kurs yayınlandı:", publishResult);
+      console.log("Yeni bölüm eklendi:", publishResult);
       setTimeout(() => setConfetti(false), 5000);
     } catch (error) {
-      console.error("Kurs eklenirken bir hata oluştu:", error);
+      console.error("Bölüm eklenirken bir hata oluştu:", error);
     }
   };
 
@@ -98,18 +98,21 @@ function AddChapter({ courseId }) {
           </thead>
           <tbody>
             {courseList.map((course, index) => (
-              <tr key={index}>
-                <td className="border px-4 py-2">{course.chapter.map(chap => chap.chapterNumber).join(', ')}</td>
-                <td className="border px-4 py-2">{course.chapter.map(chap => chap.name).join(', ')}</td>
-                <td className="border px-4 py-2">{course.chapter.map(chap => chap.shortDesc).join(', ')}</td>
-                <td className="border px-4 py-2">{course.chapter.map(chap => (
-                  <video key={chap.id} controls width="200" height="120">
-                    <source src={chap.video.url} type="video/mp4" />
-                    Tarayıcınız video etiketini desteklemiyor.
-                  </video>
-                ))}</td>
-              </tr>
+              course.chapter.map((chap, chapIndex) => (
+                <tr key={`${index}-${chapIndex}`}>
+                  <td className="border px-4 py-2">{chap.chapterNumber}</td>
+                  <td className="border px-4 py-2">{chap.name}</td>
+                  <td className="border px-4 py-2">{chap.shortDesc}</td>
+                  <td className="border px-4 py-2">
+                    <video key={chap.id} controls width="200" height="120">
+                      <source src={chap.video.url} type="video/mp4" />
+                      Tarayıcınız video etiketini desteklemiyor.
+                    </video>
+                  </td>
+                </tr>
+              ))
             ))}
+
           </tbody>
         </table>
         <h2 className="text-[20px] font-bold text-sky-700 mr-4 mt-8">Bölüm Ayrıntıları</h2>
@@ -159,7 +162,7 @@ function AddChapter({ courseId }) {
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
-              Kursu Kaydet
+              Bölümü Kaydet
             </button>
           </div>
         </form>
