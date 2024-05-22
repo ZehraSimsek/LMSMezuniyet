@@ -857,6 +857,9 @@ video {
 .w-4 {
   width: 1rem;
 }
+.w-4\/5 {
+  width: 80%;
+}
 .w-40 {
   width: 10rem;
 }
@@ -877,6 +880,9 @@ video {
 }
 .w-full {
   width: 100%;
+}
+.min-w-60 {
+  min-width: 15rem;
 }
 .min-w-full {
   min-width: 100%;

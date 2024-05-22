@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import GlobalApi from '../../_utils/GlobalApi';
-import { FaTrash, FaEdit } from 'react-icons/fa';
+import { FaTrash, FaEdit, FaBookOpen} from 'react-icons/fa';
 import { useUser } from '@clerk/nextjs';
 import { VictoryPie } from 'victory';
 import EditCourse from './editCourse';
+import AddChapter from './addChapter';
 
 function AllCourses() {
   const [courses, setCourses] = useState([]);
   const [expandedRows, setExpandedRows] = useState([]);
   const { user } = useUser();
   const [editingCourseId, setEditingCourseId] = useState(null);
+  const [addChapterCourseId, setAddChapterCourseId] = useState(null);
 
   useEffect(() => {
     GlobalApi.getAllCourseList().then((result) => {
@@ -41,9 +43,17 @@ function AllCourses() {
     setEditingCourseId(courseId);
   }
 
+  const handleAddChapter = (courseId) => {
+    setAddChapterCourseId(courseId);
+  }
+
   if (editingCourseId) {
     return <EditCourse courseId={editingCourseId} />;
   }
+  if (addChapterCourseId) {
+    return <AddChapter courseId={addChapterCourseId} />;
+  }
+
   return (
     <div className="flex flex-col mt-14">
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -105,6 +115,9 @@ function AllCourses() {
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button onClick={(e) => { e.stopPropagation(); handleEditCourse(course.id); }} className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                           <FaEdit className="h-5 w-5" />
+                        </button>
+                        <button onClick={(e) => { e.stopPropagation(); handleAddChapter(course.id); }} className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                          <FaBookOpen className="h-5 w-5" />
                         </button>
                         <button onClick={(e) => { e.stopPropagation(); handleDeleteCourse(course.id); }} className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                           <FaTrash className="h-5 w-5" />

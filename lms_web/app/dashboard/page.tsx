@@ -244,7 +244,7 @@ export default function DashboardPage() {
     localStorage.clear();
   }
   return (
-    <div className='mt-10 text-start max-w-full mx-auto p-5 rounded-2xl h-screen bg-slate-50'>
+    <div className='mt-10 text-start max-w-full mx-auto p-5 rounded-2xl min-h-screen bg-slate-50'>
       <Sidebar isVisible={isTeacher} /> 
       <nav className="flex items-center justify-between p-5 rounded-3xl bg-custom-color shadow-md w-full fixed top-0 left-0">
         <div className="flex items-center space-x-2">

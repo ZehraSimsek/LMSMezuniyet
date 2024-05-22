@@ -1,9 +1,9 @@
 const { gql, default: request } = require("graphql-request")
-const MASTER_URL = "https://api-eu-west-2.hygraph.com/v2/"+process.env.NEXT_PUBLIC_HYGRAPH_API_KEY+"/master"
-const API_TOKEN_ENDPOINT = "https://api-eu-west-2.hygraph.com/v2/"+process.env.TOKEN_ENDPOINT+"/master/upload";
+const MASTER_URL = "https://api-eu-west-2.hygraph.com/v2/" + process.env.NEXT_PUBLIC_HYGRAPH_API_KEY + "/master"
+const API_TOKEN_ENDPOINT = "https://api-eu-west-2.hygraph.com/v2/" + process.env.TOKEN_ENDPOINT + "/master/upload";
 
-const getAllCourseList = async() => {
-   const query = gql ` 
+const getAllCourseList = async () => {
+  const query = gql` 
    query MyQuery {
     courseLists(first: 20, orderBy: createdAt_DESC) {
       name
@@ -18,6 +18,8 @@ const getAllCourseList = async() => {
         ... on Chapter {
           id
           name
+          shortDesc
+          chapterNumber
           video {
             url
           }
@@ -31,13 +33,13 @@ const getAllCourseList = async() => {
     }
   }
    `
-   const result = await request(MASTER_URL,query)
-   console.log(result);
-   return result;
+  const result = await request(MASTER_URL, query)
+  console.log(result);
+  return result;
 }
 
-const getSideBanner = async() => {
-  const query = gql `
+const getSideBanner = async () => {
+  const query = gql`
   query GetSideBanner {
     sideBanners {
       id
@@ -50,15 +52,15 @@ const getSideBanner = async() => {
     }
   }
   `
-  const result = await request(MASTER_URL,query)
+  const result = await request(MASTER_URL, query)
   console.log(result);
   return result;
 }
 
 const getCourseById = async (courseId) => {
-    const query = gql `
+  const query = gql`
       query MyQuery {
-        courseList(where: {slug:"`+courseId+`"}) {
+        courseList(where: {slug:"`+ courseId + `"}) {
           banner {
             url
           }
@@ -82,34 +84,34 @@ const getCourseById = async (courseId) => {
         }
       }
     `
-    const result = await request(MASTER_URL,query)
-    console.log(result);
-    return result;
+  const result = await request(MASTER_URL, query)
+  console.log(result);
+  return result;
 }
 
-const getUserEnrollDetail = async(courseId , email) => {
-  const query = gql `
+const getUserEnrollDetail = async (courseId, email) => {
+  const query = gql`
     query MyQuery {
       userEnrollCourses(
           where: {
-            courseId: "`+courseId+`",
-            userEmail: "`+email+`"})
+            courseId: "`+ courseId + `",
+            userEmail: "`+ email + `"})
             {
               id
             }
     }
   `
-  const result = await request(MASTER_URL,query)
+  const result = await request(MASTER_URL, query)
   console.log(result);
   return result;
 }
 
-const getUserEnrolledCourseDetails = async(id , email) => {
-  const query = gql `
+const getUserEnrolledCourseDetails = async (id, email) => {
+  const query = gql`
     query MyQuery {
       userEnrollCourses(where: {
-        id:"`+id+`", 
-        userEmail: "`+email+`"
+        id:"`+ id + `", 
+        userEmail: "`+ email + `"
       })
       {
         courseId
@@ -145,15 +147,15 @@ const getUserEnrolledCourseDetails = async(id , email) => {
       }
     }
   `
-  const result = await request(MASTER_URL,query)
-    return result;
+  const result = await request(MASTER_URL, query)
+  return result;
 }
 
-const enrollToCourse = async(courseId, email) => {
-  const query = gql `
+const enrollToCourse = async (courseId, email) => {
+  const query = gql`
     mutation MyMutation {
       createUserEnrollCourse(
-        data: {courseId:"`+courseId+`" , userEmail:"`+email+`" , courseList:{connect: {id : "`+courseId+`"}} }
+        data: {courseId:"`+ courseId + `" , userEmail:"` + email + `" , courseList:{connect: {id : "` + courseId + `"}} }
       )
       {
         id
@@ -167,7 +169,7 @@ const enrollToCourse = async(courseId, email) => {
       }
     }
   `
-  const result = await request(MASTER_URL,query);
+  const result = await request(MASTER_URL, query);
   return result;
 }
 
@@ -261,11 +263,11 @@ const getChapterCompletionStatus = async (courseId, email) => {
 // }
 
 
-const getUserAllEnrolledCourseList = async(email) => {
-  const query = gql `
+const getUserAllEnrolledCourseList = async (email) => {
+  const query = gql`
       query Myquery{
         userEnrollCourses(where: {
-          userEmail: "`+email+`"
+          userEmail: "`+ email + `"
         }) {
           completedChapter{ 
             ... on CompletedChapter{
@@ -296,7 +298,7 @@ const getUserAllEnrolledCourseList = async(email) => {
       }
   `
 
-  const result = await request(MASTER_URL,query);
+  const result = await request(MASTER_URL, query);
   return result;
 }
 
@@ -348,7 +350,7 @@ const getUserAllEnrolledCourseList = async(email) => {
 
 // const createCourse = async ({ name, description, authorEmail, totalChapters, price, selectedCategory, coverPhoto }) => {
 //   const slug = name.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
-  
+
 //   const free = price > 0 ? false : true;
 //   const createCourseMutation = gql`
 //     mutation MyMutation {
@@ -374,7 +376,7 @@ const getUserAllEnrolledCourseList = async(email) => {
 //   return createResult;
 // };
 
-const createCourse = async ({ name, description, authorEmail, totalChapters, price, selectedCategory, coverPhoto, chapterName, chapterNum , chapterDesc , videoUri }) => {
+const createCourse = async ({ name, description, authorEmail, totalChapters, price, selectedCategory, coverPhoto, chapterName, chapterNum, chapterDesc, videoUri }) => {
   const slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
 
   const free = price > 0 ? false : true;
@@ -397,7 +399,6 @@ const createCourse = async ({ name, description, authorEmail, totalChapters, pri
             chapterNumber: ${chapterNum}, 
             shortDesc: "${chapterDesc}",
             video:  {connect: {id: "${videoUri}" }}
-
           }
           }
         }
@@ -410,6 +411,34 @@ const createCourse = async ({ name, description, authorEmail, totalChapters, pri
 
   const createResult = await request(MASTER_URL, createCourseMutation);
   return createResult;
+};
+
+const addChapter = async ({courseId, chapterName, chapterNum, chapterDesc, videoUri}) => {
+  const addChapterMutation = gql`
+  mutation MyMutation{
+    updateCourseList(
+      data: {
+        chapter: {
+          create: {
+            Chapter: {
+              data: {
+                name: "${chapterName}", 
+                chapterNumber: ${chapterNum}, 
+                shortDesc: "${chapterDesc}",
+                video:  {connect: {id: "${videoUri}" }}
+              }
+            }
+          }
+        }
+      }
+      where: { id: "${courseId}" }
+    ) {
+      id
+    }
+  }
+  `;
+  const publishResult = await request(MASTER_URL, addChapterMutation);
+  return publishResult;
 };
 
 
@@ -447,17 +476,17 @@ const publishAsset = async (assetId) => {
 
 
 
-const counterEnroll = async ( courseId, counter ) => {
+const counterEnroll = async (courseId, counter) => {
   const mutationQuery = gql`
     mutation MyMutation {
       updateCourseList(
-        where: { id: "` +courseId +`" },
+        where: { id: "` + courseId + `" },
         data: { counterEnroll: ${counter} }
       ) {
         counterEnroll
         id
       }
-      publishCourseList(where: {id: "` +courseId +`"}, to: PUBLISHED) {
+      publishCourseList(where: {id: "` + courseId + `"}, to: PUBLISHED) {
         counterEnroll
       }
     }
@@ -482,7 +511,7 @@ const GetCounter = async (courseId) => {
     }
   `;
   const result = await request(MASTER_URL, query);
-  return result;
+  return result;
 };
 
 const GetIstatisticCourse = async (authorEmail) => {
@@ -515,12 +544,12 @@ const deleteCourse = async (courseId) => {
   } catch (error) {
     console.error('GraphQL isteği sırasında hata oluştu:', error);
     throw new Error('GraphQL isteği sırasında hata oluştu');
-  }
+  }
 };
 
 const updateCourse = async ({ courseId, coverPhoto, name, description, totalChapters, price, selectedCategory }) => {
-  const slug = name.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
-  
+  const slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+
   const free = price > 0 ? false : true;
   const updateCourseMutation = gql`
     mutation MyMutation {
@@ -547,21 +576,22 @@ const updateCourse = async ({ courseId, coverPhoto, name, description, totalChap
 
 
 export default {
-    getAllCourseList,
-    getSideBanner,
-    getCourseById,
-    getUserEnrollDetail,
-    enrollToCourse,
-    getUserEnrolledCourseDetails,
-    markChapterCompleted,
-    getUserAllEnrolledCourseList,
-    createCourse,
-    counterEnroll,
-    GetCounter,
-    GetIstatisticCourse,
-    deleteCourse,
-    publishCourse,
-    updateCourse,
-    getChapterCompletionStatus,
-    publishAsset,
+  getAllCourseList,
+  getSideBanner,
+  getCourseById,
+  getUserEnrollDetail,
+  enrollToCourse,
+  getUserEnrolledCourseDetails,
+  markChapterCompleted,
+  getUserAllEnrolledCourseList,
+  createCourse,
+  counterEnroll,
+  GetCounter,
+  GetIstatisticCourse,
+  deleteCourse,
+  publishCourse,
+  updateCourse,
+  getChapterCompletionStatus,
+  publishAsset,
+  addChapter
 }
