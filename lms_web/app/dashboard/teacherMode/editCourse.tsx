@@ -125,7 +125,7 @@ function EditCourse({ courseId }) {
           console.log("Kurs yayınlandı:", publishResult);
         })
         .catch((publishError) => {
-          console.error("Kurs yayınlanırken bir hata oluştu:", publishError);
+          console.error("Kurs editlenirken bir hata oluştu:", publishError);
         });
         setTimeout(() => setUpdate(true), 5000);
       })

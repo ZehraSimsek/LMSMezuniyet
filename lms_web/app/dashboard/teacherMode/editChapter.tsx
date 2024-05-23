@@ -170,7 +170,7 @@ import fetch from 'node-fetch';
 import FormData from 'form-data';
 import GlobalApi from '../../_utils/GlobalApi';
 const HYGRAPH_ASSET_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MTY0NzQwODQsImF1ZCI6WyJodHRwczovL2FwaS1ldS13ZXN0LTIuaHlncmFwaC5jb20vdjIvY2xza3BxbHQ2M3dwZzAxdXBsbTRuMHQ3MS9tYXN0ZXIiLCJtYW5hZ2VtZW50LW5leHQuZ3JhcGhjbXMuY29tIl0sImlzcyI6Imh0dHBzOi8vbWFuYWdlbWVudC1ldS13ZXN0LTIuaHlncmFwaC5jb20vIiwic3ViIjoiYTU4ZTRiZDEtMTcyNS00NDZkLWIxYTUtMjM4MjkyOWE1ZjZiIiwianRpIjoiY2x3amNjbzFwNXI0djA3bWg4NTRsYjh2dCJ9.kAl4hSKYgxKatPJUK3MFV0T49MGJrhrXxztfKu9eKTVIzLxbpmI0CLIFZQmbnnp4sCPnNxnlwuniDwZheXlMFObE13Zq7SZbg76ZDVpWKHSScxoNWZPsJt9WCaJIVEIJT6Lga39E-JOjEAs7VmPIxE1qJKxcLjtMMcF4pkT6WOGK9e6_w6luWVNOC1QTZjFBbv4J1_8UP0KjxxVRNPp97zvCRM9xDlQrSjwBdUmQxfBmd2SGgB_y3NDemYgC6ttfypERGI_XQSIx0mCi6ve4b18CPU_XEG85qiKQibli9DCiKm21W41arqoiRsmP2L7tMdOWoJKW8PGfP1yClKPf6nD0l_YaU372iNKQR8R8WWj9FjdIsKyEsrxcpurUkS4DQbdxrqtvovuStWvl7Woar2tl5h2XE0-LEWq6LI5m2Xw-pToHs0Bq1ZoHYji0g4wS22IlmQWGrbkCHNmDoaxmy6MasEoPQKyp0cP1YzYC4RpkrMlNem3hN_3bIWHB81QSt-zjkdWaJRNYoEjwARIfQn91RLpZoPsM8fB8ocPtp-wCU1YHFBTVsB9s1ug0I2zzbEKLtrXFCN_ppKh8mVP69HGjc8DhcxV_J6lXxFvOuoygXviYVhf_4nG08tfxHx9cv-wJ3b6ee4b08VFj6FJau3jRDn8dOz_q64367D2jQ2Y';
-const HYGRAPH_URL = "https://api-eu-west-2.hygraph.com/v2/" + process.env.NEXT_PUBLIC_HYGRAPH_API_KEY + "/master";
+const MASTER = "https://api-eu-west-2.hygraph.com/v2/" + process.env.NEXT_PUBLIC_HYGRAPH_API_KEY + "/master";
 
 function EditChapter({ chapterId, courseId }) {
     const [chapterName, setChapterName] = useState("");
@@ -189,7 +189,7 @@ function EditChapter({ chapterId, courseId }) {
                     setChapterName(chapter.name);
                     setChapterDesc(chapter.shortDesc);
                     setChapterNo(chapter.chapterNumber);
-                    setVideoUri(chapter.video.fileName);
+                    setVideoUri(chapter.video?.id);
                 }
             }
         });
@@ -199,9 +199,10 @@ function EditChapter({ chapterId, courseId }) {
     const handleChapterVideo = (event) => {
         if (event.target.files[0]) {
             setVideoUri(event.target.files[0]);
+        }else{
+            setVideoUri(videoUri);
+            console.log("seçilince , " ,videoUri)
         }
-    
-        setVideoUri(videoUri);
     };
     
 
@@ -214,28 +215,31 @@ function EditChapter({ chapterId, courseId }) {
             return;
         }
 
-        // let coverVideoId = null;
-        // if (videoUri) {
-        //     const form = new FormData();
-        //     form.append('fileUpload', videoUri);
+        
+        let coverVideoId = null;
+        if (videoUri && typeof videoUri !== 'string') {
+          const form = new FormData();
+          form.append('fileUpload', videoUri);
 
-        //     const uploadResponse = await fetch(`${HYGRAPH_URL}/upload`, {
-        //         method: 'POST',
-        //         headers: {
-        //             'Authorization': `Bearer ${HYGRAPH_ASSET_TOKEN}`,
-        //         },
-        //         body: form,
-        //     });
-        //     if (!uploadResponse.ok) {
-        //         throw new Error(`Chapter video upload failed with status ${uploadResponse.status}`);
-        //     }
+          const uploadResponse = await fetch(`https://api-eu-west-2.hygraph.com/v2/clskpqlt63wpg01uplm4n0t71/master/upload`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${HYGRAPH_ASSET_TOKEN}`,
+            },
+            body: form,
+          });
+          if (!uploadResponse.ok) {
+            throw new Error(`Chapter video upload failed with status ${uploadResponse.status}`);
+          }
 
-        //     const responseData = await uploadResponse.json();
-        //     coverVideoId = responseData.id;
+          const responseData = await uploadResponse.json();
+          coverVideoId = responseData.id;
 
-        //     const publishVideoAssetResult = await GlobalApi.publishAsset(coverVideoId);
-        //     console.log("Chapter video asset published:", publishVideoAssetResult);
-        // }
+          const publishVideoAssetResult = await GlobalApi.publishAsset(coverVideoId);
+          console.log("Chapter video asset yayınlandı:", publishVideoAssetResult);
+        } else {
+          coverVideoId = videoUri; 
+        }
 
         const chapterData = {
             courseId,
@@ -243,6 +247,7 @@ function EditChapter({ chapterId, courseId }) {
             chapterName,
             chapterDesc,
             chapterNum: parseFloat(chapterNo),
+            videoUri : coverVideoId
         };
 
         const result = await GlobalApi.updateChapter(chapterData);

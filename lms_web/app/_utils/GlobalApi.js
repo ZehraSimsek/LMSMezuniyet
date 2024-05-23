@@ -443,7 +443,7 @@ const addChapter = async ({courseId, chapterName, chapterNum, chapterDesc, video
   return publishResult;
 };
 
-const updateChapter = async ({courseId, chapterId, chapterName, chapterNum, chapterDesc}) => {
+const updateChapter = async ({courseId, chapterId, chapterName, chapterNum, chapterDesc , videoUri}) => {
   const updateChapterMutation = gql`
   mutation MyMutation {
     updateCourseList(
@@ -453,8 +453,8 @@ const updateChapter = async ({courseId, chapterId, chapterName, chapterNum, chap
           data: {
             chapterNumber: ${chapterNum}, 
             name: "${chapterName}", 
-            shortDesc: "${chapterDesc}"
-            
+            shortDesc: "${chapterDesc}",
+            video:  {connect: {id: "${videoUri}" }}
           }
         }}}}
       where: {id: "${courseId}"}
