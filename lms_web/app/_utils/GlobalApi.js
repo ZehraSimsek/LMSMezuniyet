@@ -396,6 +396,7 @@ const createCourse = async ({ name, description, authorEmail, price, selectedCat
           slug: "${slug}"
           banner: { connect: { id: "${coverPhoto}" } }
           counterEnroll: 0
+          totalChapters: 1
           chapter: {create: {Chapter: {
             name: "${chapterName}", 
             chapterNumber: ${chapterNum}, 
