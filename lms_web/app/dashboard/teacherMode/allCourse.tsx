@@ -26,6 +26,10 @@ function AllCourses() {
     } catch (error) {
       console.error("Kurs silinirken bir hata oluştu:", error);
     }
+      GlobalApi.deleteEnrolledCourse(courseId).then(() => {
+      console.log("tüm kurs kayıt verileri silindi..");
+    });
+
   };
 
   const handleRowClick = (courseId) => {

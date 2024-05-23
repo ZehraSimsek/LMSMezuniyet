@@ -77,7 +77,7 @@ function EditCourse({ courseId }) {
   
 
   const handleUpdate = async () => {
-    let coverPhotoId = null; // coverPhotoId değişkenini burada tanımlayın.
+    let coverPhotoId = null; 
   
     if (coverPhoto) {
         const form = new FormData();
@@ -96,7 +96,7 @@ function EditCourse({ courseId }) {
         }
   
         const responseData = await uploadResponse.json();
-        coverPhotoId = responseData.id; // Yeni yüklenen fotoğrafın ID'sini alın.
+        coverPhotoId = responseData.id;
   
         const publishAssetResult = await GlobalApi.publishAsset(coverPhotoId);
         console.log("Asset yayınlandı:", publishAssetResult);
@@ -110,7 +110,7 @@ function EditCourse({ courseId }) {
       totalChapters: parseInt(totalChapters),
       free: free === "yes" ? true : false,
       selectedCategory: selectedCategory,
-      coverPhoto: coverPhotoId, // coverPhotoId değişkenini burada kullanın.
+      coverPhoto: coverPhotoId,
     };
   
     GlobalApi.updateCourse(courseData)

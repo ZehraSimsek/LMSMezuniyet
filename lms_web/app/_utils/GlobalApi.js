@@ -22,6 +22,8 @@ const getAllCourseList = async () => {
           chapterNumber
           video {
             url
+            id
+            fileName
           }
         }
       }
@@ -441,6 +443,31 @@ const addChapter = async ({courseId, chapterName, chapterNum, chapterDesc, video
   return publishResult;
 };
 
+const updateChapter = async ({courseId, chapterId, chapterName, chapterNum, chapterDesc}) => {
+  const updateChapterMutation = gql`
+  mutation MyMutation {
+    updateCourseList(
+      data: {chapter: {update: 
+        {
+          Chapter: { where: {id: "${chapterId}"}, 
+          data: {
+            chapterNumber: ${chapterNum}, 
+            name: "${chapterName}", 
+            shortDesc: "${chapterDesc}"
+            
+          }
+        }}}}
+      where: {id: "${courseId}"}
+    ) {
+      id
+    }
+  }
+  
+  `;
+  const publishResult = await request(MASTER_URL, updateChapterMutation);
+  return publishResult;
+};
+
 
 const publishCourse = async (courseId) => {
   const publishCourseMutation = gql`
@@ -472,6 +499,7 @@ const publishAsset = async (assetId) => {
   const publishResult = await request(MASTER_URL, publishAssetMutation);
   return publishResult;
 };
+
 
 
 const counterEnroll = async (courseId, counter) => {
@@ -545,6 +573,19 @@ const deleteCourse = async (courseId) => {
   }
 };
 
+const deleteEnrolledCourse = async (courseId) => {
+  const deleteUserEnrolledCourse = gql`
+  mutation MyMutation {
+    deleteManyUserEnrollCourses(where: { courseId: "${courseId}" }) {
+      count
+    }
+  }
+  `;
+
+  const publishResult = await request(MASTER_URL, deleteUserEnrolledCourse);
+  return publishResult;
+};
+
 const updateCourse = async ({ courseId, coverPhoto, name, description, totalChapters, price, selectedCategory }) => {
   const slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
 
@@ -591,5 +632,7 @@ export default {
   updateCourse,
   getChapterCompletionStatus,
   publishAsset,
-  addChapter
+  addChapter,
+  deleteEnrolledCourse,
+  updateChapter,
 }
