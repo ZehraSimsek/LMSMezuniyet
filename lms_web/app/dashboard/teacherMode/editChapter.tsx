@@ -215,7 +215,6 @@ function EditChapter({ chapterId, courseId }) {
             return;
         }
 
-        
         let coverVideoId = null;
         if (videoUri && typeof videoUri !== 'string') {
           const form = new FormData();

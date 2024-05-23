@@ -13,6 +13,7 @@ const getAllCourseList = async () => {
       description
       banner {
         url
+        id
       }
       chapter {
         ... on Chapter {
