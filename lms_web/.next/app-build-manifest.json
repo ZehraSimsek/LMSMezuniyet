@@ -23,6 +23,12 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(router)/layout.js"
     ],
+    "/(router)/watch-course/[enrollId]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(router)/watch-course/[enrollId]/page.css",
+      "static/chunks/app/(router)/watch-course/[enrollId]/page.js"
+    ],
     "/not-found": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",

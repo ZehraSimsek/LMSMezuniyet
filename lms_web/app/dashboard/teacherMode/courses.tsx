@@ -1081,7 +1081,6 @@ import FormData from 'form-data';
 function Courses() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [totalChapters, setTotalChapters] = useState("");
   const [price, setPrice] = useState("");
   const [free, setFree] = useState("false");
   const [chapterName, setChapterName] = useState("");
@@ -1095,7 +1094,7 @@ function Courses() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [confetti, setConfetti] = useState(false);
   const [filledFields, setFilledFields] = useState(0);
-  const totalFields = 11;
+  const totalFields = 10;
   const [showForm, setShowForm] = useState(false);
   const { user } = useUser();
   const HYGRAPH_ASSET_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MTYxMjcwNTgsImF1ZCI6WyJodHRwczovL2FwaS1ldS13ZXN0LTIuaHlncmFwaC5jb20vdjIvY2xza3BxbHQ2M3dwZzAxdXBsbTRuMHQ3MS9tYXN0ZXIiLCJtYW5hZ2VtZW50LW5leHQuZ3JhcGhjbXMuY29tIl0sImlzcyI6Imh0dHBzOi8vbWFuYWdlbWVudC1ldS13ZXN0LTIuaHlncmFwaC5jb20vIiwic3ViIjoiNTg3OGUxZDMtNWJjMy00YzZkLTgwMzMtZDgyMWI2MmI5ZDhkIiwianRpIjoiY2x3ZGxxcGF2ajRobTA4anQ0MDZpYWxobSJ9.f1tncbqNT1xDpQgxtYhOlUAY3liLKUoaYAGVc6xxT7Su-0a6bmB3uKGULbPCcHKxocva8HfGtDnMczGpC1LZvoIQy9FrVftHHI5RublU2ZSOWpHnLGPxN9_QfC6reSSSWBgCCdIiq2sUblunM8DtGDmkTIpo75fYpoizeZGXNywXrg3tGk4vJVoBbSVBePM8Qx7fVF2rc7bYOCyGufgpnVo5-Rv_ZDtj-_0TTk2br4Vf6fKH92oBrKKBOUQOjU2IVyux7FOQQANCDaSmnVyqsbx6-zc1y5izKkC545hg9zMuoqhpTgfVwfJJekEGzDpXBSt4rqUACFVsbz_Xr0utvroQrEJQ97GMk8m-twOxSCeO00PJlDDupT3USDN7pADX5XCs_vLy0_9AMFxmv3ID4XvGggtp2d-a-TeQKtkT-DRg8x4O-ZaaT4w7L7Bg_Y9nh-ibVpFk9gtg5C9mtIt9bFHzgKFrblO24f-Tk-8MB2P1FLrnaJy9EMnU8WCcIDdQh8-notWa5AE4Xj6hcWxCUX269WOLVlp2i2_s4bXg1ClsopdYJ6LgeKzHkmIT2U1ZJcoDAa_WOd6o4_B8K_UqH8p64XiaOlR-LefJDmPbD59b26q2laqpf4BUsjBEbcH8s-TnFHRNqTWOOJq-c5i6ziGNAN6EprV53kX99S-r6iU';
@@ -1106,7 +1105,6 @@ function Courses() {
     let count = 0;
     if (name !== "") count++;
     if (description !== "") count++;
-    if (totalChapters !== "") count++;
     if (price !== "") count++;
     if (free !== "false") count++;
     if (selectedCategory !== null) count++;
@@ -1116,7 +1114,7 @@ function Courses() {
     if (chapterNo !== "") count++;
     if (videoUri !== null) count++;
     setFilledFields(count);
-  }, [name, description, totalChapters, price, free, selectedCategory, coverPhoto, chapterName, chapterDesc, chapterNo, videoUri]);
+  }, [name, description, price, free, selectedCategory, coverPhoto, chapterName, chapterDesc, chapterNo, videoUri]);
 
   useEffect(() => {
     getAllCourses();
@@ -1166,7 +1164,6 @@ function Courses() {
       const missingFields = [];
       if (name === "") missingFields.push("Kurs Adı");
       if (description === "") missingFields.push("Açıklama");
-      if (totalChapters === "") missingFields.push("Toplam Bölüm Sayısı");
       if (price === "") missingFields.push("Kurs Fiyatı");
       if (free === "false") missingFields.push("Ücretli mi?");
       if (selectedCategory === null) missingFields.push("Kurs Kategorisi");
@@ -1229,7 +1226,6 @@ function Courses() {
         name,
         price,
         description,
-        totalChapters: parseInt(totalChapters),
         free: free === "yes" ? true : false,
         authorEmail: user?.primaryEmailAddress?.emailAddress,
         selectedCategory,
@@ -1293,18 +1289,6 @@ function Courses() {
                   type="text"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="bg-transparent w-full focus:outline-none"
-                />
-                <FaPencilAlt />
-              </div>
-            </div>
-            <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
-              <label className="block text-gray-700 text-sm font-bold mb-2">Toplam Bölüm Sayısı:</label>
-              <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-                <input
-                  type="number"
-                  value={totalChapters}
-                  onChange={(e) => setTotalChapters(e.target.value)}
                   className="bg-transparent w-full focus:outline-none"
                 />
                 <FaPencilAlt />

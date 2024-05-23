@@ -379,7 +379,7 @@ const getUserAllEnrolledCourseList = async (email) => {
 //   return createResult;
 // };
 
-const createCourse = async ({ name, description, authorEmail, totalChapters, price, selectedCategory, coverPhoto, chapterName, chapterNum, chapterDesc, videoUri }) => {
+const createCourse = async ({ name, description, authorEmail, price, selectedCategory, coverPhoto, chapterName, chapterNum, chapterDesc, videoUri }) => {
   const slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
 
   const free = price > 0 ? false : true;
@@ -389,7 +389,6 @@ const createCourse = async ({ name, description, authorEmail, totalChapters, pri
         data: {
           name: "${name}"
           description: "${description}"
-          totalChapters: ${totalChapters}
           price: ${price}
           free: ${free}
           authorEmail: "${authorEmail}"
@@ -416,7 +415,7 @@ const createCourse = async ({ name, description, authorEmail, totalChapters, pri
   return createResult;
 };
 
-const addChapter = async ({courseId, chapterName, chapterNum, chapterDesc, videoUri}) => {
+const addChapter = async ({ courseId, chapterName, chapterNum, chapterDesc, videoUri }) => {
   const addChapterMutation = gql`
   mutation MyMutation{
     updateCourseList(
@@ -444,7 +443,7 @@ const addChapter = async ({courseId, chapterName, chapterNum, chapterDesc, video
   return publishResult;
 };
 
-const updateChapter = async ({courseId, chapterId, chapterName, chapterNum, chapterDesc , videoUri}) => {
+const updateChapter = async ({ courseId, chapterId, chapterName, chapterNum, chapterDesc, videoUri }) => {
   const updateChapterMutation = gql`
   mutation MyMutation {
     updateCourseList(
@@ -469,6 +468,21 @@ const updateChapter = async ({courseId, chapterId, chapterName, chapterNum, chap
   return publishResult;
 };
 
+const deleteChapter = async ({ courseId, chapterId }) => {
+  const deleteChapterMutation = gql`
+  mutation MyMutation {
+    updateCourseList(
+      where: {id: "${courseId}"}
+      data: {chapter: {delete: {Chapter: {id: "${chapterId}"}}}}
+    ) {
+      id
+    }
+  }
+  
+  `;
+  const publishResult = await request(MASTER_URL, deleteChapterMutation);
+  return publishResult;
+};
 
 const publishCourse = async (courseId) => {
   const publishCourseMutation = gql`
@@ -614,6 +628,43 @@ const updateCourse = async ({ courseId, coverPhoto, name, description, totalChap
   return updateResult;
 };
 
+const totalChaptersCounter = async (courseId, totalChaptersCounter) => {
+  const mutationQuery = gql`
+  mutation MyMutation {
+    updateCourseList(
+      data: {totalChapters: ${totalChaptersCounter}}, 
+      where: { id: "${courseId}" }    
+    ) {
+      id
+    }
+    publishCourseList(where: {id: "` + courseId + `"}, to: PUBLISHED) {
+      totalChapters
+    }
+  }
+  `;
+
+  try {
+    const result = await request(MASTER_URL, mutationQuery);
+    return result;
+  } catch (error) {
+    console.error('Total Chapters Counter artırma hatası:', error);
+    throw error;
+  }
+};
+
+
+const GetTotalChapters = async (courseId) => {
+  const query = gql`
+    query MyQuery {
+      courseList(where: {id: "${courseId}"}) {
+        totalChapters
+      }
+    }
+  `;
+  const result = await request(MASTER_URL, query);
+  return result;
+};
+
 
 export default {
   getAllCourseList,
@@ -636,4 +687,7 @@ export default {
   addChapter,
   deleteEnrolledCourse,
   updateChapter,
+  totalChaptersCounter,
+  GetTotalChapters,
+  deleteChapter
 }

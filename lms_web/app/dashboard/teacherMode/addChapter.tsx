@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaPencilAlt, FaEdit } from 'react-icons/fa';
+import { FaPencilAlt, FaEdit, FaTrash } from 'react-icons/fa';
 import { useUser } from '@clerk/nextjs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -32,6 +32,30 @@ function AddChapter({ courseId }) {
     setVideoUri(event.target.files[0]);
   };
 
+  const handleDeleteChapter = async (courseId, chapterId, chapterNumber) => {
+    try {console.log("numero ", chapterNumber);
+      if (chapterNumber === 1) {
+        toast.error("Birinci bölümü silemezsiniz!");
+        
+      } else{
+        const result = await GlobalApi.deleteChapter({ courseId, chapterId });
+        toast.success("Bölüm başarıyla silindi!");
+        console.log('Bölüm başarıyla silindi:', result);
+        const resp = await GlobalApi.GetTotalChapters(courseId);
+        let counterEnrollValue = resp.courseList.totalChapters;
+        counterEnrollValue = counterEnrollValue - 1;
+        const updateResult = await GlobalApi.totalChaptersCounter(courseId, counterEnrollValue);
+        console.log("Sonuçlar: ", updateResult);
+        const publishResult = await GlobalApi.publishCourse(result.updateCourseList.id);
+        console.log("Bölüm silindi:", publishResult);
+      }
+
+    } catch (error) {
+      toast.error("Bölüm silinirken hatayla karşılaşıldı.");
+      console.error('Bölüm silinirken hatayla karşılaşıldı.', error);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -54,7 +78,7 @@ function AddChapter({ courseId }) {
           body: form,
         });
         if (!uploadResponse.ok) {
-          throw new Error(`Chapter video upload failed with status ${uploadResponse.status}`);
+          throw new Error(`Video asset yüklenemedi:  ${uploadResponse.status}`);
         }
 
         const responseData = await uploadResponse.json();
@@ -83,12 +107,18 @@ function AddChapter({ courseId }) {
     } catch (error) {
       console.error("Bölüm eklenirken bir hata oluştu:", error);
     }
+
+    const resp = await GlobalApi.GetTotalChapters(courseId);
+    let counterEnrollValue = resp.courseList.totalChapters;
+    counterEnrollValue = counterEnrollValue + 1;
+    const updateResult = await GlobalApi.totalChaptersCounter(courseId, counterEnrollValue);
+    console.log("Sonuçlar: ", updateResult);
   };
 
-  const handleEditChapter = (chapterId , courseId) => {
+  const handleEditChapter = (chapterId, courseId) => {
     setEditingChapterId(chapterId);
     setEditingCourseId(courseId);
-    console.log("chapter id" , chapterId , courseId);
+    console.log("chapter id", chapterId, courseId);
   }
 
   if (editingChapterId) {
@@ -124,8 +154,11 @@ function AddChapter({ courseId }) {
                       Tarayıcınız video etiketini desteklemiyor.
                     </video>
                   </td>
-                  <button onClick={(e) => { e.stopPropagation(); handleEditChapter(chap.id , course.id); }} className="px-4 py-2 text-center">
+                  <button onClick={(e) => { e.stopPropagation(); handleEditChapter(chap.id, course.id); }} className="px-4 py-2 text-center">
                     <FaEdit className="h-5 w-5" />
+                  </button>
+                  <button onClick={(e) => { e.stopPropagation(); handleDeleteChapter(course.id, chap.id, chap.chapterNumber); }} className="px-4 py-2 text-center">
+                    <FaTrash className="h-5 w-5" />
                   </button>
                 </tr>
               ))

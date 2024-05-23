@@ -512,6 +512,14 @@ function CourseEnroll({ courseInfo, isUserAlreadyEnrolled }) {
       if (resp) {
         router.push('/watch-course/' + resp.createUserEnrollCourse.id);
         toast.success('Başarıyla kaydoldunuz!');
+        GlobalApi.GetCounter(courseInfo?.id).then(resp => {
+          let counterEnrollValue = resp.courseList.counterEnroll;
+          console.log(counterEnrollValue); 
+          counterEnrollValue = counterEnrollValue + 1 ;
+          GlobalApi.counterEnroll(courseInfo?.id, counterEnrollValue).then(resp => {
+            console.log(resp);
+          });
+        })
       }
     })
     .catch(error => {
@@ -519,17 +527,6 @@ function CourseEnroll({ courseInfo, isUserAlreadyEnrolled }) {
       });
     });
   };
-
-  GlobalApi.GetCounter(courseInfo?.id).then(resp => {
-    let counterEnrollValue = resp.courseList.counterEnroll;
-    console.log(counterEnrollValue); 
-    counterEnrollValue = counterEnrollValue + 1 ;
-    //counter'ın değerini update mutationa göndermemiz lazım
-    GlobalApi.counterEnroll(courseInfo?.id, counterEnrollValue).then(resp => {
-      console.log(resp);
-    });
-  })
-
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
