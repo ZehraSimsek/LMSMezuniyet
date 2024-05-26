@@ -114,7 +114,7 @@ function AllCourses() {
                         {course.counterEnroll}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {course.tag}
+                        {course.tags}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button onClick={(e) => { e.stopPropagation(); handleEditCourse(course.id); }} className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">

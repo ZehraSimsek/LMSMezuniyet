@@ -269,7 +269,7 @@ function AddChapter({ courseId }) {
   const [editingChapterId, setEditingChapterId] = useState(null);
   const [editingCourseId, setEditingCourseId] = useState(null);
   const [showAddChapterForm, setShowAddChapterForm] = useState(false);
-  const [trigger , setTrigger] = useState(0);
+  const [trigger, setTrigger] = useState(0);
   const { user } = useUser();
 
   useEffect(() => {
@@ -298,7 +298,7 @@ function AddChapter({ courseId }) {
         console.log("Sonuçlar: ", updateResult);
         const publishResult = await GlobalApi.publishCourse(result.updateCourseList.id);
         console.log("Bölüm silindi:", publishResult);
-        setTrigger(trigger + 1 );
+        setTrigger(trigger + 1);
       }
     } catch (error) {
       toast.error("Bölüm silinirken hatayla karşılaşıldı.");
@@ -314,6 +314,15 @@ function AddChapter({ courseId }) {
       return;
     }
     try {
+      for (const course of courseList) {
+        for (const chap of course.chapter) {
+          if (chap.chapterNumber === parseInt(chapterNo, 10)) {
+            toast.error("Bu bölüm numarası zaten kullanılıyor.");
+            return;
+          }
+        }
+      }
+
       let coverVideoId = null;
       if (videoUri) {
         const form = new FormData();
@@ -354,9 +363,13 @@ function AddChapter({ courseId }) {
       const publishResult = await GlobalApi.publishCourse(result.updateCourseList.id);
       console.log("Yeni bölüm eklendi:", publishResult);
       setTimeout(() => setConfetti(false), 5000);
-      setTrigger(trigger + 1 );
+      setTrigger(trigger + 1);
+      setChapterName("");
+      setChapterDesc("");
+      setChapterNo("");
+      setVideoUri(null);
 
-      setShowAddChapterForm(false); // Modalı kapat
+      setShowAddChapterForm(false);
     } catch (error) {
       console.error("Bölüm eklenirken bir hata oluştu:", error);
     }
@@ -380,7 +393,7 @@ function AddChapter({ courseId }) {
 
   return (
     <div>
-      <ToastContainer />
+      <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover/>
       {confetti && <Confetti />}
       <div className="w-full mt-4 px-8">
         {!showAddChapterForm ? (
@@ -390,7 +403,7 @@ function AddChapter({ courseId }) {
                 onClick={() => setShowAddChapterForm(true)}
                 className="text-blue-200 font-bold px-3 py-2 rounded"
               >
-                <FaPlusCircle className="h-6 w-6"/>
+                <FaPlusCircle className="h-6 w-6" />
               </button>
             </h2>
             <table className="min-w-full bg-white">
@@ -434,72 +447,77 @@ function AddChapter({ courseId }) {
         <Modal
           isOpen={showAddChapterForm}
           onRequestClose={() => setShowAddChapterForm(false)}
-          contentLabel="Bölüm Ekle"
-          className="fixed inset-0 flex items-center justify-center"
-          overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+        contentLabel="Bölüm Ekle"
+        className="fixed inset-0 flex items-center justify-center"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         >
-          <div className="bg-blue-100 p-3 rounded-lg shadow-lg w-full max-w-2xl mx-auto">
-            <h2 className="text-[20px] font-bold text-sky-700 mr-4 mt-8">Bölüm Ayrıntıları</h2>
-            <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Numarası:</label>
-              <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-                <input
-                  type="number"
-                  value={chapterNo}
-                  onChange={(e) => setChapterNo(e.target.value)}
-                  className="bg-transparent w-4/5 focus:outline-none"
-                />
-                <FaPencilAlt />
-              </div>
-            </div>
-            <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Adı:</label>
-              <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-                <input
-                  type="text"
-                  value={chapterName}
-                  onChange={(e) => setChapterName(e.target.value)}
-                  className="bg-transparent w-4/5 focus:outline-none"
-                />
-                <FaPencilAlt />
-              </div>
-            </div>
-            <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Açıklaması:</label>
-              <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-                <input
-                  type="text"
-                  value={chapterDesc}
-                  onChange={(e) => setChapterDesc(e.target.value)}
-                  className="bg-transparent w-4/5 focus:outline-none"
-                />
-                <FaPencilAlt />
-              </div>
-            </div>
-            <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Videosu:</label>
-              <input type="file" onChange={handleChapterVideo} />
-            </div>
-            <div className="flex justify-end">
-            <button
-                  type="button"
-                  onClick={() => setShowAddChapterForm(false)}
-                  className=" bg-blue-200 hover:bg-blue-400 text-white font-bold py-2 px-4 mr-3 rounded"
-                >
-                  Kapat
-                </button>
-              <button
-                type="submit"
-                onClick={handleSubmit}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              >
-                Bölümü Kaydet
-              </button>
+        <div className="bg-blue-100 p-3 rounded-lg shadow-lg w-full max-w-2xl mx-auto">
+          <h2 className="text-[20px] font-bold text-sky-700 mr-4 mt-8">Bölüm Ayrıntıları</h2>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Numarası:</label>
+            <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+              <input
+                type="number"
+                value={chapterNo}
+                onChange={(e) => setChapterNo(e.target.value)}
+                className="bg-transparent w-4/5 focus:outline-none"
+              />
+              <FaPencilAlt />
             </div>
           </div>
-        </Modal>
-      </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Adı:</label>
+            <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+              <input
+                type="text"
+                value={chapterName}
+                onChange={(e) => setChapterName(e.target.value)}
+                className="bg-transparent w-4/5 focus:outline-none"
+              />
+              <FaPencilAlt />
+            </div>
+          </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Açıklaması:</label>
+            <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+              <input
+                type="text"
+                value={chapterDesc}
+                onChange={(e) => setChapterDesc(e.target.value)}
+                className="bg-transparent w-4/5 focus:outline-none"
+              />
+              <FaPencilAlt />
+            </div>
+          </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Videosu:</label>
+            <input type="file" onChange={handleChapterVideo} />
+          </div>
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={() => {setShowAddChapterForm(false);
+                setChapterName("");
+            setChapterDesc("");
+            setChapterNo("");
+            setVideoUri(null);
+              }}
+              className=" bg-blue-200 hover:bg-blue-400 text-white font-bold py-2 px-4 mr-3 rounded"
+            >
+              Kapat
+            </button>
+            <button
+              type="submit"
+              onClick={handleSubmit}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Bölümü Kaydet
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
+    </div >
   );
 }
 

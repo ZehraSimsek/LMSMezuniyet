@@ -22,6 +22,7 @@ function EditCourse({ courseId }) {
   const [update, setUpdate] = useState(false);
   const [trigger, setTrigger] = useState(0);
   const [coverPhotoUrl, setCoverPhotoUrl] = useState();
+  const [tag , setTag] = useState("");
   const totalFields = 7;
   const HYGRAPH_ASSET_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MTYxMjcwNTgsImF1ZCI6WyJodHRwczovL2FwaS1ldS13ZXN0LTIuaHlncmFwaC5jb20vdjIvY2xza3BxbHQ2M3dwZzAxdXBsbTRuMHQ3MS9tYXN0ZXIiLCJtYW5hZ2VtZW50LW5leHQuZ3JhcGhjbXMuY29tIl0sImlzcyI6Imh0dHBzOi8vbWFuYWdlbWVudC1ldS13ZXN0LTIuaHlncmFwaC5jb20vIiwic3ViIjoiNTg3OGUxZDMtNWJjMy00YzZkLTgwMzMtZDgyMWI2MmI5ZDhkIiwianRpIjoiY2x3ZGxxcGF2ajRobTA4anQ0MDZpYWxobSJ9.f1tncbqNT1xDpQgxtYhOlUAY3liLKUoaYAGVc6xxT7Su-0a6bmB3uKGULbPCcHKxocva8HfGtDnMczGpC1LZvoIQy9FrVftHHI5RublU2ZSOWpHnLGPxN9_QfC6reSSSWBgCCdIiq2sUblunM8DtGDmkTIpo75fYpoizeZGXNywXrg3tGk4vJVoBbSVBePM8Qx7fVF2rc7bYOCyGufgpnVo5-Rv_ZDtj-_0TTk2br4Vf6fKH92oBrKKBOUQOjU2IVyux7FOQQANCDaSmnVyqsbx6-zc1y5izKkC545hg9zMuoqhpTgfVwfJJekEGzDpXBSt4rqUACFVsbz_Xr0utvroQrEJQ97GMk8m-twOxSCeO00PJlDDupT3USDN7pADX5XCs_vLy0_9AMFxmv3ID4XvGggtp2d-a-TeQKtkT-DRg8x4O-ZaaT4w7L7Bg_Y9nh-ibVpFk9gtg5C9mtIt9bFHzgKFrblO24f-Tk-8MB2P1FLrnaJy9EMnU8WCcIDdQh8-notWa5AE4Xj6hcWxCUX269WOLVlp2i2_s4bXg1ClsopdYJ6LgeKzHkmIT2U1ZJcoDAa_WOd6o4_B8K_UqH8p64XiaOlR-LefJDmPbD59b26q2laqpf4BUsjBEbcH8s-TnFHRNqTWOOJq-c5i6ziGNAN6EprV53kX99S-r6iU';
   const HYGRAPH_URL = "https://api-eu-west-2.hygraph.com/v2/" + process.env.NEXT_PUBLIC_HYGRAPH_API_KEY + "/master";
@@ -33,10 +34,10 @@ function EditCourse({ courseId }) {
     if (totalChapters !== "") count++;
     if (price !== "") count++;
     if (free !== "false") count++;
-    if (selectedCategory !== null) count++;
+    if (tag !== null) count++;
     if (coverPhoto !== null) count++;
     setFilledFields(count);
-  }, [name, description, totalChapters, price, free, selectedCategory, coverPhoto]);
+  }, [name, description, totalChapters, price, free, tag, coverPhoto]);
 
   useEffect(() => {
     GlobalApi.getAllCourseList().then((result) => {
@@ -47,8 +48,8 @@ function EditCourse({ courseId }) {
       setDescription(specificCourse.description);
       setTotalChapters(specificCourse.totalChapters);
       setPrice(specificCourse.price);
-      setFree(specificCourse.free ? "yes" : "no");
-      setSelectedCategory(specificCourse.tag);
+      setFree(specificCourse.price !== 0 ? "yes" : "no");
+      setTag(specificCourse.tags);
       setCoverPhotoUrl(specificCourse.banner.id);
     });
   }, [courseId]);
@@ -62,23 +63,31 @@ function EditCourse({ courseId }) {
   }
 
   useEffect(() => {
-    const getCategories = () => {
-      GlobalApi.getAllCourseList().then((resp) => {
-        setCourseList(resp?.courseLists);
-      });
-      if (course) {
-        const categories = [...new Set(courseList.flatMap(course => course.tag))];
-        console.log("zej", categories);
-        setCourseCategories(categories.map((category) => ({
-          label: category,
-          value: category,
-        })));
-      }
-    };
-    getCategories();
-    setTrigger(trigger + 1);
-  }, [course, courseId]);
+    getAllCourses();
+  }, []);
 
+  useEffect(() => {
+    getCategories();
+  }, [courseList]);
+
+  const getAllCourses = () => {
+    GlobalApi.getAllCourseList().then((resp) => {
+      setCourseList(resp?.courseLists);
+    });
+  };
+
+  const getCategories = () => {
+    const categories = [...new Set(courseList.flatMap(course => course.tags))];
+    setCourseCategories(categories.map((category) => ({
+      label: category,
+      value: category,
+    })));
+  };
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+    setTag(event.target.value); 
+  };
 
   const handleUpdate = async () => {
     let coverPhotoId = null;
@@ -116,7 +125,7 @@ function EditCourse({ courseId }) {
       description: description,
       totalChapters: parseInt(totalChapters),
       free: free === "yes" ? true : false,
-      selectedCategory: selectedCategory,
+      tags: tag,
       coverPhoto: coverPhotoId,
     };
 
@@ -141,8 +150,6 @@ function EditCourse({ courseId }) {
       });
   };
 
-
-
   if (!course) {
     return <div>Loading...</div>;
   }
@@ -151,9 +158,6 @@ function EditCourse({ courseId }) {
     return <AllCourses />;
   }
 
-  const handleCategoryChange = (event) => {
-    setSelectedCategory(event.target.value);
-  }
 
   return (
     <div className="flex flex-col md:flex-row mt-4 px-8 pt-6 pb-8 mb-4 h-full md:w-full">
@@ -197,18 +201,29 @@ function EditCourse({ courseId }) {
           </div>
         </div>
         <div className="mb-4 md:w-1/2 md:pl-4 ">
-          <div className="card p-4 bg-blue-100 rounded-lg shadow-lg mb-8">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Kurs Kategorisi Seçin:</label>
-            <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-              <select onChange={handleCategoryChange} className="bg-transparent w-full focus:outline-none">
-                {courseCategories.map((category, index) => (
-                  <option key={index} value={category.value}>{category.label}</option>
-                ))}
-              </select>
-              <FaPencilAlt />
+        <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
+              <label className="block text-gray-700 text-sm font-bold mb-2">Kurs Kategorisi:</label>
+              <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+                <input
+                  type="text"
+                  value={tag}
+                  onChange={(e) => setTag(e.target.value)}
+                  className="bg-transparent w-full focus:outline-none"
+                  placeholder="Etiket giriniz veya kategoriden seçiniz"
+                />
+                <select
+                  value={selectedCategory}
+                  onChange={handleCategoryChange}
+                  className="bg-transparent w-full focus:outline-none"
+                >
+                  <option value="" disabled>Seçiniz</option>
+                  {courseCategories.map((category) => (
+                    <option key={category.value} value={category.value}>{category.label}</option>
+                  ))}
+                </select>
+                <FaPencilAlt />
+              </div>
             </div>
-            <input type="text" value={selectedCategory} placeholder='Mevcut kategorilerden seçebilirsiniz.' className="border p-2 bg-gray-100 w-full flex justify-between items-center rounded-lg mt-2" readOnly />
-          </div>
           <div className="card p-4 bg-blue-100 rounded-lg shadow-lg mb-8">
             <label className="block text-gray-700 text-sm font-bold mb-2">Kurs Fiyatı:</label>
             <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
@@ -226,7 +241,7 @@ function EditCourse({ courseId }) {
           Kursu Güncelle
         </button>
       </div>
-      <ToastContainer />
+      <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover/>
     </div>
   );
 }

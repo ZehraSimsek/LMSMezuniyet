@@ -425,14 +425,14 @@ function CourseList() {
   };
 
   const getTags = () => {
-    const tags = [...new Set(courseList.flatMap(course => course.tag))];
+    const tags = [...new Set(courseList.flatMap(course => course.tags))];
     setTags(tags);
   };
 
   const filterCourses = () => {
     let filteredCourses = courseList;
     if (activeTag !== 'Tümü' && tags.includes(activeTag)) {
-      filteredCourses = filteredCourses.filter(course => course.tag.includes(activeTag));
+      filteredCourses = filteredCourses.filter(course => course.tags.includes(activeTag));
     }
     if (filter !== 'Tümü') {
       filteredCourses = filteredCourses.filter(course => (filter === 'Ücretsiz' ? course.free : !course.free));
@@ -539,7 +539,7 @@ function CourseList() {
           <SideBanners />
         </div>
       </div>
-      <ToastContainer />
+      <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover/>
     </div>
   );
 }

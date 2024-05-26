@@ -29,7 +29,7 @@ const getAllCourseList = async () => {
         }
       }
       totalChapters
-      tag
+      tags
       slug
       authorEmail
       counterEnroll
@@ -154,11 +154,44 @@ const getUserEnrolledCourseDetails = async (id, email) => {
   return result;
 }
 
+// const enrollToCourse = async (courseId, email) => {
+//   const query = gql`
+//     mutation MyMutation {
+//       createUserEnrollCourse(
+//         data: {courseId:"`+ courseId + `" , userEmail:"` + email + `" , courseList:{connect: {id : "` + courseId + `"}} }
+//       )
+//       {
+//         id
+//       }
+//       publishManyUserEnrollCoursesConnection{
+//         edges {
+//           node {
+//             id
+//           }
+//         }
+//       }
+//     }
+//   `
+//   const result = await request(MASTER_URL, query);
+//   return result;
+// }
+
 const enrollToCourse = async (courseId, email) => {
-  const query = gql`
+  const courseQuery = gql`
+    query MyQuery {
+      courseList(where: {id: "${courseId}"}) {
+        authorEmail
+      }
+    }
+  `;
+  const courseResult = await request(MASTER_URL, courseQuery);
+  const authorEmail = courseResult.courseList.authorEmail;
+
+  const dateEnroll = new Date().toISOString();
+  const enrollQuery = gql`
     mutation MyMutation {
       createUserEnrollCourse(
-        data: {courseId:"`+ courseId + `" , userEmail:"` + email + `" , courseList:{connect: {id : "` + courseId + `"}} }
+        data: {courseId:"${courseId}", userEmail:"${email}", authorEmail: "${authorEmail}", dateEnroll: "${dateEnroll}", courseList:{connect: {id : "${courseId}"}} }
       )
       {
         id
@@ -171,10 +204,12 @@ const enrollToCourse = async (courseId, email) => {
         }
       }
     }
-  `
-  const result = await request(MASTER_URL, query);
-  return result;
-}
+  `;
+  const enrollResult = await request(MASTER_URL, enrollQuery);
+  return enrollResult;
+};
+
+
 
 const markChapterCompleted = async (enrollId, chapterId, isCompleted) => {
   const query = gql`
@@ -280,6 +315,8 @@ const getUserAllEnrolledCourseList = async (email) => {
             }
           }
           courseId
+          dateEnroll
+          authorEmail
           courseList{
             name
             id
@@ -304,6 +341,45 @@ const getUserAllEnrolledCourseList = async (email) => {
   const result = await request(MASTER_URL, query);
   return result;
 }
+
+const getAuthorCourses = async (authorEmail) => {
+  const query = gql`
+      query Myquery{
+        userEnrollCourses(where: {
+          authorEmail: "`+ authorEmail + `"
+        }) {
+          completedChapter{ 
+            ... on CompletedChapter{
+              id
+              chapterId
+              isCompleted
+            }
+          }
+          courseId
+          dateEnroll
+          authorEmail
+          courseList{
+            name
+            id
+            totalChapters
+            slug
+            free
+            description
+            chapter{
+              ... on Chapter{
+                id
+                name
+              }
+            }
+          }
+        }
+      }
+  `
+
+  const result = await request(MASTER_URL, query);
+  return result;
+}
+
 
 // const createCourse = async ({ name, description,authorEmail, totalChapters, price, free , selectedCategory}) => {
 //   const mutationQuery = gql`
@@ -379,7 +455,7 @@ const getUserAllEnrolledCourseList = async (email) => {
 //   return createResult;
 // };
 
-const createCourse = async ({ name, description, authorEmail, price, selectedCategory, coverPhoto, chapterName, chapterNum, chapterDesc, videoUri }) => {
+const createCourse = async ({ name, description, authorEmail, price, tag , coverPhoto, chapterName, chapterNum, chapterDesc, videoUri }) => {
   const slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
 
   const free = price > 0 ? false : true;
@@ -392,7 +468,7 @@ const createCourse = async ({ name, description, authorEmail, price, selectedCat
           price: ${price}
           free: ${free}
           authorEmail: "${authorEmail}"
-          tag: ${selectedCategory}
+          tags: "${tag}"
           slug: "${slug}"
           banner: { connect: { id: "${coverPhoto}" } }
           counterEnroll: 0
@@ -690,5 +766,6 @@ export default {
   updateChapter,
   totalChaptersCounter,
   GetTotalChapters,
-  deleteChapter
+  deleteChapter,
+  getAuthorCourses
 }

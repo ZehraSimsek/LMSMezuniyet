@@ -17,6 +17,7 @@ function EditChapter({ chapterId, courseId }) {
     const [videoUri, setVideoUri] = useState(null);
     const [confetti, setConfetti] = useState(false);
     const [backList , setBackList] = useState(false);
+    const [initialChapterNumber, setInitialChapterNumber] = useState("");
 
     useEffect(() => {
         GlobalApi.getAllCourseList().then((result) => {
@@ -28,6 +29,7 @@ function EditChapter({ chapterId, courseId }) {
                     setChapterDesc(chapter.shortDesc);
                     setChapterNo(chapter.chapterNumber);
                     setVideoUri(chapter.video?.id);
+                    setInitialChapterNumber(chapter.chapterNumber);
                 }
             }
         });
@@ -43,6 +45,14 @@ function EditChapter({ chapterId, courseId }) {
         }
     };
 
+    const handleChapterNoChange = (e) => {
+        const newChapterNo = e.target.value;
+        setChapterNo(e.target.value);
+        if (newChapterNo === initialChapterNumber) {
+            setChapterNo(newChapterNo);
+        }
+    };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -52,6 +62,19 @@ function EditChapter({ chapterId, courseId }) {
             toast.error("Lütfen tüm alanları doldurun.");
             return;
         }
+
+        if (parseFloat(chapterNo) !== parseFloat(initialChapterNumber)) {
+            const courseList = await GlobalApi.getAllCourseList();
+            for (const course of courseList.courseLists) {
+                for (const chap of course.chapter) {
+                    if (chap.chapterNumber === parseFloat(chapterNo) && chap.id !== chapterId) {
+                        toast.error("Bu bölüm numarası zaten kullanılıyor.");
+                        return;
+                    }
+                }
+            }
+        }
+
 
         let coverVideoId = null;
         if (videoUri && typeof videoUri !== 'string') {
@@ -105,7 +128,7 @@ function EditChapter({ chapterId, courseId }) {
 
     return (
         <div className='w-full'>
-            <ToastContainer />
+            <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover/>
             {confetti && <Confetti />}
             {/* <div className="w-full mt-4 px-8">
                 <h2 className="text-[20px] font-bold text-sky-700 mr-4 mt-8">Bölüm Ayrıntıları</h2>
@@ -168,7 +191,8 @@ function EditChapter({ chapterId, courseId }) {
                         <input
                             type="number"
                             value={chapterNo}
-                            onChange={(e) => setChapterNo(e.target.value)}
+                            onChange={handleChapterNoChange}
+                            // onChange={(e) => setChapterNo(e.target.value)}
                             className="bg-transparent w-4/5 focus:outline-none"
                         />
                         <FaPencilAlt />

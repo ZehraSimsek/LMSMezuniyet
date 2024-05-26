@@ -113,7 +113,7 @@ function CourseItem({course , id}) {
           className='rounded-t-l'
         />
         <div className='flex flex-col gap-1 p-2'>
-            <h2 className='font-semibold'>{course.name} <span className='text-gray-400'>[{course.tag.join(', ')}]</span></h2>
+            <h2 className='font-semibold'>{course.name} <span className='text-gray-400'>[{course.tags}]</span></h2>
             <h2 className='text-[10px] text-gray-400'>{course.author}</h2>
             <h2 className='text-[15px]'>{course?.free?'Ücretsiz':'Ücretli'}</h2>
         </div>

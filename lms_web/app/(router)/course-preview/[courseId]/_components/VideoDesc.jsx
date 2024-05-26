@@ -387,7 +387,7 @@ function VideoDesc({ courseInfo, activeChapterIndex, watchMode = false, setChapt
   const { user } = useUser();
   const [completedChapters, setCompletedChapters] = useState([]);
   const [videoDuration, setVideoDuration] = useState(null);
-  const [showCompleteButton, setShowCompleteButton] = useState(false); // New state
+  const [showCompleteButton, setShowCompleteButton] = useState(false); 
 
   const handleChapterCompletion = (chapterId) => {
     setChapterCompleted(chapterId, true);
@@ -424,7 +424,7 @@ function VideoDesc({ courseInfo, activeChapterIndex, watchMode = false, setChapt
       });
 
       video.addEventListener('timeupdate', () => {
-        if (video.duration - video.currentTime <= 1) { // Check if the video is within the last second
+        if (video.duration - video.currentTime <= 1) { 
           setShowCompleteButton(true);
         } else {
           setShowCompleteButton(false);
@@ -452,7 +452,7 @@ function VideoDesc({ courseInfo, activeChapterIndex, watchMode = false, setChapt
           watchMode ?
           <span className='flex justify-between items-center'>
             {courseInfo?.chapter[activeChapterIndex]?.name}
-            {completedChapters[activeChapterIndex] === false && showCompleteButton && // Render button only if not completed and last second is reached
+            {completedChapters[activeChapterIndex] === false && showCompleteButton && 
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 onClick={() => handleChapterCompletion(courseInfo?.chapter[activeChapterIndex]?.id)}
