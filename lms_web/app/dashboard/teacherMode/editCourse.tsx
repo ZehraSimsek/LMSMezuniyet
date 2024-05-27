@@ -77,11 +77,34 @@ function EditCourse({ courseId }) {
   };
 
   const getCategories = () => {
-    const categories = [...new Set(courseList.flatMap(course => course.tags))];
-    setCourseCategories(categories.map((category) => ({
+    const categoryCounts = {};
+    let maxEnrollCategory = '';
+    let maxEnrollCount = 0;
+
+    courseList.forEach(course => {
+      const categories = typeof course.tags === 'string' ? course.tags.split(',') : course.tags;
+
+      categories.forEach(category => {
+        if (!categoryCounts[category]) {
+          categoryCounts[category] = course.counterEnroll;
+        } else {
+          categoryCounts[category] += course.counterEnroll;
+        }
+
+        if (categoryCounts[category] > maxEnrollCount) {
+          maxEnrollCount = categoryCounts[category];
+          maxEnrollCategory = category;
+        }
+      });
+    });
+
+    const categories = Object.keys(categoryCounts).map(category => ({
       label: category,
       value: category,
-    })));
+      isMostEnrolled: category === maxEnrollCategory,
+    })).sort((a, b) => categoryCounts[b.value] - categoryCounts[a.value]); // Enroll sayısına göre sırala
+
+    setCourseCategories(categories);
   };
 
   const handleCategoryChange = (event) => {

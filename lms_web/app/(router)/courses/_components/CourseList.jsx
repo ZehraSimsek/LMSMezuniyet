@@ -395,7 +395,7 @@ import SideBanners from "./SideBanners";
 import Link from 'next/link';
 import { toast, ToastContainer, } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FaChevronRight } from 'react-icons/fa';
+import { FaStar } from 'react-icons/fa';
 
 function CourseList() {
   const [courseList, setCourseList] = useState([]);
@@ -420,14 +420,42 @@ function CourseList() {
 
   const getAllCourses = () => {
     GlobalApi.getAllCourseList().then((resp) => {
-      setCourseList(resp?.courseLists);
+      if (resp?.courseLists) {
+        let sortedCourseList = resp.courseLists.sort((a, b) => b.counterEnroll - a.counterEnroll);
+        setCourseList(sortedCourseList);
+      }
     });
   };
 
+
   const getTags = () => {
-    const tags = [...new Set(courseList.flatMap(course => course.tags))];
+    const tagCounts = {};
+    const tagEnrolls = {};
+    let maxEnrollTag = '';
+  
+    courseList.forEach(course => {
+      const tags = typeof course.tags === 'string' ? course.tags.split(',') : course.tags;
+  
+      tags.forEach(tag => {
+        tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+        tagEnrolls[tag] = (tagEnrolls[tag] || 0) + course.counterEnroll;
+      });
+    });
+  
+    const maxEnroll = Math.max(...Object.values(tagEnrolls));
+    maxEnrollTag = Object.keys(tagEnrolls).find(tag => tagEnrolls[tag] === maxEnroll);
+  
+    const tags = Object.keys(tagCounts).map(tag => ({
+      name: tag,
+      count: tagCounts[tag],
+      totalEnroll: tagEnrolls[tag],
+      isMostEnrolled: tag === maxEnrollTag,
+    })).sort((a, b) => b.totalEnroll - a.totalEnroll); 
+  
     setTags(tags);
   };
+  
+
 
   const filterCourses = () => {
     let filteredCourses = courseList;
@@ -468,11 +496,11 @@ function CourseList() {
             placeholder="Kurs ara..."
             className="w-58 p-2 text-center rounded-xl mt-2"
             style={{
-              border: "2px solid #C0C0C0", 
-              transition: "transform 0.3s ease", 
+              border: "2px solid #C0C0C0",
+              transition: "transform 0.3s ease",
             }}
-            onMouseEnter={(e) => e.target.style.transform = "scale(1.05)"} 
-            onMouseLeave={(e) => e.target.style.transform = "scale(1)"} 
+            onMouseEnter={(e) => e.target.style.transform = "scale(1.05)"}
+            onMouseLeave={(e) => e.target.style.transform = "scale(1)"}
           />
         </div>
         <div className="flex justify-center m-auto">
@@ -500,15 +528,18 @@ function CourseList() {
                 <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                   {tags.map(tag => (
                     <button
-                      key={tag}
+                      key={tag.name}
                       onClick={() => {
-                        setActiveTag(activeTag === tag ? 'Tümü' : tag);
+                        setActiveTag(activeTag === tag.name ? 'Tümü' : tag.name);
                         setTagDropdownOpen(false);
                       }}
-                      className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 ${activeTag === tag ? 'bg-blue-500 text-white' : ''}`}
+                      className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 ${activeTag === tag.name ? 'bg-blue-500 text-white' : ''}`}
                       role="menuitem"
                     >
-                      {tag}
+                      <div className="flex items-center">
+                        {tag.name}
+                        {tag.isMostEnrolled && <FaStar className='text-yellow-500 text-xs mr-3' />}
+                      </div>
                     </button>
                   ))}
                 </div>
@@ -539,7 +570,7 @@ function CourseList() {
           <SideBanners />
         </div>
       </div>
-      <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover/>
+      <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
     </div>
   );
 }

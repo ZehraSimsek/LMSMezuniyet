@@ -112,8 +112,8 @@ function CourseList({ userEnrolledCourses }) {
 
   return (
     <div className='p-6 mt-3 rounded-sm'>
-      <h2 className="text-[20px] font-bold text-sky-700 mr-4">Alınan Kurslar</h2>
-      <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
+      <h2 className="text-[20px] font-bold text-sky-700 mr-2 mt-2">Alınan Kurslar</h2>
+      <div className='grid grid-cols-1 md:grid-cols-3 gap-5 mt-10'>
         {inProgressCourses.map((item, index) => (
           <ProgressCourseItem key={index} course={item} isCompleted={false} />
         ))}

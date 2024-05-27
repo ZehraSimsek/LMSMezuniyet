@@ -1352,59 +1352,59 @@
 //           </div>
 //         </div>
 //       )}
-      // {showForm && (
-      //   <div className="w-full mt-4 px-8">
-      //     <h2 className="text-[20px] font-bold text-sky-700 mr-4">Bölüm Ayrıntıları</h2>
-      //     <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg mt-2">
-      //       <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Numarası:</label>
-      //       <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-      //         <input
-      //           type="number"
-      //           value={chapterNo}
-      //           onChange={(e) => setChapterNo(e.target.value)}
-      //           className="bg-transparent w-4/5 focus:outline-none"
-      //         />
-      //         <FaPencilAlt />
-      //       </div>
-      //     </div>
-      //     <div className="card min-w-60 mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
-      //       <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Adı:</label>
-      //       <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-      //         <input
-      //           type="text"
-      //           value={chapterName}
-      //           onChange={(e) => setChapterName(e.target.value)}
-      //           className="bg-transparent w-4/5 focus:outline-none"
-      //         />
-      //         <FaPencilAlt />
-      //       </div>
-      //     </div>
-      //     <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
-      //       <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Açıklaması:</label>
-      //       <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-      //         <input
-      //           type="text"
-      //           value={chapterDesc}
-      //           onChange={(e) => setChapterDesc(e.target.value)}
-      //           className="bg-transparent w-4/5 focus:outline-none"
-      //         />
-      //         <FaPencilAlt />
-      //       </div>
-      //     </div>
-      //     <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
-      //       <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Videosu:</label>
-      //       <input type="file" onChange={handleChapterVideo} />
-      //     </div>
-      //     <div className="flex justify-end">
-      //       <button
-      //         onClick={handleSubmit}
-      //         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      //       >
-      //         Kursu Kaydet
-      //       </button>
-      //     </div>
-      //   </div>
-      // )}
+// {showForm && (
+//   <div className="w-full mt-4 px-8">
+//     <h2 className="text-[20px] font-bold text-sky-700 mr-4">Bölüm Ayrıntıları</h2>
+//     <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg mt-2">
+//       <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Numarası:</label>
+//       <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+//         <input
+//           type="number"
+//           value={chapterNo}
+//           onChange={(e) => setChapterNo(e.target.value)}
+//           className="bg-transparent w-4/5 focus:outline-none"
+//         />
+//         <FaPencilAlt />
+//       </div>
+//     </div>
+//     <div className="card min-w-60 mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
+//       <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Adı:</label>
+//       <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+//         <input
+//           type="text"
+//           value={chapterName}
+//           onChange={(e) => setChapterName(e.target.value)}
+//           className="bg-transparent w-4/5 focus:outline-none"
+//         />
+//         <FaPencilAlt />
+//       </div>
+//     </div>
+//     <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
+//       <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Açıklaması:</label>
+//       <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+//         <input
+//           type="text"
+//           value={chapterDesc}
+//           onChange={(e) => setChapterDesc(e.target.value)}
+//           className="bg-transparent w-4/5 focus:outline-none"
+//         />
+//         <FaPencilAlt />
+//       </div>
+//     </div>
+//     <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
+//       <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Videosu:</label>
+//       <input type="file" onChange={handleChapterVideo} />
+//     </div>
+//     <div className="flex justify-end">
+//       <button
+//         onClick={handleSubmit}
+//         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+//       >
+//         Kursu Kaydet
+//       </button>
+//     </div>
+//   </div>
+// )}
 //       <ToastContainer />
 //     </div>
 //   );
@@ -1613,155 +1613,155 @@
 //   };
 
 //   return (
-  //   <div className="flex flex-col items-center justify-center pt-20">
-  //     {!showForm && <AllCourses />}
-  //     {confetti && <Confetti />}
-  //     <button
-  //       style={{ position: 'absolute', top: '80px' }}
-  //       onClick={() => setShowForm(!showForm)}
-  //       className="bg-blue-200 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded flex items-center w-32 absolute top-0 left-0 m-4 mt-8"
-  //     >
-  //       {showForm ? <FaTimes className="mr-1" /> : <FaPlus className="mr-1" />}
-  //       <span>{showForm ? "Vazgeç" : "Kurs Ekle"}</span>
-  //     </button>
-  //     {showForm && (
-  //       <div className="flex flex-col md:flex-row mt-4 px-8 pt-6 pb-8 mb-4 w-full">
-  //         <span className="mr-2 ml-2" style={{ position: 'absolute', top: '120px', left: '150px' }}>
-  //           ({filledFields}/{totalFields})
-  //         </span>
-  //         <div className="mb-4 md:w-1/2 md:pr-4">
-  //           <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
-  //             <label className="block text-gray-700 text-sm font-bold mb-2">Kurs Adı:</label>
-  //             <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-  //               <input
-  //                 type="text"
-  //                 value={name}
-  //                 onChange={(e) => setName(e.target.value)}
-  //                 className="bg-transparent w-full focus:outline-none"
-  //               />
-  //               <FaPencilAlt />
-  //             </div>
-  //           </div>
-  //           <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
-  //             <label className="block text-gray-700 text-sm font-bold mb-2">Açıklama:</label>
-  //             <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-  //               <input
-  //                 type="text"
-  //                 value={description}
-  //                 onChange={(e) => setDescription(e.target.value)}
-  //                 className="bg-transparent w-full focus:outline-none"
-  //               />
-  //               <FaPencilAlt />
-  //             </div>
-  //           </div>
-  //           <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
-  //             <label className="block text-gray-700 text-sm font-bold mb-2">Ücretli mi?</label>
-  //             <div className="mt-2">
-  //               <label className="inline-flex items-center">
-  //                 <input
-  //                   type="radio"
-  //                   value="yes"
-  //                   onChange={handleFreeChange}
-  //                   checked={free === 'yes'}
-  //                   className="form-radio text-indigo-600"
-  //                 />
-  //                 <span className="ml-2">Evet</span>
-  //               </label>
-  //               <label className="inline-flex items-center ml-6">
-  //                 <input
-  //                   type="radio"
-  //                   value="no"
-  //                   onChange={handleFreeChange}
-  //                   checked={free === 'no'}
-  //                   className="form-radio text-pink-600"
-  //                 />
-  //                 <span className="ml-2">Hayır</span>
-  //               </label>
-  //             </div>
-  //           </div>
-  //           <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
-  //             <label className="block text-gray-700 text-sm font-bold mb-2">Kurs Kategorisi:</label>
-  //             <CreatableSelect
-  //   options={courseCategories}
-  //   value={selectedCategory}
-  //   onChange={handleCategoryChange}
-  //   onInputChange={(input) => setInputValue(input)} // Kullanıcının girdiği değeri sakla
-  //   inputValue={inputValue} // Kullanıcının girdiği değeri set et
-  // />
+//   <div className="flex flex-col items-center justify-center pt-20">
+//     {!showForm && <AllCourses />}
+//     {confetti && <Confetti />}
+//     <button
+//       style={{ position: 'absolute', top: '80px' }}
+//       onClick={() => setShowForm(!showForm)}
+//       className="bg-blue-200 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded flex items-center w-32 absolute top-0 left-0 m-4 mt-8"
+//     >
+//       {showForm ? <FaTimes className="mr-1" /> : <FaPlus className="mr-1" />}
+//       <span>{showForm ? "Vazgeç" : "Kurs Ekle"}</span>
+//     </button>
+//     {showForm && (
+//       <div className="flex flex-col md:flex-row mt-4 px-8 pt-6 pb-8 mb-4 w-full">
+//         <span className="mr-2 ml-2" style={{ position: 'absolute', top: '120px', left: '150px' }}>
+//           ({filledFields}/{totalFields})
+//         </span>
+//         <div className="mb-4 md:w-1/2 md:pr-4">
+//           <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
+//             <label className="block text-gray-700 text-sm font-bold mb-2">Kurs Adı:</label>
+//             <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+//               <input
+//                 type="text"
+//                 value={name}
+//                 onChange={(e) => setName(e.target.value)}
+//                 className="bg-transparent w-full focus:outline-none"
+//               />
+//               <FaPencilAlt />
+//             </div>
+//           </div>
+//           <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
+//             <label className="block text-gray-700 text-sm font-bold mb-2">Açıklama:</label>
+//             <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+//               <input
+//                 type="text"
+//                 value={description}
+//                 onChange={(e) => setDescription(e.target.value)}
+//                 className="bg-transparent w-full focus:outline-none"
+//               />
+//               <FaPencilAlt />
+//             </div>
+//           </div>
+//           <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
+//             <label className="block text-gray-700 text-sm font-bold mb-2">Ücretli mi?</label>
+//             <div className="mt-2">
+//               <label className="inline-flex items-center">
+//                 <input
+//                   type="radio"
+//                   value="yes"
+//                   onChange={handleFreeChange}
+//                   checked={free === 'yes'}
+//                   className="form-radio text-indigo-600"
+//                 />
+//                 <span className="ml-2">Evet</span>
+//               </label>
+//               <label className="inline-flex items-center ml-6">
+//                 <input
+//                   type="radio"
+//                   value="no"
+//                   onChange={handleFreeChange}
+//                   checked={free === 'no'}
+//                   className="form-radio text-pink-600"
+//                 />
+//                 <span className="ml-2">Hayır</span>
+//               </label>
+//             </div>
+//           </div>
+//           <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
+//             <label className="block text-gray-700 text-sm font-bold mb-2">Kurs Kategorisi:</label>
+//             <CreatableSelect
+//   options={courseCategories}
+//   value={selectedCategory}
+//   onChange={handleCategoryChange}
+//   onInputChange={(input) => setInputValue(input)} // Kullanıcının girdiği değeri sakla
+//   inputValue={inputValue} // Kullanıcının girdiği değeri set et
+// />
 
-  //           </div>
-  //           <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
-  //             <label className="block text-gray-700 text-sm font-bold mb-2">Kurs Fiyatı:</label>
-  //             <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-  //               <input
-  //                 type="number"
-  //                 value={price}
-  //                 onChange={(e) => setPrice(e.target.value)}
-  //                 className="bg-transparent w-full focus:outline-none"
-  //               />
-  //               <FaPencilAlt />
-  //             </div>
-  //           </div>
-  //           <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
-  //             <label className="block text-gray-700 text-sm font-bold mb-2">Kapak Fotoğrafı:</label>
-  //             <input type="file" onChange={handleCoverPhoto} />
-  //           </div>
-  //         </div>
-  //         <div className="mb-4 md:w-1/2 md:pl-4">
-  //           <div className="w-full mt-4 px-8">
-  //             <h2 className="text-[20px] font-bold text-sky-700 mr-4">Bölüm Ayrıntıları</h2>
-  //             <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg mt-2">
-  //               <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Numarası:</label>
-  //               <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-  //                 <input
-  //                   type="number"
-  //                   value={chapterNo}
-  //                   onChange={(e) => setChapterNo(e.target.value)}
-  //                   className="bg-transparent w-4/5 focus:outline-none"
-  //                 />
-  //                 <FaPencilAlt />
-  //               </div>
-  //             </div>
-  //             <div className="card min-w-60 mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
-  //               <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Adı:</label>
-  //               <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-  //                 <input
-  //                   type="text"
-  //                   value={chapterName}
-  //                   onChange={(e) => setChapterName(e.target.value)}
-  //                   className="bg-transparent w-4/5 focus:outline-none"
-  //                 />
-  //                 <FaPencilAlt />
-  //               </div>
-  //             </div>
-  //             <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
-  //               <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Açıklaması:</label>
-  //               <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-  //                 <input
-  //                   type="text"
-  //                   value={chapterDesc}
-  //                   onChange={(e) => setChapterDesc(e.target.value)}
-  //                   className="bg-transparent w-4/5 focus:outline-none"
-  //                 />
-  //                 <FaPencilAlt />
-  //               </div>
-  //             </div>
-  //             <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
-  //               <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Videosu:</label>
-  //               <input type="file" onChange={handleChapterVideo} />
-  //             </div>
-  //             <div className="flex justify-end">
-  //               <button
-  //                 onClick={handleSubmit}
-  //                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-  //               >
-  //                 Kursu Kaydet
-  //               </button>
-  //             </div>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     )}
+//           </div>
+//           <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
+//             <label className="block text-gray-700 text-sm font-bold mb-2">Kurs Fiyatı:</label>
+//             <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+//               <input
+//                 type="number"
+//                 value={price}
+//                 onChange={(e) => setPrice(e.target.value)}
+//                 className="bg-transparent w-full focus:outline-none"
+//               />
+//               <FaPencilAlt />
+//             </div>
+//           </div>
+//           <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
+//             <label className="block text-gray-700 text-sm font-bold mb-2">Kapak Fotoğrafı:</label>
+//             <input type="file" onChange={handleCoverPhoto} />
+//           </div>
+//         </div>
+//         <div className="mb-4 md:w-1/2 md:pl-4">
+//           <div className="w-full mt-4 px-8">
+//             <h2 className="text-[20px] font-bold text-sky-700 mr-4">Bölüm Ayrıntıları</h2>
+//             <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg mt-2">
+//               <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Numarası:</label>
+//               <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+//                 <input
+//                   type="number"
+//                   value={chapterNo}
+//                   onChange={(e) => setChapterNo(e.target.value)}
+//                   className="bg-transparent w-4/5 focus:outline-none"
+//                 />
+//                 <FaPencilAlt />
+//               </div>
+//             </div>
+//             <div className="card min-w-60 mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
+//               <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Adı:</label>
+//               <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+//                 <input
+//                   type="text"
+//                   value={chapterName}
+//                   onChange={(e) => setChapterName(e.target.value)}
+//                   className="bg-transparent w-4/5 focus:outline-none"
+//                 />
+//                 <FaPencilAlt />
+//               </div>
+//             </div>
+//             <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
+//               <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Açıklaması:</label>
+//               <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+//                 <input
+//                   type="text"
+//                   value={chapterDesc}
+//                   onChange={(e) => setChapterDesc(e.target.value)}
+//                   className="bg-transparent w-4/5 focus:outline-none"
+//                 />
+//                 <FaPencilAlt />
+//               </div>
+//             </div>
+//             <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
+//               <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Videosu:</label>
+//               <input type="file" onChange={handleChapterVideo} />
+//             </div>
+//             <div className="flex justify-end">
+//               <button
+//                 onClick={handleSubmit}
+//                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+//               >
+//                 Kursu Kaydet
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     )}
 //       <ToastContainer />
 //     </div>
 //   );
@@ -1796,7 +1796,7 @@ function Courses() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [confetti, setConfetti] = useState(false);
   const [filledFields, setFilledFields] = useState(0);
-  const [tag , setTag] = useState("");
+  const [tag, setTag] = useState("");
   const totalFields = 10;
   const [showForm, setShowForm] = useState(false);
   const { user } = useUser();
@@ -1834,11 +1834,34 @@ function Courses() {
   };
 
   const getCategories = () => {
-    const categories = [...new Set(courseList.flatMap(course => course.tags))];
-    setCourseCategories(categories.map((category) => ({
+    const categoryCounts = {};
+    let maxEnrollCategory = '';
+    let maxEnrollCount = 0;
+
+    courseList.forEach(course => {
+      const categories = typeof course.tags === 'string' ? course.tags.split(',') : course.tags;
+
+      categories.forEach(category => {
+        if (!categoryCounts[category]) {
+          categoryCounts[category] = course.counterEnroll;
+        } else {
+          categoryCounts[category] += course.counterEnroll;
+        }
+
+        if (categoryCounts[category] > maxEnrollCount) {
+          maxEnrollCount = categoryCounts[category];
+          maxEnrollCategory = category;
+        }
+      });
+    });
+
+    const categories = Object.keys(categoryCounts).map(category => ({
       label: category,
       value: category,
-    })));
+      isMostEnrolled: category === maxEnrollCategory,
+    })).sort((a, b) => categoryCounts[b.value] - categoryCounts[a.value]); // Enroll sayısına göre sırala
+
+    setCourseCategories(categories);
   };
 
   const handleFreeChange = (event) => {
@@ -1852,7 +1875,7 @@ function Courses() {
 
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
-    setTag(event.target.value); 
+    setTag(event.target.value);
   };
 
   const handleCoverPhoto = (event) => {
@@ -1973,7 +1996,7 @@ function Courses() {
             ({filledFields}/{totalFields})
           </span>
           <div className="mb-4 md:w-1/2 md:pr-4">
-          <h2 className="text-[20px] font-bold text-sky-700 mr-4">Kurs Ayrıntıları</h2>
+            <h2 className="text-[20px] font-bold text-sky-700 mr-4">Kurs Ayrıntıları</h2>
             <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
               <label className="block text-gray-700 text-sm font-bold mb-2">Kurs Adı:</label>
               <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
