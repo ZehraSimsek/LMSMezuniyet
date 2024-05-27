@@ -342,44 +342,6 @@ const getUserAllEnrolledCourseList = async (email) => {
   return result;
 }
 
-const getAuthorCourses = async (authorEmail) => {
-  const query = gql`
-      query Myquery{
-        userEnrollCourses(where: {
-          authorEmail: "`+ authorEmail + `"
-        }) {
-          completedChapter{ 
-            ... on CompletedChapter{
-              id
-              chapterId
-              isCompleted
-            }
-          }
-          courseId
-          dateEnroll
-          authorEmail
-          courseList{
-            name
-            id
-            totalChapters
-            slug
-            free
-            description
-            chapter{
-              ... on Chapter{
-                id
-                name
-              }
-            }
-          }
-        }
-      }
-  `
-
-  const result = await request(MASTER_URL, query);
-  return result;
-}
-
 
 // const createCourse = async ({ name, description,authorEmail, totalChapters, price, free , selectedCategory}) => {
 //   const mutationQuery = gql`
@@ -455,7 +417,7 @@ const getAuthorCourses = async (authorEmail) => {
 //   return createResult;
 // };
 
-const createCourse = async ({ name, description, authorEmail, price, tag , coverPhoto, chapterName, chapterNum, chapterDesc, videoUri }) => {
+const createCourse = async ({ name, description, authorEmail, price, tag, coverPhoto, chapterName, chapterNum, chapterDesc, videoUri }) => {
   const slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
 
   const free = price > 0 ? false : true;
@@ -619,7 +581,6 @@ const counterEnroll = async (courseId, counter) => {
   }
 };
 
-
 const GetCounter = async (courseId) => {
   const query = gql`
     query MyQuery {
@@ -678,7 +639,7 @@ const deleteEnrolledCourse = async (courseId) => {
   return publishResult;
 };
 
-const updateCourse = async ({ courseId, coverPhoto, name, description, totalChapters, price, selectedCategory }) => {
+const updateCourse = async ({ courseId, coverPhoto, name, description, totalChapters, price, tag }) => {
   const slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
 
   const free = price > 0 ? false : true;
@@ -692,7 +653,7 @@ const updateCourse = async ({ courseId, coverPhoto, name, description, totalChap
           totalChapters: ${totalChapters}
           price: ${price}
           free: ${free}
-          tag: ${selectedCategory}
+          tags: "${tag}"
           banner: { connect: { id: "${coverPhoto}" } }
           slug: "${slug}"
         }
@@ -729,6 +690,94 @@ const totalChaptersCounter = async (courseId, totalChaptersCounter) => {
   }
 };
 
+const leaderCounter = async (authorEmail, completedChapterCounter) => {
+  const mutationQuery = gql`
+    mutation {
+      createUserInfo(
+        data: { email: "${authorEmail}", completedChapterCounter: ${completedChapterCounter} }
+      ) {
+        id
+      }
+    }
+  `;
+
+  try {
+    const result = await request(MASTER_URL, mutationQuery);
+    if (result) {
+      const publishMutation = gql`
+        mutation {
+          publishUserInfo(
+            where: { id: "${result.createUserInfo.id}" }
+            to: PUBLISHED
+          ) {
+            id
+          }
+        }
+      `;
+
+      await request(MASTER_URL, publishMutation);
+    }
+
+    return result;
+  } catch (error) {
+    if (error.response.errors[0].message.includes('value is not unique for the field "email"')) {
+      const userInfo = await getUserInfoCounter(authorEmail);
+      const newCounter = userInfo.userInfo.completedChapterCounter + 1;
+      return await updateRegisterCounter({ authorEmail, courseRegCounter: newCounter });
+    } else {
+      console.error('Leader Counter artırma hatası:', error);
+      throw error;
+    }
+  }
+};
+
+const getUserInfoCounter = async (authorEmail) => {
+  const query = gql`
+    query {
+      userInfo(where: { email: "${authorEmail}" }) {
+        completedChapterCounter
+      }
+    }
+  `;
+  const result = await request(MASTER_URL, query);
+  return result;
+};
+
+const updateRegisterCounter = async ({authorEmail, courseRegCounter}) => {
+  const handleUpdateRegisterCounter = gql`
+  mutation MyMutation {
+    updateUserInfo(
+      where: { email: "${authorEmail}" },
+      data: { completedChapterCounter: ${courseRegCounter} }
+    ) {
+      id
+    }
+  }
+  `;
+
+  try {
+    const result = await request(MASTER_URL, handleUpdateRegisterCounter);
+    if (result) {
+      const publishMutation = gql`
+      mutation PublishMutation {
+        publishUserInfo(
+          where: { id: "${result.updateUserInfo.id}" }
+          to: PUBLISHED
+        ) {
+          id
+        }
+      }
+      `;
+      
+      await request(MASTER_URL, publishMutation);
+    }
+
+    return result;
+  } catch (error) {
+    console.error('Leader Counter artırma hatası:', error);
+    throw error;
+  }
+};
 
 const GetTotalChapters = async (courseId) => {
   const query = gql`
@@ -767,5 +816,7 @@ export default {
   totalChaptersCounter,
   GetTotalChapters,
   deleteChapter,
-  getAuthorCourses
+  leaderCounter,
+  getUserInfoCounter,
+  updateRegisterCounter
 }

@@ -20,9 +20,9 @@ function EditCourse({ courseId }) {
   const [confetti, setConfetti] = useState(false);
   const [filledFields, setFilledFields] = useState(0);
   const [update, setUpdate] = useState(false);
-  const [trigger, setTrigger] = useState(0);
+  const [photo, setPhoto] = useState();
   const [coverPhotoUrl, setCoverPhotoUrl] = useState();
-  const [tag , setTag] = useState("");
+  const [tag, setTag] = useState("");
   const totalFields = 7;
   const HYGRAPH_ASSET_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MTYxMjcwNTgsImF1ZCI6WyJodHRwczovL2FwaS1ldS13ZXN0LTIuaHlncmFwaC5jb20vdjIvY2xza3BxbHQ2M3dwZzAxdXBsbTRuMHQ3MS9tYXN0ZXIiLCJtYW5hZ2VtZW50LW5leHQuZ3JhcGhjbXMuY29tIl0sImlzcyI6Imh0dHBzOi8vbWFuYWdlbWVudC1ldS13ZXN0LTIuaHlncmFwaC5jb20vIiwic3ViIjoiNTg3OGUxZDMtNWJjMy00YzZkLTgwMzMtZDgyMWI2MmI5ZDhkIiwianRpIjoiY2x3ZGxxcGF2ajRobTA4anQ0MDZpYWxobSJ9.f1tncbqNT1xDpQgxtYhOlUAY3liLKUoaYAGVc6xxT7Su-0a6bmB3uKGULbPCcHKxocva8HfGtDnMczGpC1LZvoIQy9FrVftHHI5RublU2ZSOWpHnLGPxN9_QfC6reSSSWBgCCdIiq2sUblunM8DtGDmkTIpo75fYpoizeZGXNywXrg3tGk4vJVoBbSVBePM8Qx7fVF2rc7bYOCyGufgpnVo5-Rv_ZDtj-_0TTk2br4Vf6fKH92oBrKKBOUQOjU2IVyux7FOQQANCDaSmnVyqsbx6-zc1y5izKkC545hg9zMuoqhpTgfVwfJJekEGzDpXBSt4rqUACFVsbz_Xr0utvroQrEJQ97GMk8m-twOxSCeO00PJlDDupT3USDN7pADX5XCs_vLy0_9AMFxmv3ID4XvGggtp2d-a-TeQKtkT-DRg8x4O-ZaaT4w7L7Bg_Y9nh-ibVpFk9gtg5C9mtIt9bFHzgKFrblO24f-Tk-8MB2P1FLrnaJy9EMnU8WCcIDdQh8-notWa5AE4Xj6hcWxCUX269WOLVlp2i2_s4bXg1ClsopdYJ6LgeKzHkmIT2U1ZJcoDAa_WOd6o4_B8K_UqH8p64XiaOlR-LefJDmPbD59b26q2laqpf4BUsjBEbcH8s-TnFHRNqTWOOJq-c5i6ziGNAN6EprV53kX99S-r6iU';
   const HYGRAPH_URL = "https://api-eu-west-2.hygraph.com/v2/" + process.env.NEXT_PUBLIC_HYGRAPH_API_KEY + "/master";
@@ -51,6 +51,7 @@ function EditCourse({ courseId }) {
       setFree(specificCourse.price !== 0 ? "yes" : "no");
       setTag(specificCourse.tags);
       setCoverPhotoUrl(specificCourse.banner.id);
+      setPhoto(specificCourse.banner);
     });
   }, [courseId]);
 
@@ -102,16 +103,18 @@ function EditCourse({ courseId }) {
       label: category,
       value: category,
       isMostEnrolled: category === maxEnrollCategory,
-    })).sort((a, b) => categoryCounts[b.value] - categoryCounts[a.value]); // Enroll sayısına göre sırala
+    })).sort((a, b) => categoryCounts[b.value] - categoryCounts[a.value]);
 
     setCourseCategories(categories);
   };
 
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
-    setTag(event.target.value); 
+    if (event.target.value) {
+      setTag(event.target.value);
+    }
   };
-
+  
   const handleUpdate = async () => {
     let coverPhotoId = null;
 
@@ -138,7 +141,7 @@ function EditCourse({ courseId }) {
       console.log("Asset yayınlandı:", publishAssetResult);
     }
     else {
-      coverPhotoId = coverPhotoUrl; 
+      coverPhotoId = coverPhotoUrl;
     }
 
     const courseData = {
@@ -148,7 +151,7 @@ function EditCourse({ courseId }) {
       description: description,
       totalChapters: parseInt(totalChapters),
       free: free === "yes" ? true : false,
-      tags: tag,
+      tag: tag,
       coverPhoto: coverPhotoId,
     };
 
@@ -224,29 +227,29 @@ function EditCourse({ courseId }) {
           </div>
         </div>
         <div className="mb-4 md:w-1/2 md:pl-4 ">
-        <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
-              <label className="block text-gray-700 text-sm font-bold mb-2">Kurs Kategorisi:</label>
-              <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-                <input
-                  type="text"
-                  value={tag}
-                  onChange={(e) => setTag(e.target.value)}
-                  className="bg-transparent w-full focus:outline-none"
-                  placeholder="Etiket giriniz veya kategoriden seçiniz"
-                />
-                <select
-                  value={selectedCategory}
-                  onChange={handleCategoryChange}
-                  className="bg-transparent w-full focus:outline-none"
-                >
-                  <option value="" disabled>Seçiniz</option>
-                  {courseCategories.map((category) => (
-                    <option key={category.value} value={category.value}>{category.label}</option>
-                  ))}
-                </select>
-                <FaPencilAlt />
-              </div>
+          <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Kurs Kategorisi:</label>
+            <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+              <input
+                type="text"
+                value={tag}
+                onChange={(e) => setTag(e.target.value)}
+                className="bg-transparent w-full focus:outline-none"
+                placeholder="Etiket giriniz veya kategoriden seçiniz"
+              />
+              <select
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+                className="bg-transparent w-full focus:outline-none"
+              >
+                <option value="" disabled>Seçiniz</option>
+                {courseCategories.map((category) => (
+                  <option key={category.value} value={category.value}>{category.label}</option>
+                ))}
+              </select>
+              <FaPencilAlt />
             </div>
+          </div>
           <div className="card p-4 bg-blue-100 rounded-lg shadow-lg mb-8">
             <label className="block text-gray-700 text-sm font-bold mb-2">Kurs Fiyatı:</label>
             <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
@@ -256,15 +259,15 @@ function EditCourse({ courseId }) {
           </div>
           <div className="card p-4 bg-blue-100 rounded-lg shadow-lg mb-8">
             <label className="block text-gray-700 text-sm font-bold mb-2">Kapak Fotoğrafı:</label>
-            {coverPhotoUrl && <img src={coverPhotoUrl.url} alt="Kapak Fotoğrafı" />}
+            {photo && <img src={photo.url} alt="Kapak Fotoğrafı" />}
             <input type="file" onChange={handleCoverPhoto} />
           </div>
         </div>
-        <button onClick={handleUpdate} style={{ position: 'absolute', bottom: '20px', right: '20px' }} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <button onClick={handleUpdate} style={{ position: 'fixed', bottom: '20px', right: '20px' }} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Kursu Güncelle
         </button>
       </div>
-      <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover/>
+      <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
     </div>
   );
 }

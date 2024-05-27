@@ -1,3 +1,6 @@
 {
-  "/dashboard/page": "app/dashboard/page.js"
+  "/not-found": "app/not-found.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/(router)/course-preview/[courseId]/page": "app/(router)/course-preview/[courseId]/page.js",
+  "/(router)/watch-course/[enrollId]/page": "app/(router)/watch-course/[enrollId]/page.js"
 }

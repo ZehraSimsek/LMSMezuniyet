@@ -15,8 +15,9 @@ function EditChapter({ chapterId, courseId }) {
     const [chapterDesc, setChapterDesc] = useState("");
     const [chapterNo, setChapterNo] = useState("");
     const [videoUri, setVideoUri] = useState(null);
+    const [video, setVideo] = useState(null);
     const [confetti, setConfetti] = useState(false);
-    const [backList , setBackList] = useState(false);
+    const [backList, setBackList] = useState(false);
     const [initialChapterNumber, setInitialChapterNumber] = useState("");
 
     useEffect(() => {
@@ -29,6 +30,7 @@ function EditChapter({ chapterId, courseId }) {
                     setChapterDesc(chapter.shortDesc);
                     setChapterNo(chapter.chapterNumber);
                     setVideoUri(chapter.video?.id);
+                    setVideo(chapter.video);
                     setInitialChapterNumber(chapter.chapterNumber);
                 }
             }
@@ -81,7 +83,7 @@ function EditChapter({ chapterId, courseId }) {
             const form = new FormData();
             form.append('fileUpload', videoUri);
 
-            const uploadResponse = await fetch(`https://api-eu-west-2.hygraph.com/v2/clskpqlt63wpg01uplm4n0t71/master/upload`, {
+            const uploadResponse = await fetch(`${MASTER}/upload`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${HYGRAPH_ASSET_TOKEN}`,
@@ -119,70 +121,17 @@ function EditChapter({ chapterId, courseId }) {
         console.log("Bölüm düzenlendi:", publishResult);
         setTimeout(() => setConfetti(false), 5000);
         setTimeout(() => setBackList(true), 5000);
-        
+
     };
 
-    if(backList) {
-        return <AddChapter courseId={courseId}/>;
+    if (backList) {
+        return <AddChapter courseId={courseId} />;
     }
 
     return (
         <div className='w-full'>
-            <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover/>
+            <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             {confetti && <Confetti />}
-            {/* <div className="w-full mt-4 px-8">
-                <h2 className="text-[20px] font-bold text-sky-700 mr-4 mt-8">Bölüm Ayrıntıları</h2>
-                <form onSubmit={handleSubmit} className=" md:w-screen mb-6 p-4 bg-blue-100 rounded-lg shadow-lg mt-2">
-                    <div className="mb-6">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Numarası:</label>
-                        <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-                            <input
-                                type="number"
-                                value={chapterNo}
-                                onChange={(e) => setChapterNo(e.target.value)}
-                                className="bg-transparent w-4/5 focus:outline-none"
-                            />
-                            <FaPencilAlt />
-                        </div>
-                    </div>
-                    <div className="mb-6">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Adı:</label>
-                        <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-                            <input
-                                type="text"
-                                value={chapterName}
-                                onChange={(e) => setChapterName(e.target.value)}
-                                className="bg-transparent w-4/5 focus:outline-none"
-                            />
-                            <FaPencilAlt />
-                        </div>
-                    </div>
-                    <div className="mb-6">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Açıklaması:</label>
-                        <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-                            <input
-                                type="text"
-                                value={chapterDesc}
-                                onChange={(e) => setChapterDesc(e.target.value)}
-                                className="bg-transparent w-4/5 focus:outline-none"
-                            />
-                            <FaPencilAlt />
-                        </div>
-                    </div>
-                    <div className="mb-6">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Videosu:</label>
-                        <input type="file" onChange={handleChapterVideo} />
-                    </div>
-                    <div className="flex justify-end">
-                        <button
-                            type="submit"
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                        >
-                            Bölümü Kaydet
-                        </button>
-                    </div>
-                </form>
-            </div> */}
             <div className="m-20 px-8 md:w-11/12">
                 <h2 className="text-[20px] font-bold text-sky-700 mr-4">Bölüm Ayrıntıları</h2>
                 <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg mt-2">
@@ -224,6 +173,12 @@ function EditChapter({ chapterId, courseId }) {
                 </div>
                 <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg">
                     <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Videosu:</label>
+                    {video && (
+                        <video width="320" height="240" controls>
+                            <source src={video.url} type="video/mp4" />
+                            Your browser does not support the video tag.
+                        </video>
+                    )}
                     <input type="file" onChange={handleChapterVideo} />
                 </div>
                 <div className="flex justify-end">

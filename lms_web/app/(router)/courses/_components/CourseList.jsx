@@ -404,7 +404,6 @@ function CourseList() {
   const [tags, setTags] = useState([]);
   const [activeTag, setActiveTag] = useState('Tümü');
   const [filter, setFilter] = useState("Tümü");
-  const [showMoreTags, setShowMoreTags] = useState(false);
   const [tagDropdownOpen, setTagDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -426,7 +425,6 @@ function CourseList() {
       }
     });
   };
-
 
   const getTags = () => {
     const tagCounts = {};
@@ -455,21 +453,23 @@ function CourseList() {
     setTags(tags);
   };
   
-
-
   const filterCourses = () => {
     let filteredCourses = courseList;
-    if (activeTag !== 'Tümü' && tags.includes(activeTag)) {
-      filteredCourses = filteredCourses.filter(course => course.tags.includes(activeTag));
+    if (activeTag !== 'Tümü') {
+      filteredCourses = filteredCourses.filter(course => {
+        const tags = typeof course.tags === 'string' ? course.tags.split(',') : course.tags;
+        return tags.includes(activeTag);
+      });
     }
     if (filter !== 'Tümü') {
       filteredCourses = filteredCourses.filter(course => (filter === 'Ücretsiz' ? course.free : !course.free));
     }
     if (searchTerm !== "") {
-      filteredCourses = filteredCourses.filter(course =>
-        course.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        course.tag.join(', ').toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      filteredCourses = filteredCourses.filter(course => {
+        const tags = typeof course.tags === 'string' ? course.tags.split(',') : course.tags;
+        return course.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          tags.join(', ').toLowerCase().includes(searchTerm.toLowerCase());
+      });
     }
     if (filteredCourses.length === 0 && searchTerm !== "") {
       toast.warn('Arama sonucunda herhangi bir kurs bulunamadı.', {
@@ -479,6 +479,8 @@ function CourseList() {
     }
     setFilteredCourseList(filteredCourses);
   };
+ 
+  const maxEnroll = Math.max(...courseList.map(course => course.counterEnroll));
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -555,7 +557,7 @@ function CourseList() {
             ? filteredCourseList.map((item, index) => (
               <Link href={'/course-preview/' + item.slug}>
                 <div key={index}>
-                  <CourseItem course={item} id={item.id} />
+                  <CourseItem course={item} id={item.id} maxEnroll={maxEnroll}/>
                 </div>
               </Link>
             ))

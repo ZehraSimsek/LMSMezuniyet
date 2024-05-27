@@ -111,7 +111,7 @@
 //   //     setCompletedChapters(initialCompletedChapters);
 //   //   }
 //   // }, [courseInfo]);
-  
+
 //   const handleChapterCompletion = (chapterId) => {
 //     if (!completedChapters[activeChapterIndex]) {
 //       setChapterCompleted(chapterId, true);
@@ -122,7 +122,7 @@
 //       });
 //     }
 //   }
-  
+
 //   useEffect(() => {
 //     if (completedChapters[activeChapterIndex]) {
 //       setCompletedChapters(prevChapters => {
@@ -387,15 +387,29 @@ function VideoDesc({ courseInfo, activeChapterIndex, watchMode = false, setChapt
   const { user } = useUser();
   const [completedChapters, setCompletedChapters] = useState([]);
   const [videoDuration, setVideoDuration] = useState(null);
-  const [showCompleteButton, setShowCompleteButton] = useState(false); 
+  const [showCompleteButton, setShowCompleteButton] = useState(false);
 
-  const handleChapterCompletion = (chapterId) => {
+  const handleChapterCompletion = async (chapterId) => {
     setChapterCompleted(chapterId, true);
     setCompletedChapters(prevChapters => {
       const updatedChapters = [...prevChapters];
       updatedChapters[activeChapterIndex] = true;
       return updatedChapters;
     });
+
+    const authorEmail = user.primaryEmailAddress.emailAddress;
+    try {
+      const userInfo = await GlobalApi.getUserInfoCounter(authorEmail); 
+      console.log(userInfo.userInfo); 
+      if (userInfo.userInfo) {
+        const newCounter = userInfo.userInfo.completedChapterCounter + 1;
+        await GlobalApi.updateRegisterCounter({ authorEmail, courseRegCounter: newCounter }); 
+      } else {
+        await GlobalApi.leaderCounter(authorEmail, 1);
+      }
+    } catch (error) {
+      console.error('Error updating chapter completion status:', error);
+    }
   };
 
   useEffect(() => {
@@ -424,7 +438,7 @@ function VideoDesc({ courseInfo, activeChapterIndex, watchMode = false, setChapt
       });
 
       video.addEventListener('timeupdate', () => {
-        if (video.duration - video.currentTime <= 1) { 
+        if (video.duration - video.currentTime <= 1) {
           setShowCompleteButton(true);
         } else {
           setShowCompleteButton(false);
@@ -435,7 +449,7 @@ function VideoDesc({ courseInfo, activeChapterIndex, watchMode = false, setChapt
     return () => {
       if (video) {
         video.removeEventListener('loadedmetadata', () => setVideoDuration(video.duration));
-        video.removeEventListener('timeupdate', () => {});
+        video.removeEventListener('timeupdate', () => { });
       }
     };
   }, []);
@@ -450,18 +464,18 @@ function VideoDesc({ courseInfo, activeChapterIndex, watchMode = false, setChapt
       <h2 className='mt-5 text-[17px] font-semibold'>
         {
           watchMode ?
-          <span className='flex justify-between items-center'>
-            {courseInfo?.chapter[activeChapterIndex]?.name}
-            {completedChapters[activeChapterIndex] === false && showCompleteButton && 
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                onClick={() => handleChapterCompletion(courseInfo?.chapter[activeChapterIndex]?.id)}
-              >
-                Tamamlandı
-              </button>
-            }
-          </span> :
-          <span>Kurs Hakkında..</span>
+            <span className='flex justify-between items-center'>
+              {courseInfo?.chapter[activeChapterIndex]?.name}
+              {completedChapters[activeChapterIndex] === false && showCompleteButton &&
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={() => handleChapterCompletion(courseInfo?.chapter[activeChapterIndex]?.id)}
+                >
+                  Tamamlandı
+                </button>
+              }
+            </span> :
+            <span>Kurs Hakkında..</span>
         }
       </h2>
       <div>

@@ -103,8 +103,8 @@ import React from 'react'
 import Image from 'next/image'
 import { FaBookOpen, FaBook, FaStar  } from 'react-icons/fa'
 
-function CourseItem({ course, id }) {
-  const SOME_THRESHOLD = 30;
+function CourseItem({ course, maxEnroll }) {
+  const SOME_THRESHOLD = maxEnroll-1;
   return (
     <div className='border rounded-xl hover:shadow-md cursor-pointer shadow-blue-200 hover:scale-105 transition-transform duration-200'>
       <Image src={course?.banner?.url}
