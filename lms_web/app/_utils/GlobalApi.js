@@ -746,14 +746,14 @@ const getUserInfoCounter = async (authorEmail) => {
 const getLeadCount = async () => {
   const query = gql`
   query MyQuery {
-    userInfos {
+    userInfos(orderBy: completedChapterCounter_DESC) {
       completedChapterCounter
       email
     }
   }  
   `;
   const result = await request(MASTER_URL, query);
-  return result;
+  return result.userInfos; 
 };
 
 const updateRegisterCounter = async ({authorEmail, courseRegCounter}) => {

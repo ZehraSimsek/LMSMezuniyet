@@ -495,10 +495,26 @@ function CourseEnroll({ courseInfo, isUserAlreadyEnrolled }) {
   const member = false;
   const { user } = useUser();
   const router = useRouter();
+  const [price, setPrice] = useState(courseInfo.price);
 
   useEffect(() => {
     console.log("isUserAlreadyEnrolled", isUserAlreadyEnrolled)
+    console.log("courseInfo", courseInfo.price);
   }, [])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await GlobalApi.getLeadCount();
+      let firstUserEmail = result[0].email;
+      console.log("firstemail", firstUserEmail);
+  
+      if (user?.primaryEmailAddress?.emailAddress === firstUserEmail) {
+        setPrice(prevPrice => prevPrice - 10);
+      }
+    };
+    fetchData();
+  }, [user?.primaryEmailAddress?.emailAddress]);
+  
 
   const onEnrollCourse = () => {
     if (isUserAlreadyEnrolled) {
@@ -567,7 +583,7 @@ function CourseEnroll({ courseInfo, isUserAlreadyEnrolled }) {
             Şimdi üye olun ve öğrenmeye başlayın!
           </h2>
           <button onClick={openModal} className="bg-white text-indigo-800 hover:bg-white hover:text-purple-700 px-4 py-2 rounded-lg font-semibold">
-            Sadece ₺{courseInfo.price} üye olun!
+            Sadece ₺{price} üye olun!
           </button>
           <StyledModal
             isOpen={modalIsOpen}
