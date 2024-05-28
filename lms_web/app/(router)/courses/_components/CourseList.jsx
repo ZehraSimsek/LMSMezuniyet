@@ -568,7 +568,7 @@ function CourseList() {
               ></div>
             ))}
         </div>
-        <div className="flex flex-col bg-slate-100 ml-3 mt-0">
+        <div className="flex flex-col min-h-full ml-3 mt-0 mr-5">
           <SideBanners />
         </div>
       </div>

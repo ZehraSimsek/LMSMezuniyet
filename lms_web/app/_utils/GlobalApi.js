@@ -743,6 +743,19 @@ const getUserInfoCounter = async (authorEmail) => {
   return result;
 };
 
+const getLeadCount = async () => {
+  const query = gql`
+  query MyQuery {
+    userInfos {
+      completedChapterCounter
+      email
+    }
+  }  
+  `;
+  const result = await request(MASTER_URL, query);
+  return result;
+};
+
 const updateRegisterCounter = async ({authorEmail, courseRegCounter}) => {
   const handleUpdateRegisterCounter = gql`
   mutation MyMutation {
@@ -818,5 +831,6 @@ export default {
   deleteChapter,
   leaderCounter,
   getUserInfoCounter,
-  updateRegisterCounter
+  updateRegisterCounter,
+  getLeadCount
 }

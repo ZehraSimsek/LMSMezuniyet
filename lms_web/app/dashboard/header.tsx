@@ -165,7 +165,7 @@
 //   );
 // }
 
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import { useUser, useSession } from '@clerk/clerk-react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';

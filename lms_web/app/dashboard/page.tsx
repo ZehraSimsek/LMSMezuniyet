@@ -196,7 +196,6 @@ import Image from 'next/image';
 import Sidebar from './sidebar';
 import { FaChalkboardTeacher, FaSignOutAlt , FaAndroid } from 'react-icons/fa'; 
 import PacmanLoader from "react-spinners/PacmanLoader";
-import SideBanners from "../(router)/courses/_components/SideBanners";
 import { UserRoleContext } from '../context/UserRoleContext'; 
 
 export default function DashboardPage() {
