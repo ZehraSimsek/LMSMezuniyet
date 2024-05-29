@@ -509,8 +509,8 @@ function CourseEnroll({ courseInfo, isUserAlreadyEnrolled }) {
       console.log("firstemail", firstUserEmail);
   
       if (user?.primaryEmailAddress?.emailAddress === firstUserEmail) {
-        setPrice(prevPrice => prevPrice - 10);
-      }
+        setPrice(prevPrice => prevPrice * 0.5);
+    }    
     };
     fetchData();
   }, [user?.primaryEmailAddress?.emailAddress]);

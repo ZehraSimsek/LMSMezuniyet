@@ -245,7 +245,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import { FaPencilAlt, FaEdit, FaTrash, FaCheck, FaPlusCircle } from 'react-icons/fa';
+import { FaPencilAlt, FaEdit, FaTrash, FaList, FaPlusCircle } from 'react-icons/fa';
 import { useUser } from '@clerk/nextjs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -254,6 +254,7 @@ import fetch from 'node-fetch';
 import FormData from 'form-data';
 import GlobalApi from '../../_utils/GlobalApi';
 import EditChapter from './editChapter';
+import AllCourses from './allCourse';
 
 const HYGRAPH_ASSET_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MTYzOTgwMzQsImF1ZCI6WyJodHRwczovL2FwaS1ldS13ZXN0LTIuaHlncmFwaC5jb20vdjIvY2xza3BxbHQ2M3dwZzAxdXBsbTRuMHQ3MS9tYXN0ZXIiLCJtYW5hZ2VtZW50LW5leHQuZ3JhcGhjbXMuY29tIl0sImlzcyI6Imh0dHBzOi8vbWFuYWdlbWVudC1ldS13ZXN0LTIuaHlncmFwaC5jb20vIiwic3ViIjoiYjFiODkxZDUtMzg4My00YzkxLTk3NjEtZGM3N2E1MjYzOGVhIiwianRpIjoiY2x3aTMybmp5Nzk0cjA3bGJnNDI4YW85dSJ9.e3COQwGVMnSIEMU6MEC_Gt60j9D1X9Jkttr9M2lXw7PHhoXqhNq1m8y8QCCt4-thrnJpwsTMW4pCskxZHdSsM8Irjs3895ck3fqYxu2XM8uiLMOahI8KaAo8dY-ufiGWDkN2Lj77QbPX3xqJUYVkZX9ftO0gPAj-dc2hG1XXXPY8SypYiO0UWYySxtYHkyeoxM-amj7S_eFUymviC-k5R5w6EYt2CXEul8RLl5s0lTgp4tNC3zub9-jmkdtxqxRKK3ArOkYvU2yv87xXTQyjMlaVXZvBBpsEzP0L4JAMqraS7iy4b-pR6i5jldEOZwE-ZsfYQ4MZDkdbkZn7Obc8uskf7bH_-UdNL5GkeefIqDnJJp7t_XCndCBtbD1E7ThjHxRt3ygnO7IJVdHGn6ndUbwJIPJtjA-ZWlaSKMy6nMzCftczaGz4J6-Qo0joNGJYwVjLSIHTyvEzHrYuvXhaFS5aOdfxrw17qgpJZtwI7pSNwrBJayoTJc0k1wsvk-MUQ9gdxfaX6Sa6nCa70DAkm_4RSoIsD1D_-BPO-H3VnsNtxd5D5BXbd55UgMtD1s6wwMSYkHyVQO4Ms6jKmwnflQ5uvaQfhw66XzCdlpjE1OgjFFqPCto2IDDSJucGWPyiyYL0QLNaz_iN1stuB7fajEEIuVD1O54XB7jk0a-ZmuM';
 const MASTER = "https://api-eu-west-2.hygraph.com/v2/" + process.env.NEXT_PUBLIC_HYGRAPH_API_KEY + "/master";
@@ -269,6 +270,7 @@ function AddChapter({ courseId }) {
   const [editingChapterId, setEditingChapterId] = useState(null);
   const [editingCourseId, setEditingCourseId] = useState(null);
   const [showAddChapterForm, setShowAddChapterForm] = useState(false);
+  const [showCourseList, setShowCourseList] = useState(false);
   const [trigger, setTrigger] = useState(0);
   const { user } = useUser();
 
@@ -391,21 +393,33 @@ function AddChapter({ courseId }) {
     return <EditChapter chapterId={editingChapterId} courseId={courseId} />;
   }
 
+  if (showCourseList) {
+    return <AllCourses />
+  }
+
   return (
     <div>
-      <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover/>
+      <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
       {confetti && <Confetti />}
       <div className="w-full mt-4 px-8">
         {!showAddChapterForm ? (
           <div>
-            <h2 className="text-[20px] font-bold text-sky-700 mr-4">Mevcut Bölümler
+            <div className="flex items-center">
+              <h2 className="text-[15px] font-bold text-sky-700 mr-4">
+                <button
+                  onClick={() => setShowAddChapterForm(true)}
+                  className="text-blue-200 font-bold px-2 py-2 rounded"
+                >
+                  <FaPlusCircle className="h-6 w-6" />
+                </button>Mevcut Bölümler</h2>
               <button
-                onClick={() => setShowAddChapterForm(true)}
-                className="text-blue-200 font-bold px-3 py-2 rounded"
+                onClick={() => setShowCourseList(true)}
+                className="text-blue-200 font-bold px-3 py-2 rounded flex items-center ml-auto"
               >
-                <FaPlusCircle className="h-6 w-6" />
+                <FaList className="h-6 w-6 mr-2" />
+                <h2 className="text-[15px] font-bold text-sky-700 mr-4">Kurslara Dön</h2>
               </button>
-            </h2>
+            </div>
             <table className="min-w-full bg-white">
               <thead>
                 <tr>
@@ -447,76 +461,77 @@ function AddChapter({ courseId }) {
         <Modal
           isOpen={showAddChapterForm}
           onRequestClose={() => setShowAddChapterForm(false)}
-        contentLabel="Bölüm Ekle"
-        className="fixed inset-0 flex items-center justify-center"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+          contentLabel="Bölüm Ekle"
+          className="fixed inset-0 flex items-center justify-center"
+          overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         >
-        <div className="bg-blue-100 p-3 rounded-lg shadow-lg w-full max-w-2xl mx-auto">
-          <h2 className="text-[20px] font-bold text-sky-700 mr-4 mt-8">Bölüm Ayrıntıları</h2>
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Numarası:</label>
-            <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-              <input
-                type="number"
-                value={chapterNo}
-                onChange={(e) => setChapterNo(e.target.value)}
-                className="bg-transparent w-4/5 focus:outline-none"
-              />
-              <FaPencilAlt />
+          <div className="bg-blue-100 p-3 rounded-lg shadow-lg w-full max-w-2xl mx-auto">
+            <h2 className="text-[20px] font-bold text-sky-700 mr-4 mt-8">Bölüm Ayrıntıları</h2>
+            <div className="mb-6">
+              <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Numarası:</label>
+              <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+                <input
+                  type="number"
+                  value={chapterNo}
+                  onChange={(e) => setChapterNo(e.target.value)}
+                  className="bg-transparent w-4/5 focus:outline-none"
+                />
+                <FaPencilAlt />
+              </div>
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Adı:</label>
+              <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+                <input
+                  type="text"
+                  value={chapterName}
+                  onChange={(e) => setChapterName(e.target.value)}
+                  className="bg-transparent w-4/5 focus:outline-none"
+                />
+                <FaPencilAlt />
+              </div>
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Açıklaması:</label>
+              <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
+                <input
+                  type="text"
+                  value={chapterDesc}
+                  onChange={(e) => setChapterDesc(e.target.value)}
+                  className="bg-transparent w-4/5 focus:outline-none"
+                />
+                <FaPencilAlt />
+              </div>
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Videosu:</label>
+              <input type="file" onChange={handleChapterVideo} />
+            </div>
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAddChapterForm(false);
+                  setChapterName("");
+                  setChapterDesc("");
+                  setChapterNo("");
+                  setVideoUri(null);
+                }}
+                className=" bg-blue-200 hover:bg-blue-400 text-white font-bold py-2 px-4 mr-3 rounded"
+              >
+                Kapat
+              </button>
+              <button
+                type="submit"
+                onClick={handleSubmit}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Bölümü Kaydet
+              </button>
             </div>
           </div>
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Adı:</label>
-            <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-              <input
-                type="text"
-                value={chapterName}
-                onChange={(e) => setChapterName(e.target.value)}
-                className="bg-transparent w-4/5 focus:outline-none"
-              />
-              <FaPencilAlt />
-            </div>
-          </div>
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Açıklaması:</label>
-            <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
-              <input
-                type="text"
-                value={chapterDesc}
-                onChange={(e) => setChapterDesc(e.target.value)}
-                className="bg-transparent w-4/5 focus:outline-none"
-              />
-              <FaPencilAlt />
-            </div>
-          </div>
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Videosu:</label>
-            <input type="file" onChange={handleChapterVideo} />
-          </div>
-          <div className="flex justify-end">
-            <button
-              type="button"
-              onClick={() => {setShowAddChapterForm(false);
-                setChapterName("");
-            setChapterDesc("");
-            setChapterNo("");
-            setVideoUri(null);
-              }}
-              className=" bg-blue-200 hover:bg-blue-400 text-white font-bold py-2 px-4 mr-3 rounded"
-            >
-              Kapat
-            </button>
-            <button
-              type="submit"
-              onClick={handleSubmit}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Bölümü Kaydet
-            </button>
-          </div>
-        </div>
-      </Modal>
-    </div>
+        </Modal>
+      </div>
     </div >
   );
 }

@@ -1,7 +1,6 @@
 {
   "/not-found": "app/not-found.js",
-  "/page": "app/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/(router)/course-preview/[courseId]/page": "app/(router)/course-preview/[courseId]/page.js",
-  "/(router)/watch-course/[enrollId]/page": "app/(router)/watch-course/[enrollId]/page.js"
+  "/(router)/watch-course/[enrollId]/page": "app/(router)/watch-course/[enrollId]/page.js",
+  "/(router)/course-preview/[courseId]/page": "app/(router)/course-preview/[courseId]/page.js"
 }

@@ -217,7 +217,6 @@ function PaymentForm({ courseInfo }) {
       if (confirm.error) return alert("Payment unsuccessful!");
       toast.success("Ödeme Başarılı! Abonelik aktif edildi.");
 
-      // Ödeme başarılı olduğunda kursa kaydol
       GlobalApi.enrollToCourse(courseInfo?.id, user?.primaryEmailAddress?.emailAddress)
         .then(resp => {
           console.log(resp);

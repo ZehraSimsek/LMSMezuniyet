@@ -382,6 +382,7 @@ import VideoPlayer from './VideoPlayer';
 import Markdown from 'react-markdown';
 import GlobalApi from '../../../../_utils/GlobalApi';
 import { useUser } from '@clerk/clerk-react';
+import { AiOutlineReload } from 'react-icons/ai';
 
 function VideoDesc({ courseInfo, activeChapterIndex, watchMode = false, setChapterCompleted }) {
   const { user } = useUser();
@@ -399,11 +400,11 @@ function VideoDesc({ courseInfo, activeChapterIndex, watchMode = false, setChapt
 
     const authorEmail = user.primaryEmailAddress.emailAddress;
     try {
-      const userInfo = await GlobalApi.getUserInfoCounter(authorEmail); 
-      console.log(userInfo.userInfo); 
+      const userInfo = await GlobalApi.getUserInfoCounter(authorEmail);
+      console.log(userInfo.userInfo);
       if (userInfo.userInfo) {
         const newCounter = userInfo.userInfo.completedChapterCounter + 1;
-        await GlobalApi.updateRegisterCounter({ authorEmail, courseRegCounter: newCounter }); 
+        await GlobalApi.updateRegisterCounter({ authorEmail, courseRegCounter: newCounter });
       } else {
         await GlobalApi.leaderCounter(authorEmail, 1);
       }
@@ -474,6 +475,12 @@ function VideoDesc({ courseInfo, activeChapterIndex, watchMode = false, setChapt
                   Tamamlandı
                 </button>
               }
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl flex items-center"
+                onClick={() => GlobalApi.markChapterUnCompleted(courseInfo?.chapter[activeChapterIndex]?.id, false, courseInfo.id)}
+              >
+                <AiOutlineReload className="mr-1" />
+              </button>
             </span> :
             <span>Kurs Hakkında..</span>
         }

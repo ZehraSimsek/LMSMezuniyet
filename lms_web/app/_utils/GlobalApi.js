@@ -1,6 +1,5 @@
 const { gql, default: request } = require("graphql-request")
 const MASTER_URL = "https://api-eu-west-2.hygraph.com/v2/" + process.env.NEXT_PUBLIC_HYGRAPH_API_KEY + "/master"
-const API_TOKEN_ENDPOINT = "https://api-eu-west-2.hygraph.com/v2/" + process.env.TOKEN_ENDPOINT + "/master/upload";
 
 const getAllCourseList = async () => {
   const query = gql` 
@@ -36,25 +35,6 @@ const getAllCourseList = async () => {
     }
   }
    `
-  const result = await request(MASTER_URL, query)
-  console.log(result);
-  return result;
-}
-
-const getSideBanner = async () => {
-  const query = gql`
-  query GetSideBanner {
-    sideBanners {
-      id
-      name
-      banner {
-        id
-        url
-      }
-      url
-    }
-  }
-  `
   const result = await request(MASTER_URL, query)
   console.log(result);
   return result;
@@ -239,6 +219,40 @@ const markChapterCompleted = async (enrollId, chapterId, isCompleted) => {
 
   const result = await request(MASTER_URL, query);
   return result;
+}
+
+const markChapterUnCompleted = async(chapterId , isCompleted, enrollId) =>{
+  const query = gql`
+  mutation MyMutation {
+    updateUserEnrollCourse(
+      data: {
+        completedChapter: {
+          update: {
+            CompletedChapter: {
+              where: { id: "` + chapterId + `" },
+              data: { isCompleted: ` + isCompleted + ` }
+            }
+          }
+        }
+      },
+      where: { id: "` + enrollId + `" }
+    ) {
+      id
+      completedChapter {
+        ... on CompletedChapter {
+          id
+          isCompleted
+        }
+      }
+    }
+    publishUserEnrollCourse(where: {id: "` + enrollId + `"}){
+      id
+    }
+  }
+  `;
+  const result = await request(MASTER_URL, query);
+  return result;
+
 }
 
 const getChapterCompletionStatus = async (courseId, email) => {
@@ -807,7 +821,6 @@ const GetTotalChapters = async (courseId) => {
 
 export default {
   getAllCourseList,
-  getSideBanner,
   getCourseById,
   getUserEnrollDetail,
   enrollToCourse,
@@ -832,5 +845,6 @@ export default {
   leaderCounter,
   getUserInfoCounter,
   updateRegisterCounter,
-  getLeadCount
+  getLeadCount,
+  markChapterUnCompleted,
 }

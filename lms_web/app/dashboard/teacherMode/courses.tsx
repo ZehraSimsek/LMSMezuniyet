@@ -1787,7 +1787,7 @@ function Courses() {
   const [free, setFree] = useState("false");
   const [chapterName, setChapterName] = useState("");
   const [chapterDesc, setChapterDesc] = useState("");
-  const [chapterNo, setChapterNo] = useState("");
+  const [chapterNo, setChapterNo] = useState("1");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [courseCategories, setCourseCategories] = useState([]);
   const [coverPhoto, setCoverPhoto] = useState(null);
@@ -1899,8 +1899,18 @@ function Courses() {
       if (chapterDesc === "") missingFields.push("Bölüm Açıklaması");
       if (chapterNo === "") missingFields.push("Bölüm Numarası");
       if (videoUri === null) missingFields.push("Bölüm Videosu");
-
-      toast.error(`Lütfen tüm alanları doldurunuz: ${missingFields.join(", ")}`);
+    
+      if (missingFields.length > 0) {
+        toast.error(`Lütfen tüm alanları doldurunuz: ${missingFields.join(", ")}`);
+        return;
+      }
+    }
+    if (price < 10 && free === "yes") {
+      toast.error("Ücretli bir kurs için fiyat en az 10 TL olmalıdır.");
+      return;
+    }
+    if (chapterNo !== "1") {
+      toast.error("Önce ilk bölümü yüklemelisiniz!");
       return;
     }
     try {
