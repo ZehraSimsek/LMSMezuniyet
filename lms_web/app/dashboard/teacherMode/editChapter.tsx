@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Confetti from 'react-confetti';
 import fetch from 'node-fetch';
 import FormData from 'form-data';
 import GlobalApi from '../../_utils/GlobalApi';
@@ -16,7 +15,6 @@ function EditChapter({ chapterId, courseId }) {
     const [chapterNo, setChapterNo] = useState("");
     const [videoUri, setVideoUri] = useState(null);
     const [video, setVideo] = useState(null);
-    const [confetti, setConfetti] = useState(false);
     const [backList, setBackList] = useState(false);
     const [initialChapterNumber, setInitialChapterNumber] = useState("");
 
@@ -114,12 +112,10 @@ function EditChapter({ chapterId, courseId }) {
 
         const result = await GlobalApi.updateChapter(chapterData);
         toast.success("Bölüm Düzenleme Başarılı!");
-        setConfetti(true);
         console.log(result);
 
         const publishResult = await GlobalApi.publishCourse(result.updateCourseList.id);
         console.log("Bölüm düzenlendi:", publishResult);
-        setTimeout(() => setConfetti(false), 5000);
         setTimeout(() => setBackList(true), 5000);
 
     };
@@ -131,7 +127,6 @@ function EditChapter({ chapterId, courseId }) {
     return (
         <div className='w-full'>
             <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
-            {confetti && <Confetti />}
             <div className="m-20 px-8 md:w-11/12">
                 <h2 className="text-[20px] font-bold text-sky-700 mr-4">Bölüm Ayrıntıları</h2>
                 <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg mt-2">
@@ -141,7 +136,6 @@ function EditChapter({ chapterId, courseId }) {
                             type="number"
                             value={chapterNo}
                             onChange={handleChapterNoChange}
-                            // onChange={(e) => setChapterNo(e.target.value)}
                             className="bg-transparent w-4/5 focus:outline-none"
                         />
                         <FaPencilAlt />

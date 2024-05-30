@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
 import GlobalApi from '../../_utils/GlobalApi';
-import Confetti from 'react-confetti';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AllCourses from './allCourse';
@@ -17,7 +16,6 @@ function EditCourse({ courseId }) {
   const [totalChapters, setTotalChapters] = useState("");
   const [price, setPrice] = useState("");
   const [free, setFree] = useState("false");
-  const [confetti, setConfetti] = useState(false);
   const [filledFields, setFilledFields] = useState(0);
   const [update, setUpdate] = useState(false);
   const [photo, setPhoto] = useState();
@@ -158,9 +156,7 @@ function EditCourse({ courseId }) {
     GlobalApi.updateCourse(courseData)
       .then((result) => {
         toast.success("Kurs Başarıyla Güncellendi!");
-        setConfetti(true);
         console.log(result);
-        setTimeout(() => setConfetti(false), 5000);
         console.log("Kurs güncellendi:", result);
         GlobalApi.publishCourse(result.updateCourseList.id)
           .then((publishResult) => {
@@ -187,7 +183,6 @@ function EditCourse({ courseId }) {
 
   return (
     <div className="flex flex-col md:flex-row mt-4 px-8 pt-6 pb-8 mb-4 h-full md:w-full">
-      {confetti && <Confetti />}
       <div className="flex flex-col md:flex-row mt-4 px-8 pt-6 pb-8 mb-4 h-full md:w-full">
         <span className="mr-2 ml-2" style={{ position: 'absolute', top: '120px', left: '150px' }}>({filledFields}/{totalFields})</span>
         <div className="mb-4 md:w-1/2 md:pr-4">

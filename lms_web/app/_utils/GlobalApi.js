@@ -134,28 +134,6 @@ const getUserEnrolledCourseDetails = async (id, email) => {
   return result;
 }
 
-// const enrollToCourse = async (courseId, email) => {
-//   const query = gql`
-//     mutation MyMutation {
-//       createUserEnrollCourse(
-//         data: {courseId:"`+ courseId + `" , userEmail:"` + email + `" , courseList:{connect: {id : "` + courseId + `"}} }
-//       )
-//       {
-//         id
-//       }
-//       publishManyUserEnrollCoursesConnection{
-//         edges {
-//           node {
-//             id
-//           }
-//         }
-//       }
-//     }
-//   `
-//   const result = await request(MASTER_URL, query);
-//   return result;
-// }
-
 const enrollToCourse = async (courseId, email) => {
   const courseQuery = gql`
     query MyQuery {
@@ -221,40 +199,6 @@ const markChapterCompleted = async (enrollId, chapterId, isCompleted) => {
   return result;
 }
 
-const markChapterUnCompleted = async(chapterId , isCompleted, enrollId) =>{
-  const query = gql`
-  mutation MyMutation {
-    updateUserEnrollCourse(
-      data: {
-        completedChapter: {
-          update: {
-            CompletedChapter: {
-              where: { id: "` + chapterId + `" },
-              data: { isCompleted: ` + isCompleted + ` }
-            }
-          }
-        }
-      },
-      where: { id: "` + enrollId + `" }
-    ) {
-      id
-      completedChapter {
-        ... on CompletedChapter {
-          id
-          isCompleted
-        }
-      }
-    }
-    publishUserEnrollCourse(where: {id: "` + enrollId + `"}){
-      id
-    }
-  }
-  `;
-  const result = await request(MASTER_URL, query);
-  return result;
-
-}
-
 const getChapterCompletionStatus = async (courseId, email) => {
   const query = gql`
     query MyQuery($courseId: String!, $email: String!) {
@@ -273,47 +217,6 @@ const getChapterCompletionStatus = async (courseId, email) => {
   const result = await request(MASTER_URL, query, variables);
   return result;
 };
-
-
-// const getChapterCompletionStatus = async (enrollId, chapterId) => {
-//   const query = gql`
-//     query MyQuery {
-//       userEnrollCourses(where: {id: "` + enrollId + `"}) {
-//         completedChapter(where: {chapterId: "` + chapterId + `"}) {
-//           isCompleted
-//         }
-//       }
-//     }
-//   `
-
-//   const result = await request(MASTER_URL, query);
-//   return result;
-// }
-
-
-// const markChapterCompleted = async(email, chapterId) => {
-//   const query = gql `
-//     mutation MyMutation {
-//       updateUserEnrollCourses(
-//         data: {completedChapter : {
-//           create : {
-//             CompletedChapter : {data: {chapterId:"`+chapterId+`"}}
-//           }
-//         }}
-//         where : {userEmail:"`+email+`"}
-//       ){
-//         id
-//       }
-//       publishUserEnrollCourse(where: {userEmail:"`+email+`"}){
-//         id
-//       }
-//     }
-//   `
-
-//   const result = await request(MASTER_URL,query);
-//   return result;
-// }
-
 
 const getUserAllEnrolledCourseList = async (email) => {
   const query = gql`
@@ -355,81 +258,6 @@ const getUserAllEnrolledCourseList = async (email) => {
   const result = await request(MASTER_URL, query);
   return result;
 }
-
-
-// const createCourse = async ({ name, description,authorEmail, totalChapters, price, free , selectedCategory}) => {
-//   const mutationQuery = gql`
-//     mutation MyMutation {
-//       createCourseList(
-//         data: {
-//           name: "${name}"
-//           description: "${description}"
-//           totalChapters: ${totalChapters}
-//           price: ${price}
-//           free: ${free}
-//           authorEmail: "${authorEmail}"
-//           tag : ${selectedCategory}
-//         }
-//       ) {
-//         id
-//       }
-//     }
-//   `;
-
-//   const result = await request(MASTER_URL, mutationQuery);
-//   return result;
-// };
-
-// const createCourse = async ({ name, description, authorEmail, totalChapters, price, free, selectedCategory }) => {
-//   const createCourseMutation = gql`
-//     mutation MyMutation {
-//       createCourseList(
-//         data: {
-//           name: "${name}"
-//           description: "${description}"
-//           totalChapters: ${totalChapters}
-//           price: ${price}
-//           free: ${free}
-//           authorEmail: "${authorEmail}"
-//           tag: ${selectedCategory}
-//         }
-//       ) {
-//         id
-//       }
-//     }
-//   `;
-//   const createResult = await request(MASTER_URL, createCourseMutation);
-//   return createResult;
-// };
-
-
-// const createCourse = async ({ name, description, authorEmail, totalChapters, price, selectedCategory, coverPhoto }) => {
-//   const slug = name.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
-
-//   const free = price > 0 ? false : true;
-//   const createCourseMutation = gql`
-//     mutation MyMutation {
-//       createCourseList(
-//         data: {
-//           name: "${name}"
-//           description: "${description}"
-//           totalChapters: ${totalChapters}
-//           price: ${price}
-//           free: ${free}
-//           authorEmail: "${authorEmail}"
-//           tag: ${selectedCategory}
-//           slug: "${slug}"
-//           banner: { connect: { id: "${coverPhoto}" } }
-//           counterEnroll: 0 
-//         }
-//       ) {
-//         id
-//       }
-//     }
-//   `;
-//   const createResult = await request(MASTER_URL, createCourseMutation);
-//   return createResult;
-// };
 
 const createCourse = async ({ name, description, authorEmail, price, tag, coverPhoto, chapterName, chapterNum, chapterDesc, videoUri }) => {
   const slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
@@ -846,5 +674,4 @@ export default {
   getUserInfoCounter,
   updateRegisterCounter,
   getLeadCount,
-  markChapterUnCompleted,
 }

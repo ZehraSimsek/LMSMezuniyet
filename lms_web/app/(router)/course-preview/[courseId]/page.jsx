@@ -1,25 +1,3 @@
-// "use client"
-// import React, { useEffect } from 'react'
-// import VideoDesc from './_components/VideoDesc';
-// import {usePathname} from 'next/router'
-
-// function CoursePreview({params}) {
-//     const path = usePathname();
-
-//     useEffect(() =>{
-//         console.log(params);
-//     },[]);
-    
-//   return (
-//     <div className='grid grid-cols-1 md:grid-cols-3 p-5 gap-3'>
-//         <div className='col-span-2 bg-white p-36 '>
-//             <VideoDesc />
-//         </div>
-//     </div>
-//   )
-// }
-
-// export default CoursePreview
 "use client"
 import React, { useEffect, useState } from 'react'
 import VideoDesc from './_components/VideoDesc';
@@ -57,17 +35,6 @@ function CoursePreview({params}) {
         })
     };
 
-  // return courseInfo&&(
-  //   <div className='grid grid-cols-1 md:grid-cols-3 p-5 gap-3'>
-  //       <div className='col-span-2 bg-white p-36 pt-10 '>
-  //           <VideoDesc courseInfo={courseInfo}/>
-  //       </div>
-  //       <div>
-  //           <CourseEnroll isUserAlreadyEnrolled={isUserAlreadyEnrolled} courseInfo={courseInfo}/>
-  //           <CourseContent courseInfo={courseInfo}/>
-  //       </div>
-  //   </div>
-  // )
   return courseInfo && (
     <div className='grid grid-cols-1 md:grid-cols-3 p-5 gap-3'>
       <div className='col-span-2 bg-white p-10 md:p-36 pt-10'>
