@@ -22,10 +22,10 @@ function CourseItem({ course, maxEnroll }) {
           {course?.chapter?.length == 2 ? <FaBookOpen size={24} className='mr-2' /> : <FaBook size={24} />}
         </div>
         <div>
-          {course.counterEnroll > SOME_THRESHOLD && (
-            <div className=' text-yellow-300 text-xl rounded-bl-lg'><FaStar className='mr-1' /></div>
-          )}
-        </div>
+        {course.counterEnroll > SOME_THRESHOLD && (
+          <div className='bg-yellow-100 text-yellow-800 text-sm font-semibold px-2 py-1 rounded-lg'>En çok izlenen</div>
+        )}
+      </div>
       </div>
 
     </div>

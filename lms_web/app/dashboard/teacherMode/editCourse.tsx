@@ -22,7 +22,7 @@ function EditCourse({ courseId }) {
   const [coverPhotoUrl, setCoverPhotoUrl] = useState();
   const [tag, setTag] = useState("");
   const totalFields = 7;
-  const HYGRAPH_ASSET_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MTYxMjcwNTgsImF1ZCI6WyJodHRwczovL2FwaS1ldS13ZXN0LTIuaHlncmFwaC5jb20vdjIvY2xza3BxbHQ2M3dwZzAxdXBsbTRuMHQ3MS9tYXN0ZXIiLCJtYW5hZ2VtZW50LW5leHQuZ3JhcGhjbXMuY29tIl0sImlzcyI6Imh0dHBzOi8vbWFuYWdlbWVudC1ldS13ZXN0LTIuaHlncmFwaC5jb20vIiwic3ViIjoiNTg3OGUxZDMtNWJjMy00YzZkLTgwMzMtZDgyMWI2MmI5ZDhkIiwianRpIjoiY2x3ZGxxcGF2ajRobTA4anQ0MDZpYWxobSJ9.f1tncbqNT1xDpQgxtYhOlUAY3liLKUoaYAGVc6xxT7Su-0a6bmB3uKGULbPCcHKxocva8HfGtDnMczGpC1LZvoIQy9FrVftHHI5RublU2ZSOWpHnLGPxN9_QfC6reSSSWBgCCdIiq2sUblunM8DtGDmkTIpo75fYpoizeZGXNywXrg3tGk4vJVoBbSVBePM8Qx7fVF2rc7bYOCyGufgpnVo5-Rv_ZDtj-_0TTk2br4Vf6fKH92oBrKKBOUQOjU2IVyux7FOQQANCDaSmnVyqsbx6-zc1y5izKkC545hg9zMuoqhpTgfVwfJJekEGzDpXBSt4rqUACFVsbz_Xr0utvroQrEJQ97GMk8m-twOxSCeO00PJlDDupT3USDN7pADX5XCs_vLy0_9AMFxmv3ID4XvGggtp2d-a-TeQKtkT-DRg8x4O-ZaaT4w7L7Bg_Y9nh-ibVpFk9gtg5C9mtIt9bFHzgKFrblO24f-Tk-8MB2P1FLrnaJy9EMnU8WCcIDdQh8-notWa5AE4Xj6hcWxCUX269WOLVlp2i2_s4bXg1ClsopdYJ6LgeKzHkmIT2U1ZJcoDAa_WOd6o4_B8K_UqH8p64XiaOlR-LefJDmPbD59b26q2laqpf4BUsjBEbcH8s-TnFHRNqTWOOJq-c5i6ziGNAN6EprV53kX99S-r6iU';
+  const HYGRAPH_ASSET_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MTYzOTgwMzQsImF1ZCI6WyJodHRwczovL2FwaS1ldS13ZXN0LTIuaHlncmFwaC5jb20vdjIvY2xza3BxbHQ2M3dwZzAxdXBsbTRuMHQ3MS9tYXN0ZXIiLCJtYW5hZ2VtZW50LW5leHQuZ3JhcGhjbXMuY29tIl0sImlzcyI6Imh0dHBzOi8vbWFuYWdlbWVudC1ldS13ZXN0LTIuaHlncmFwaC5jb20vIiwic3ViIjoiYjFiODkxZDUtMzg4My00YzkxLTk3NjEtZGM3N2E1MjYzOGVhIiwianRpIjoiY2x3aTMybmp5Nzk0cjA3bGJnNDI4YW85dSJ9.e3COQwGVMnSIEMU6MEC_Gt60j9D1X9Jkttr9M2lXw7PHhoXqhNq1m8y8QCCt4-thrnJpwsTMW4pCskxZHdSsM8Irjs3895ck3fqYxu2XM8uiLMOahI8KaAo8dY-ufiGWDkN2Lj77QbPX3xqJUYVkZX9ftO0gPAj-dc2hG1XXXPY8SypYiO0UWYySxtYHkyeoxM-amj7S_eFUymviC-k5R5w6EYt2CXEul8RLl5s0lTgp4tNC3zub9-jmkdtxqxRKK3ArOkYvU2yv87xXTQyjMlaVXZvBBpsEzP0L4JAMqraS7iy4b-pR6i5jldEOZwE-ZsfYQ4MZDkdbkZn7Obc8uskf7bH_-UdNL5GkeefIqDnJJp7t_XCndCBtbD1E7ThjHxRt3ygnO7IJVdHGn6ndUbwJIPJtjA-ZWlaSKMy6nMzCftczaGz4J6-Qo0joNGJYwVjLSIHTyvEzHrYuvXhaFS5aOdfxrw17qgpJZtwI7pSNwrBJayoTJc0k1wsvk-MUQ9gdxfaX6Sa6nCa70DAkm_4RSoIsD1D_-BPO-H3VnsNtxd5D5BXbd55UgMtD1s6wwMSYkHyVQO4Ms6jKmwnflQ5uvaQfhw66XzCdlpjE1OgjFFqPCto2IDDSJucGWPyiyYL0QLNaz_iN1stuB7fajEEIuVD1O54XB7jk0a-ZmuM';
   const HYGRAPH_URL = "https://api-eu-west-2.hygraph.com/v2/" + process.env.NEXT_PUBLIC_HYGRAPH_API_KEY + "/master";
 
   useEffect(() => {
@@ -33,9 +33,9 @@ function EditCourse({ courseId }) {
     if (price !== "") count++;
     if (free !== "false") count++;
     if (tag !== null) count++;
-    if (coverPhoto !== null) count++;
+    if (coverPhotoUrl !== null) count++;
     setFilledFields(count);
-  }, [name, description, totalChapters, price, free, tag, coverPhoto]);
+  }, [name, description, totalChapters, price, free, tag, coverPhotoUrl]);
 
   useEffect(() => {
     GlobalApi.getAllCourseList().then((result) => {
@@ -48,7 +48,7 @@ function EditCourse({ courseId }) {
       setPrice(specificCourse.price);
       setFree(specificCourse.price !== 0 ? "yes" : "no");
       setTag(specificCourse.tags);
-      setCoverPhotoUrl(specificCourse.banner.id);
+      setCoverPhotoUrl(specificCourse.banner.url);
       setPhoto(specificCourse.banner);
     });
   }, [courseId]);
@@ -116,9 +116,9 @@ function EditCourse({ courseId }) {
   const handleUpdate = async () => {
     let coverPhotoId = null;
 
-    if (coverPhoto) {
+    if (coverPhotoUrl) {
       const form = new FormData();
-      form.append('fileUpload', coverPhoto);
+      form.append('fileUpload', coverPhotoUrl);
 
       const uploadResponse = await fetch(`${HYGRAPH_URL}/upload`, {
         method: 'POST',
@@ -134,6 +134,7 @@ function EditCourse({ courseId }) {
 
       const responseData = await uploadResponse.json();
       coverPhotoId = responseData.id;
+      console.log(responseData.id);
 
       const publishAssetResult = await GlobalApi.publishAsset(coverPhotoId);
       console.log("Asset yayınlandı:", publishAssetResult);
