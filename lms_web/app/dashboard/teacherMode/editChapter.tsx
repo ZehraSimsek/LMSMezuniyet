@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaPencilAlt } from 'react-icons/fa';
+import { FaPencilAlt, FaList } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import fetch from 'node-fetch';
@@ -16,6 +16,7 @@ function EditChapter({ chapterId, courseId }) {
     const [videoUri, setVideoUri] = useState(null);
     const [video, setVideo] = useState(null);
     const [backList, setBackList] = useState(false);
+    const [chapterList, setShowChapterList] = useState(false);
     const [initialChapterNumber, setInitialChapterNumber] = useState("");
 
     useEffect(() => {
@@ -124,11 +125,24 @@ function EditChapter({ chapterId, courseId }) {
         return <AddChapter courseId={courseId} />;
     }
 
+    if (chapterList) {
+        return <AddChapter courseId={courseId} />;
+    }
+
     return (
         <div className='w-full'>
             <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <div className="m-20 px-8 md:w-11/12">
-                <h2 className="text-[20px] font-bold text-sky-700 mr-4">Bölüm Ayrıntıları</h2>
+                <div className="flex justify-between items-center">
+                    <h2 className="text-[20px] font-bold text-sky-700">Bölüm Ayrıntıları</h2>
+                    <button
+                        onClick={() => setShowChapterList(true)}
+                        className="text-blue-200 font-bold px-3 py-2 rounded flex items-center"
+                    >
+                        <FaList className="h-6 w-6 mr-2" />
+                        <h2 className="text-[15px] font-bold text-sky-700">Bölümlere Dön</h2>
+                    </button>
+                </div>
                 <div className="card mb-6 p-4 bg-blue-100 rounded-lg shadow-lg mt-2">
                     <label className="block text-gray-700 text-sm font-bold mb-2">Bölüm Numarası:</label>
                     <div className="border p-2 bg-gray-100 flex justify-between items-center rounded-lg">
