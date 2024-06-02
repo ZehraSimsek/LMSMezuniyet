@@ -1,6 +1,4 @@
-import React, { useEffect, useRef, useContext } from 'react';
-import { useUser, useSession } from '@clerk/clerk-react';
-import { useRouter } from 'next/router';
+import React, { useContext } from 'react';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
 import { UserButton } from "@clerk/nextjs"; 
@@ -8,35 +6,7 @@ import { FaChalkboardTeacher } from 'react-icons/fa';
 import { UserRoleContext } from '../context/UserRoleContext'; 
 
 export default function Header({ name }) {
-  const { signOut } = useUser();
-  const { renew } = useSession();
-  const router = useRouter();
   const userRole = useContext(UserRoleContext); 
-
-  const sessionTimeout = 60 * 60 * 1000; 
-  const sessionTimer = useRef(null);
-
-  useEffect(() => {
-    //renew();
-    sessionTimer.current = setTimeout(async () => {
-      await signOut();
-      router.push('/');
-      toast.success("Oturum süresi doldu. Otomatik olarak çıkış yapıldı.", {
-        position: toast.POSITION.TOP_CENTER
-      });
-    }, sessionTimeout);
-
-    return () => clearTimeout(sessionTimer.current);
-  }, []);
-
-  const handleSignOut = async () => {
-    clearTimeout(sessionTimer.current); 
-    await signOut();
-    router.push('/'); 
-    toast.success("Başarıyla çıkış yapıldı!", {
-      position: toast.POSITION.TOP_CENTER
-    });
-  };
 
   const handleRoleChange = (userRole) => {
     toast.success(`${userRole} moduna geçtiniz!`, {

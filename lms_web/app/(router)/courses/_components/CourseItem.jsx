@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import { FaBookOpen, FaBook, FaStar  } from 'react-icons/fa'
+import { FaBookOpen, FaBook  } from 'react-icons/fa'
 
 function CourseItem({ course, maxEnroll }) {
   const SOME_THRESHOLD = maxEnroll-1;

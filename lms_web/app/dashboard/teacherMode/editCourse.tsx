@@ -129,7 +129,7 @@ function EditCourse({ courseId }) {
       });
 
       if (!uploadResponse.ok) {
-        throw new Error(`Upload failed with status ${uploadResponse.status}`);
+        throw new Error(`Upload hatası ${uploadResponse.status}`);
       }
 
       const responseData = await uploadResponse.json();
@@ -174,7 +174,7 @@ function EditCourse({ courseId }) {
   };
 
   if (!course) {
-    return <div>Loading...</div>;
+    return <div>Yükleniyor...</div>;
   }
 
   if (update) {

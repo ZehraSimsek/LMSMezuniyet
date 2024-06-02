@@ -34,10 +34,10 @@ function PaymentForm({ courseInfo }) {
           paymentMethod: paymentMethod.paymentMethod.id,
         }),
       });
-      if (!response.ok) return alert("Payment unsuccessful!");
+      if (!response.ok) return alert("Ödeme Başarısız!");
       const data = await response.json();
       const confirm = await stripe.confirmCardPayment(data.clientSecret);
-      if (confirm.error) return alert("Payment unsuccessful!");
+      if (confirm.error) return alert("Ödeme Başarısız!");
       toast.success("Ödeme Başarılı! Abonelik aktif edildi.");
 
       GlobalApi.enrollToCourse(courseInfo?.id, user?.primaryEmailAddress?.emailAddress)
@@ -53,7 +53,7 @@ function PaymentForm({ courseInfo }) {
         });
     } catch (err) {
       console.error(err);
-      toast.error("Payment failed! " + err.message);
+      toast.error("Ödeme Başarısız! " + err.message);
     }
   };
 

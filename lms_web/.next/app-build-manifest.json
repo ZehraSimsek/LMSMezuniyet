@@ -27,28 +27,6 @@
       "static/chunks/main-app.js",
       "static/css/app/dashboard/page.css",
       "static/chunks/app/dashboard/page.js"
-    ],
-    "/(router)/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(router)/layout.js"
-    ],
-    "/(router)/course-preview/[courseId]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(router)/course-preview/[courseId]/page.css",
-      "static/chunks/app/(router)/course-preview/[courseId]/page.js"
-    ],
-    "/(router)/watch-course/[enrollId]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(router)/watch-course/[enrollId]/page.css",
-      "static/chunks/app/(router)/watch-course/[enrollId]/page.js"
-    ],
-    "/not-found": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/not-found.js"
     ]
   }
 }

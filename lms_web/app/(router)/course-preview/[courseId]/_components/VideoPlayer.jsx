@@ -7,7 +7,7 @@ const VideoPlayer = ({ videoUrl, poster }) => {
     const video = videoEl.current;
     if (!video) return;
 
-    console.log(`The video is ${video.duration} seconds long.`);
+    console.log(`Video uzunluğu: ${video.duration}`);
   };
 
   return (

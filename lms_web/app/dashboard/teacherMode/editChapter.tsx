@@ -90,7 +90,7 @@ function EditChapter({ chapterId, courseId }) {
                 body: form,
             });
             if (!uploadResponse.ok) {
-                throw new Error(`Chapter video upload failed with status ${uploadResponse.status}`);
+                throw new Error(`Chapter video hatası ${uploadResponse.status}`);
             }
 
             const responseData = await uploadResponse.json();

@@ -29,7 +29,7 @@ function VideoDesc({ courseInfo, activeChapterIndex, watchMode = false, setChapt
         await GlobalApi.leaderCounter(authorEmail, 1);
       }
     } catch (error) {
-      console.error('Error updating chapter completion status:', error);
+      console.error('hata:', error);
     }
   };
 

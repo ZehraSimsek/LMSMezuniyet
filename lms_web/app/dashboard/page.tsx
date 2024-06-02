@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { UserButton, useUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import Sidebar from './sidebar';
-import { FaChalkboardTeacher, FaSignOutAlt , FaAndroid } from 'react-icons/fa'; 
+import { FaChalkboardTeacher, FaAndroid } from 'react-icons/fa'; 
 import PacmanLoader from "react-spinners/PacmanLoader";
 import { UserRoleContext } from '../context/UserRoleContext'; 
 
@@ -11,7 +11,6 @@ export default function DashboardPage() {
   const { user } = useUser();
   const { userRole, setUserRole } = useContext(UserRoleContext); 
   const [isTeacher, setIsTeacher] = useState(false);
-  const [isStudent, setIsStudent] = useState(false);
   const [isTeacherMode, setIsTeacherMode] = useState(false); 
   const [isUserLoading, setIsUserLoading] = useState(true); 
 

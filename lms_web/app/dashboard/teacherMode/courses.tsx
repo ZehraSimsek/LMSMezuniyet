@@ -86,7 +86,7 @@ function Courses() {
       label: category,
       value: category,
       isMostEnrolled: category === maxEnrollCategory,
-    })).sort((a, b) => categoryCounts[b.value] - categoryCounts[a.value]); // Enroll sayısına göre sırala
+    })).sort((a, b) => categoryCounts[b.value] - categoryCounts[a.value]);
 
     setCourseCategories(categories);
   };
@@ -154,7 +154,7 @@ function Courses() {
           body: coverForm,
         });
         if (!coverUploadResponse.ok) {
-          throw new Error(`Cover photo upload failed with status ${coverUploadResponse.status}`);
+          throw new Error(`Cover photo hatası ${coverUploadResponse.status}`);
         }
 
         const coverResponseData = await coverUploadResponse.json();
@@ -176,7 +176,7 @@ function Courses() {
           body: form,
         });
         if (!uploadResponse.ok) {
-          throw new Error(`Chapter video upload failed with status ${uploadResponse.status}`);
+          throw new Error(`Chapter video hatası ${uploadResponse.status}`);
         }
 
         const responseData = await uploadResponse.json();
