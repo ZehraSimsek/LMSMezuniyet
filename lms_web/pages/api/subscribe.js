@@ -13,11 +13,11 @@ export default async function handler(req, res) {
       payment_method: paymentMethod,
       invoice_settings: { default_payment_method: paymentMethod },
     });
-    // Create a product
+    // product
     const product = await stripe.products.create({
       name: "Monthly subscription",
     });
-    // Create a subscription
+    // subscription
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
       items: [
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
       },
       expand: ["latest_invoice.payment_intent"],
     });
-    // Send back the client secret for payment
+    // Ödeme için client secret geri gönderme
     res.json({
       message: "Subscription successfully initiated",
       clientSecret: subscription.latest_invoice.payment_intent.client_secret,
